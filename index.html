@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sekarang</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="atmosphere" aria-hidden="true"></div>
+    <main class="stage">
+      <p class="brand">Sekarang</p>
+      <time id="clock" class="clock" datetime="">
+        <span class="hours" data-part="hours">00</span>
+        <span class="sep" aria-hidden="true">:</span>
+        <span class="minutes" data-part="minutes">00</span>
+        <span class="sep soft" aria-hidden="true">:</span>
+        <span class="seconds" data-part="seconds">00</span>
+      </time>
+      <p id="date" class="date"></p>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
