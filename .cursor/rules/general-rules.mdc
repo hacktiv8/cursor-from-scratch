@@ -20,3 +20,7 @@ alwaysApply: true
 - Keep 3rd party libraries to bare minimum
 - Pin library version in package.json
 - Prefer small components, clear naming, minimal abstraction
+
+## TypeScript-specific
+- Prefer functional programming style over imperative style in TypeScript
+

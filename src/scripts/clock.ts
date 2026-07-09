@@ -14,47 +14,57 @@ const dateFormatter = new Intl.DateTimeFormat(LOCALE, {
   year: "numeric",
 });
 
+const pad2 = (n: number): string => String(n).padStart(2, "0");
+
 /** Machine-readable `HH:MM:SS` for the `<time datetime>` attribute. */
-export function formatDateTimeAttr(date: Date): string {
-  const h = String(date.getHours()).padStart(2, "0");
-  const m = String(date.getMinutes()).padStart(2, "0");
-  const s = String(date.getSeconds()).padStart(2, "0");
-  return `${h}:${m}:${s}`;
-}
+export const formatDateTimeAttr = (date: Date): string =>
+  [date.getHours(), date.getMinutes(), date.getSeconds()].map(pad2).join(":");
 
 /** Display time string for the current locale (24-hour). */
-export function formatTime(date: Date): string {
-  return timeFormatter.format(date);
-}
+export const formatTime = (date: Date): string => timeFormatter.format(date);
 
 /** Display date string for the current locale. */
-export function formatDate(date: Date): string {
-  return dateFormatter.format(date);
-}
+export const formatDate = (date: Date): string => dateFormatter.format(date);
 
 export type ClockSnapshot = {
-  time: string;
-  date: string;
-  dateTime: string;
+  readonly time: string;
+  readonly date: string;
+  readonly dateTime: string;
 };
 
 /** Pure snapshot of clock display values for a given instant. */
-export function getClockSnapshot(date: Date): ClockSnapshot {
-  return {
-    time: formatTime(date),
-    date: formatDate(date),
-    dateTime: formatDateTimeAttr(date),
-  };
-}
+export const getClockSnapshot = (date: Date): ClockSnapshot => ({
+  time: formatTime(date),
+  date: formatDate(date),
+  dateTime: formatDateTimeAttr(date),
+});
 
-export function startClock(clockEl: HTMLTimeElement, dateEl: HTMLElement): void {
-  const tick = () => {
-    const snapshot = getClockSnapshot(new Date());
+export type ClockDeps = {
+  readonly now?: () => Date;
+  readonly setInterval?: typeof globalThis.setInterval;
+  readonly clearInterval?: typeof globalThis.clearInterval;
+};
+
+const applySnapshot =
+  (clockEl: HTMLTimeElement, dateEl: HTMLElement) =>
+  (snapshot: ClockSnapshot): void => {
     clockEl.textContent = snapshot.time;
     clockEl.dateTime = snapshot.dateTime;
     dateEl.textContent = snapshot.date;
   };
 
+export const startClock = (
+  clockEl: HTMLTimeElement,
+  dateEl: HTMLElement,
+  deps: ClockDeps = {},
+): (() => void) => {
+  const now = deps.now ?? (() => new Date());
+  const schedule = deps.setInterval ?? globalThis.setInterval.bind(globalThis);
+  const cancel = deps.clearInterval ?? globalThis.clearInterval.bind(globalThis);
+  const render = applySnapshot(clockEl, dateEl);
+  const tick = () => render(getClockSnapshot(now()));
+
   tick();
-  window.setInterval(tick, 1000);
-}
+  const id = schedule(tick, 1000);
+  return () => cancel(id);
+};
