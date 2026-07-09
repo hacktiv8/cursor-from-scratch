@@ -1,9 +1,23 @@
 :root {
-  --lime: #b8f000;
-  --ink: #14200a;
-  --ink-soft: #2a3d14;
+  --field-lime: #b8f000;
+  --lime-bright: #c8f520;
+  --lime-deep: #9ad400;
+  --grove-mid: #7a9e00;
+  --mist-green: #f4ffe8;
+  --field-ink: #14200a;
+  --field-soft: #2a3d14;
   --font-display: "Fraunces", Georgia, serif;
   --font-body: "Sora", "Segoe UI", sans-serif;
+  --space-xs: 0.4rem;
+  --space-sm: 0.85rem;
+  --space-md: 1.75rem;
+  --space-lg: 2.5rem;
+  --space-xl: 3.5rem;
+  --space-stage: 2rem;
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-local: 0.35s;
+  --z-atmosphere: 0;
+  --z-stage: 1;
 }
 
 *,
@@ -24,19 +38,20 @@ body {
   display: grid;
   place-items: center;
   font-family: var(--font-body);
-  color: var(--ink);
-  background: var(--lime);
+  color: var(--field-ink);
+  background: var(--field-lime);
   overflow-x: hidden;
 }
 
 .atmosphere {
   position: fixed;
   inset: 0;
+  z-index: var(--z-atmosphere);
   background:
     radial-gradient(ellipse 85% 65% at 15% 10%, rgba(255, 255, 255, 0.55), transparent 55%),
-    radial-gradient(ellipse 70% 55% at 90% 85%, rgba(122, 158, 0, 0.45), transparent 50%),
-    radial-gradient(ellipse 50% 40% at 50% 45%, rgba(244, 255, 232, 0.35), transparent 65%),
-    linear-gradient(160deg, #c8f520 0%, #b8f000 40%, #9ad400 100%);
+    radial-gradient(ellipse 70% 55% at 90% 85%, color-mix(in srgb, var(--grove-mid) 45%, transparent), transparent 50%),
+    radial-gradient(ellipse 50% 40% at 50% 45%, color-mix(in srgb, var(--mist-green) 35%, transparent), transparent 65%),
+    linear-gradient(160deg, var(--lime-bright) 0%, var(--field-lime) 40%, var(--lime-deep) 100%);
   animation: drift 18s ease-in-out infinite alternate;
 }
 
@@ -51,14 +66,19 @@ body {
 
 .stage {
   position: relative;
-  z-index: 1;
+  z-index: var(--z-stage);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3.5rem;
+  gap: var(--space-xl);
+  width: min(100%, 68rem);
   text-align: center;
-  padding: 2rem;
-  animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  padding:
+    max(var(--space-stage), env(safe-area-inset-top))
+    max(var(--space-stage), env(safe-area-inset-right))
+    max(var(--space-stage), env(safe-area-inset-bottom))
+    max(var(--space-stage), env(safe-area-inset-left));
+  animation: rise 0.9s var(--ease-out-expo) backwards;
 }
 
 .brand {
@@ -66,37 +86,38 @@ body {
   font-size: clamp(2.75rem, 9vw, 5rem);
   font-weight: 500;
   letter-spacing: -0.03em;
-  color: var(--ink);
+  color: var(--field-ink);
   line-height: 1;
-  animation: fade-in 1s ease 0.15s both;
+  text-wrap: balance;
+  animation: settle 0.85s var(--ease-out-expo) 0.08s backwards;
 }
 
 .zones {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2.5rem;
-  width: min(100%, 68rem);
+  gap: var(--space-lg);
+  width: 100%;
   align-items: center;
 }
 
 .zone {
   text-align: center;
-  animation: fade-in 1s ease both;
+  animation: settle 0.85s var(--ease-out-expo) backwards;
   transition:
-    opacity 0.35s ease,
-    transform 0.35s ease;
+    opacity var(--duration-local) ease,
+    transform var(--duration-local) ease;
 }
 
 .zone:nth-child(1) {
-  animation-delay: 0.25s;
+  animation-delay: 0.14s;
 }
 
 .zone:nth-child(2) {
-  animation-delay: 0.4s;
+  animation-delay: 0.22s;
 }
 
 .zone:nth-child(3) {
-  animation-delay: 0.55s;
+  animation-delay: 0.3s;
 }
 
 .zones:has(.zone--local) .zone:not(.zone--local) {
@@ -104,7 +125,7 @@ body {
 }
 
 .zone--local {
-  transform: scale(1.08);
+  transform: none;
 }
 
 .zone-label {
@@ -112,8 +133,9 @@ body {
   font-size: clamp(1.75rem, 4vw, 2.25rem);
   font-weight: 600;
   letter-spacing: -0.02em;
-  color: var(--ink);
+  color: var(--field-ink);
   line-height: 1;
+  text-wrap: balance;
 }
 
 .zone--local .zone-label {
@@ -121,15 +143,16 @@ body {
 }
 
 .zone-name {
-  margin-top: 0.4rem;
+  margin-top: var(--space-xs);
   font-size: clamp(1rem, 2.2vw, 1.2rem);
   font-weight: 500;
-  color: var(--ink-soft);
+  color: var(--field-soft);
+  text-wrap: balance;
 }
 
 .zone--local .zone-name {
   font-size: clamp(1.1rem, 2.5vw, 1.35rem);
-  color: var(--ink);
+  color: var(--field-ink);
 }
 
 .clock {
@@ -140,7 +163,7 @@ body {
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.04em;
-  color: var(--ink);
+  color: var(--field-ink);
   line-height: 1;
 }
 
@@ -149,21 +172,22 @@ body {
 }
 
 .date {
-  margin-top: 0.85rem;
+  margin-top: var(--space-sm);
   font-size: clamp(1.1rem, 2.8vw, 1.35rem);
   font-weight: 500;
-  color: var(--ink-soft);
+  color: var(--field-soft);
   letter-spacing: 0.01em;
+  text-wrap: balance;
 }
 
 .zone--local .date {
   font-size: clamp(1.25rem, 3.2vw, 1.6rem);
-  color: var(--ink);
+  color: var(--field-ink);
 }
 
 .world {
-  width: min(100%, 68rem);
-  animation: fade-in 1s ease 0.7s both;
+  width: 100%;
+  animation: settle 0.85s var(--ease-out-expo) 0.38s backwards;
 }
 
 .world-heading {
@@ -171,18 +195,20 @@ body {
   font-size: clamp(1.5rem, 3.5vw, 2rem);
   font-weight: 600;
   letter-spacing: -0.02em;
-  color: var(--ink);
-  margin-bottom: 1.75rem;
+  color: var(--field-ink);
+  margin-bottom: var(--space-md);
+  text-wrap: balance;
 }
 
 .world-zones {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.75rem 1.25rem;
+  gap: var(--space-md) 1.25rem;
 }
 
 .world-zone {
   text-align: center;
+  min-width: 0;
 }
 
 .world-label {
@@ -190,15 +216,18 @@ body {
   font-size: clamp(1.25rem, 3vw, 1.5rem);
   font-weight: 600;
   letter-spacing: -0.02em;
-  color: var(--ink);
+  color: var(--field-ink);
   line-height: 1.1;
+  text-wrap: balance;
 }
 
 .world-name {
   margin-top: 0.3rem;
   font-size: clamp(0.95rem, 2vw, 1.05rem);
   font-weight: 500;
-  color: var(--ink-soft);
+  color: var(--field-soft);
+  text-wrap: balance;
+  overflow-wrap: break-word;
 }
 
 .world-clock {
@@ -209,15 +238,16 @@ body {
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.04em;
-  color: var(--ink);
+  color: var(--field-ink);
   line-height: 1;
 }
 
 .world-date {
   margin-top: 0.45rem;
-  font-size: clamp(0.9rem, 2vw, 1.05rem);
+  font-size: clamp(0.95rem, 2vw, 1.05rem);
   font-weight: 500;
-  color: var(--ink-soft);
+  color: var(--field-soft);
+  text-wrap: balance;
 }
 
 @media (min-width: 800px) {
@@ -225,6 +255,10 @@ body {
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
     align-items: center;
+  }
+
+  .zone--local {
+    transform: scale(1.08);
   }
 
   .clock {
@@ -241,7 +275,7 @@ body {
 
   .world-zones {
     grid-template-columns: repeat(3, 1fr);
-    gap: 2rem 1.5rem;
+    gap: var(--space-lg) 1.5rem;
   }
 
   .world-clock {
@@ -260,7 +294,7 @@ body {
   }
 
   .world-date {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
   }
 }
 
@@ -275,21 +309,19 @@ body {
 
 @keyframes rise {
   from {
-    opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(14px);
   }
   to {
-    opacity: 1;
     transform: translateY(0);
   }
 }
 
-@keyframes fade-in {
+@keyframes settle {
   from {
-    opacity: 0;
+    transform: translateY(10px);
   }
   to {
-    opacity: 1;
+    transform: translateY(0);
   }
 }
 

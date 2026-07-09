@@ -1,0 +1,257 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-09T10:40:41Z",
+  "title": "Design System: Waktu",
+  "extensions": {
+    "colorMeta": {
+      "field-lime": {
+        "role": "primary",
+        "displayName": "Field Lime",
+        "canonical": "#b8f000",
+        "tonalRamp": [
+          "#1a2e00",
+          "#3d5c00",
+          "#5f8a00",
+          "#7a9e00",
+          "#9ad400",
+          "#b8f000",
+          "#c8f520",
+          "#f4ffe8"
+        ]
+      },
+      "lime-bright": {
+        "role": "primary",
+        "displayName": "Lime Bright",
+        "canonical": "#c8f520",
+        "tonalRamp": [
+          "#1a2e00",
+          "#3d5c00",
+          "#5f8a00",
+          "#7a9e00",
+          "#9ad400",
+          "#b8f000",
+          "#c8f520",
+          "#f4ffe8"
+        ]
+      },
+      "lime-deep": {
+        "role": "primary",
+        "displayName": "Lime Deep",
+        "canonical": "#9ad400",
+        "tonalRamp": [
+          "#1a2e00",
+          "#3d5c00",
+          "#5f8a00",
+          "#7a9e00",
+          "#9ad400",
+          "#b8f000",
+          "#c8f520",
+          "#f4ffe8"
+        ]
+      },
+      "grove-mid": {
+        "role": "primary",
+        "displayName": "Grove Mid",
+        "canonical": "#7a9e00",
+        "tonalRamp": [
+          "#1a2e00",
+          "#3d5c00",
+          "#5f8a00",
+          "#7a9e00",
+          "#9ad400",
+          "#b8f000",
+          "#c8f520",
+          "#f4ffe8"
+        ]
+      },
+      "mist-green": {
+        "role": "primary",
+        "displayName": "Mist Green",
+        "canonical": "#f4ffe8",
+        "tonalRamp": [
+          "#1a2e00",
+          "#3d5c00",
+          "#5f8a00",
+          "#7a9e00",
+          "#9ad400",
+          "#b8f000",
+          "#c8f520",
+          "#f4ffe8"
+        ]
+      },
+      "field-ink": {
+        "role": "neutral",
+        "displayName": "Field Ink",
+        "canonical": "#14200a",
+        "tonalRamp": [
+          "#0a1005",
+          "#14200a",
+          "#1c2c0e",
+          "#2a3d14",
+          "#3d5620",
+          "#5a7a35",
+          "#8aab60",
+          "#c5d9a8"
+        ]
+      },
+      "field-soft": {
+        "role": "neutral",
+        "displayName": "Field Soft",
+        "canonical": "#2a3d14",
+        "tonalRamp": [
+          "#0a1005",
+          "#14200a",
+          "#1c2c0e",
+          "#2a3d14",
+          "#3d5620",
+          "#5a7a35",
+          "#8aab60",
+          "#c5d9a8"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Brand wordmark Waktu only."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Indonesia zone labels (WIB / WITA / WIT)."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "World section heading and city labels."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Zone full names and dates."
+      },
+      "clock": {
+        "displayName": "Clock",
+        "purpose": "Realtime HH:MM:SS with tabular numerals — the glance target."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "atmosphere-drift",
+        "value": "18s ease-in-out infinite alternate",
+        "purpose": "Slow field movement; remove under prefers-reduced-motion."
+      },
+      {
+        "name": "rise",
+        "value": "0.9s cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Stage entrance via transform only; content remains visible by default."
+      },
+      {
+        "name": "settle",
+        "value": "0.85s cubic-bezier(0.22, 1, 0.36, 1) backwards",
+        "purpose": "Staggered zone/world settle via translateY; never animate opacity so local dimming works."
+      },
+      {
+        "name": "local-highlight",
+        "value": "0.35s ease",
+        "purpose": "Opacity and scale transition when marking the local Indonesia zone."
+      }
+    ],
+    "breakpoints": [
+      { "name": "zones-row", "value": "800px" },
+      { "name": "world-six", "value": "1100px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Brand Wordmark",
+      "kind": "custom",
+      "refersTo": "brand-wordmark",
+      "description": "Hero-level Waktu mark above the clocks — Fraunces on Field Lime.",
+      "html": "<p class=\"ds-brand\">Waktu</p>",
+      "css": ".ds-brand { margin: 0; font-family: Fraunces, Georgia, serif; font-size: clamp(2.75rem, 9vw, 5rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1; color: #14200a; text-align: center; }"
+    },
+    {
+      "name": "Indonesia Zone Clock",
+      "kind": "custom",
+      "refersTo": "zone-clock",
+      "description": "WIB/WITA/WIT block: label, name, tabular time, date.",
+      "html": "<article class=\"ds-zone\"><h2 class=\"ds-zone-label\">WIB</h2><p class=\"ds-zone-name\">Waktu Indonesia Barat</p><time class=\"ds-clock\">14:32:08</time><p class=\"ds-date\">Kamis, 9 Juli 2026</p></article>",
+      "css": ".ds-zone { text-align: center; color: #14200a; } .ds-zone-label { margin: 0; font-family: Fraunces, Georgia, serif; font-size: clamp(1.75rem, 4vw, 2.25rem); font-weight: 600; letter-spacing: -0.02em; line-height: 1; } .ds-zone-name { margin: 0.4rem 0 0; font-family: Sora, \"Segoe UI\", sans-serif; font-size: clamp(1rem, 2.2vw, 1.2rem); font-weight: 500; color: #2a3d14; } .ds-clock { display: block; margin-top: 1rem; font-family: Sora, \"Segoe UI\", sans-serif; font-size: clamp(2.75rem, 10vw, 4.5rem); font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -0.04em; line-height: 1; color: #14200a; } .ds-date { margin: 0.85rem 0 0; font-family: Sora, \"Segoe UI\", sans-serif; font-size: clamp(1.1rem, 2.8vw, 1.35rem); font-weight: 500; color: #2a3d14; letter-spacing: 0.01em; }"
+    },
+    {
+      "name": "Local Zone Clock",
+      "kind": "custom",
+      "refersTo": "zone-clock-local",
+      "description": "Emphasized local Indonesia zone — larger type, full ink, scale 1.08.",
+      "html": "<article class=\"ds-zone ds-zone--local\" aria-current=\"true\"><h2 class=\"ds-zone-label\">WIB</h2><p class=\"ds-zone-name\">Waktu Indonesia Barat</p><time class=\"ds-clock\">14:32:08</time><p class=\"ds-date\">Kamis, 9 Juli 2026</p></article>",
+      "css": ".ds-zone--local { text-align: center; color: #14200a; transform: scale(1.08); } .ds-zone--local .ds-zone-label { margin: 0; font-family: Fraunces, Georgia, serif; font-size: clamp(2.25rem, 5.5vw, 3rem); font-weight: 600; letter-spacing: -0.02em; line-height: 1; } .ds-zone--local .ds-zone-name { margin: 0.4rem 0 0; font-family: Sora, \"Segoe UI\", sans-serif; font-size: clamp(1.1rem, 2.5vw, 1.35rem); font-weight: 500; color: #14200a; } .ds-zone--local .ds-clock { display: block; margin-top: 1rem; font-family: Sora, \"Segoe UI\", sans-serif; font-size: clamp(3.5rem, 13vw, 6rem); font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -0.04em; line-height: 1; color: #14200a; } .ds-zone--local .ds-date { margin: 0.85rem 0 0; font-family: Sora, \"Segoe UI\", sans-serif; font-size: clamp(1.25rem, 3.2vw, 1.6rem); font-weight: 500; color: #14200a; letter-spacing: 0.01em; }"
+    },
+    {
+      "name": "World City Clock",
+      "kind": "custom",
+      "refersTo": "world-clock",
+      "description": "Secondary world city cell — quieter than Indonesia zones.",
+      "html": "<article class=\"ds-world-zone\"><h3 class=\"ds-world-label\">Tokyo</h3><p class=\"ds-world-name\">Jepang</p><time class=\"ds-world-clock\">16:32:08</time><p class=\"ds-world-date\">Kamis, 9 Juli 2026</p></article>",
+      "css": ".ds-world-zone { text-align: center; color: #14200a; } .ds-world-label { margin: 0; font-family: Fraunces, Georgia, serif; font-size: clamp(1.25rem, 3vw, 1.5rem); font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; } .ds-world-name { margin: 0.3rem 0 0; font-family: Sora, \"Segoe UI\", sans-serif; font-size: clamp(0.95rem, 2vw, 1.05rem); font-weight: 500; color: #2a3d14; } .ds-world-clock { display: block; margin-top: 0.65rem; font-family: Sora, \"Segoe UI\", sans-serif; font-size: clamp(1.75rem, 5.5vw, 2.25rem); font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -0.04em; line-height: 1; color: #14200a; } .ds-world-date { margin: 0.45rem 0 0; font-family: Sora, \"Segoe UI\", sans-serif; font-size: clamp(0.9rem, 2vw, 1.05rem); font-weight: 500; color: #2a3d14; }"
+    },
+    {
+      "name": "Atmosphere Field",
+      "kind": "custom",
+      "refersTo": "field-lime",
+      "description": "Full-bleed lime field with soft radials — the drenched surface.",
+      "html": "<div class=\"ds-atmosphere\" aria-hidden=\"true\"></div>",
+      "css": ".ds-atmosphere { width: 100%; min-height: 12rem; background: radial-gradient(ellipse 85% 65% at 15% 10%, rgba(255, 255, 255, 0.55), transparent 55%), radial-gradient(ellipse 70% 55% at 90% 85%, rgba(122, 158, 0, 0.45), transparent 50%), radial-gradient(ellipse 50% 40% at 50% 45%, rgba(244, 255, 232, 0.35), transparent 65%), linear-gradient(160deg, #c8f520 0%, #b8f000 40%, #9ad400 100%); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Lime Field Clock",
+    "overview": "Waktu is a wall-facing time surface: one composition, one job, no chrome. The entire viewport is a lime field; dark leaf ink sits on it so time reads at a glance from across a room. Personality is calm, clear, and steady — a quiet fixture, not a product tour.\n\nDensity is low and hierarchy is typographic. Fraunces carries place names and the brand; Sora carries the ticking digits. Atmosphere (soft radial light, slow drift, light grain) supports presence without competing with the clock. Local Indonesian zone is scaled up and neighbors dim; world cities sit quieter below.\n\nThis system explicitly rejects SaaS marketing pages — hero stacks, feature grids, CTAs, and card chrome that compete with the clock. If a new element would belong on a landing page, it does not belong here.",
+    "keyCharacteristics": [
+      "Drenched Field Lime surface; ink on lime, never lime-on-white cards",
+      "Typographic and ambient — type is the UI; no buttons, cards, or nav chrome",
+      "Glance hierarchy: brand → local Indonesia zone → other WIB/WITA/WIT → world cities",
+      "Flat / tonal depth only — scale, opacity, atmosphere; never drop shadows",
+      "Motion is slow and optional; prefers-reduced-motion removes all of it"
+    ],
+    "rules": [
+      {
+        "name": "The Drenched Field Rule",
+        "body": "Field Lime owns 30–100% of the viewport. Never invert to a white/cream page with lime accents.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ink-On-Lime Rule",
+        "body": "All readable text uses Field Ink or Field Soft on Field Lime. Never light text on lime, never gray text on lime.",
+        "section": "colors"
+      },
+      {
+        "name": "The Glance Type Rule",
+        "body": "Clock digits are the largest continuous text on screen after (or with) the brand. If a decoration out-sizes the clock, delete the decoration.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Time Rule",
+        "body": "Every clock uses tabular numerals so digits do not jump as seconds tick.",
+        "section": "typography"
+      },
+      {
+        "name": "The No-Shadow Rule",
+        "body": "Drop shadows are forbidden. If depth is needed, use scale, opacity, or atmosphere — never a card shadow.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep Field Lime as the full-bleed body background and Field Ink / Field Soft as the only text colors.",
+      "Do make the local Indonesia zone the clearest glance target via scale and sibling dimming.",
+      "Do use Fraunces for brand and place labels; Sora + tabular nums for every clock.",
+      "Do honor prefers-reduced-motion: reduce by removing atmosphere drift, rise, fade-in, and local scale.",
+      "Do keep letter-spacing on display/clock type at or above -0.04em."
+    ],
+    "donts": [
+      "Don't build SaaS marketing pages — hero stacks, feature grids, CTAs, and card chrome that compete with the clock.",
+      "Don't use drop shadows, glass cards, or bordered card grids.",
+      "Don't put gray body text on lime; Field Soft is the only muted text.",
+      "Don't add tiny uppercase tracked eyebrows, numbered section markers, or gradient text.",
+      "Don't invent buttons or nav for a glance-only wall display."
+    ]
+  }
+}

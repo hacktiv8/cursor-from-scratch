@@ -1,15 +1,26 @@
 ---
-import { INDONESIA_ZONES, WORLD_ZONES } from "../scripts/clock";
+import {
+  INDONESIA_ZONES,
+  WORLD_ZONES,
+  getIndonesiaClocksSnapshot,
+  getWorldClocksSnapshot,
+} from "../scripts/clock";
+
+const now = new Date();
+const indonesiaClocks = getIndonesiaClocksSnapshot(now);
+const worldClocks = getWorldClocksSnapshot(now);
 ---
 
 <section class="zones" aria-label="Perbandingan waktu Indonesia">
   {
-    INDONESIA_ZONES.map((zone) => (
+    indonesiaClocks.map((zone) => (
       <article class="zone" data-zone={zone.id}>
         <h2 class="zone-label">{zone.label}</h2>
         <p class="zone-name">{zone.name}</p>
-        <time class="clock" datetime="">--:--:--</time>
-        <p class="date">Memuat tanggal…</p>
+        <time class="clock" datetime={zone.dateTime}>
+          {zone.time}
+        </time>
+        <p class="date">{zone.date}</p>
       </article>
     ))
   }
@@ -19,12 +30,14 @@ import { INDONESIA_ZONES, WORLD_ZONES } from "../scripts/clock";
   <h2 class="world-heading">Kota dunia</h2>
   <div class="world-zones">
     {
-      WORLD_ZONES.map((zone) => (
+      worldClocks.map((zone) => (
         <article class="world-zone" data-zone={zone.id}>
           <h3 class="world-label">{zone.label}</h3>
           <p class="world-name">{zone.name}</p>
-          <time class="world-clock" datetime="">--:--:--</time>
-          <p class="world-date">Memuat tanggal…</p>
+          <time class="world-clock" datetime={zone.dateTime}>
+            {zone.time}
+          </time>
+          <p class="world-date">{zone.date}</p>
         </article>
       ))
     }

@@ -20,3 +20,15 @@ Consult these guides before working on related tasks:
 - [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
 - [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
 - [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+
+## Design Context
+
+See [PRODUCT.md](./PRODUCT.md) for full product and design strategy.
+
+- **Register:** product (utility UI; design serves the task)
+- **Users:** wall-display glance — distance, ambient, no interaction
+- **Purpose:** instant, glanceable realtime date/time
+- **Personality:** calm, clear, steady
+- **Anti-references:** SaaS marketing pages
+- **Principles:** glance first · calm over spectacle · one job · hierarchy over clutter · restraint
+- **A11y:** big text, clear contrast, distance-readable type; honor `prefers-reduced-motion`
