@@ -1,11 +1,7 @@
 :root {
   --lime: #b8f000;
-  --lime-bright: #d4ff4a;
-  --lime-deep: #7a9e00;
   --ink: #14200a;
   --ink-soft: #2a3d14;
-  --paper: #f4ffe8;
-  --surface: #e8f7c8;
   --font-display: "Fraunces", Georgia, serif;
   --font-body: "Sora", "Segoe UI", sans-serif;
 }
@@ -72,7 +68,6 @@ body {
   letter-spacing: -0.03em;
   color: var(--ink);
   line-height: 1;
-  margin-bottom: 0;
   animation: fade-in 1s ease 0.15s both;
 }
 
