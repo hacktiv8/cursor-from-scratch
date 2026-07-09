@@ -77,11 +77,15 @@ body {
   grid-template-columns: 1fr;
   gap: 2.5rem;
   width: min(100%, 68rem);
+  align-items: center;
 }
 
 .zone {
   text-align: center;
   animation: fade-in 1s ease both;
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
 }
 
 .zone:nth-child(1) {
@@ -96,6 +100,14 @@ body {
   animation-delay: 0.55s;
 }
 
+.zones:has(.zone--local) .zone:not(.zone--local) {
+  opacity: 0.55;
+}
+
+.zone--local {
+  transform: scale(1.08);
+}
+
 .zone-label {
   font-family: var(--font-display);
   font-size: clamp(1.75rem, 4vw, 2.25rem);
@@ -105,11 +117,20 @@ body {
   line-height: 1;
 }
 
+.zone--local .zone-label {
+  font-size: clamp(2.25rem, 5.5vw, 3rem);
+}
+
 .zone-name {
   margin-top: 0.4rem;
   font-size: clamp(1rem, 2.2vw, 1.2rem);
   font-weight: 500;
   color: var(--ink-soft);
+}
+
+.zone--local .zone-name {
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+  color: var(--ink);
 }
 
 .clock {
@@ -124,6 +145,10 @@ body {
   line-height: 1;
 }
 
+.zone--local .clock {
+  font-size: clamp(3.5rem, 13vw, 6rem);
+}
+
 .date {
   margin-top: 0.85rem;
   font-size: clamp(1.1rem, 2.8vw, 1.35rem);
@@ -132,15 +157,28 @@ body {
   letter-spacing: 0.01em;
 }
 
+.zone--local .date {
+  font-size: clamp(1.25rem, 3.2vw, 1.6rem);
+  color: var(--ink);
+}
+
 @media (min-width: 800px) {
   .zones {
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
-    align-items: start;
+    align-items: center;
   }
 
   .clock {
-    font-size: clamp(2.5rem, 5.5vw, 3.75rem);
+    font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+  }
+
+  .zone--local .clock {
+    font-size: clamp(3.25rem, 7vw, 4.75rem);
+  }
+
+  .zones:has(.zone--local) .zone:not(.zone--local) .clock {
+    font-size: clamp(1.85rem, 3.5vw, 2.5rem);
   }
 }
 
@@ -179,5 +217,10 @@ body {
   .brand,
   .zone {
     animation: none;
+    transition: none;
+  }
+
+  .zone--local {
+    transform: none;
   }
 }

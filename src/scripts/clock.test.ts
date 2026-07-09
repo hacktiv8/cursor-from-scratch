@@ -1,12 +1,33 @@
 import { describe, expect, it, vi } from "vitest";
 import {
+  applyLocalZoneHighlight,
   formatDate,
   formatDateTimeAttr,
   formatTime,
   getClockSnapshot,
   getIndonesiaClocksSnapshot,
+  resolveIndonesiaZone,
   startIndonesiaClocks,
 } from "./clock";
+
+describe("resolveIndonesiaZone", () => {
+  it("maps known IANA ids to WIB, WITA, and WIT", () => {
+    expect(resolveIndonesiaZone("Asia/Jakarta")).toBe("Asia/Jakarta");
+    expect(resolveIndonesiaZone("Asia/Pontianak")).toBe("Asia/Jakarta");
+    expect(resolveIndonesiaZone("Asia/Makassar")).toBe("Asia/Makassar");
+    expect(resolveIndonesiaZone("Asia/Ujung_Pandang")).toBe("Asia/Makassar");
+    expect(resolveIndonesiaZone("Asia/Jayapura")).toBe("Asia/Jayapura");
+  });
+
+  it("matches by UTC offset when the IANA id is an alias outside the list", () => {
+    // Asia/Bangkok is UTC+7 year-round, same as WIB
+    expect(resolveIndonesiaZone("Asia/Bangkok")).toBe("Asia/Jakarta");
+  });
+
+  it("returns undefined when the offset matches none of the Indonesian zones", () => {
+    expect(resolveIndonesiaZone("America/New_York")).toBeUndefined();
+  });
+});
 
 describe("formatDateTimeAttr", () => {
   it("pads hours, minutes, and seconds to two digits", () => {
@@ -115,10 +136,68 @@ describe("getIndonesiaClocksSnapshot", () => {
   });
 });
 
+describe("applyLocalZoneHighlight", () => {
+  const createRoots = () =>
+    ["Asia/Jakarta", "Asia/Makassar", "Asia/Jayapura"].map((id) => {
+      const classList = {
+        values: new Set<string>(),
+        toggle(token: string, force?: boolean) {
+          if (force === undefined) {
+            if (this.values.has(token)) this.values.delete(token);
+            else this.values.add(token);
+            return;
+          }
+          if (force) this.values.add(token);
+          else this.values.delete(token);
+        },
+        contains(token: string) {
+          return this.values.has(token);
+        },
+      };
+      const attrs = new Map<string, string>();
+      return {
+        id,
+        rootEl: {
+          classList,
+          setAttribute: (name: string, value: string) => attrs.set(name, value),
+          removeAttribute: (name: string) => attrs.delete(name),
+          getAttribute: (name: string) => attrs.get(name) ?? null,
+        } as unknown as HTMLElement,
+      };
+    });
+
+  it("marks only the matching zone as local", () => {
+    const zones = createRoots();
+
+    applyLocalZoneHighlight(zones, "Asia/Makassar");
+
+    expect(zones[0]?.rootEl.classList.contains("zone--local")).toBe(false);
+    expect(zones[1]?.rootEl.classList.contains("zone--local")).toBe(true);
+    expect(zones[2]?.rootEl.classList.contains("zone--local")).toBe(false);
+    expect(zones[1]?.rootEl.getAttribute("aria-current")).toBe("true");
+    expect(zones[0]?.rootEl.getAttribute("aria-current")).toBeNull();
+  });
+
+  it("clears local marks when no Indonesian zone matches", () => {
+    const zones = createRoots();
+    applyLocalZoneHighlight(zones, "Asia/Jakarta");
+    applyLocalZoneHighlight(zones, undefined);
+
+    expect(zones.every((zone) => !zone.rootEl.classList.contains("zone--local"))).toBe(
+      true,
+    );
+  });
+});
+
 describe("startIndonesiaClocks", () => {
   const createZoneElements = () =>
     ["Asia/Jakarta", "Asia/Makassar", "Asia/Jayapura"].map((id) => ({
       id,
+      rootEl: {
+        classList: { toggle: vi.fn() },
+        setAttribute: vi.fn(),
+        removeAttribute: vi.fn(),
+      } as unknown as HTMLElement,
       clockEl: { textContent: "", dateTime: "" } as HTMLTimeElement,
       dateEl: { textContent: "" } as HTMLElement,
     }));
@@ -166,5 +245,23 @@ describe("startIndonesiaClocks", () => {
     expect(zones[2]?.clockEl.dateTime).toBe("16:00:01");
 
     stop();
+  });
+
+  it("highlights the zone that matches the user's time zone", () => {
+    const zones = createZoneElements();
+    const toggles = zones.map((zone) => zone.rootEl.classList.toggle as ReturnType<typeof vi.fn>);
+
+    startIndonesiaClocks(zones, {
+      now: () => new Date("2026-07-09T07:00:00.000Z"),
+      setInterval: vi.fn(
+        () => 1 as unknown as ReturnType<typeof globalThis.setInterval>,
+      ),
+      clearInterval: vi.fn(),
+      timeZone: () => "Asia/Jayapura",
+    });
+
+    expect(toggles[0]).toHaveBeenCalledWith("zone--local", false);
+    expect(toggles[1]).toHaveBeenCalledWith("zone--local", false);
+    expect(toggles[2]).toHaveBeenCalledWith("zone--local", true);
   });
 });

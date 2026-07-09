@@ -28,7 +28,7 @@ import { INDONESIA_ZONES } from "../scripts/clock";
       return [];
     }
 
-    return [{ id, clockEl, dateEl }];
+    return [{ id, rootEl: zoneEl, clockEl, dateEl }];
   });
 
   if (zones.length === 3) {

@@ -8,6 +8,49 @@ export const INDONESIA_ZONES = [
   { id: "Asia/Jayapura" as const, label: "WIT", name: "Waktu Indonesia Timur" },
 ] as const;
 
+/** IANA aliases that belong to the same Indonesian civil time as a canonical zone. */
+const ZONE_ALIASES: Readonly<Record<string, TimeZoneId>> = {
+  "Asia/Jakarta": "Asia/Jakarta",
+  "Asia/Pontianak": "Asia/Jakarta",
+  "Asia/Makassar": "Asia/Makassar",
+  "Asia/Ujung_Pandang": "Asia/Makassar",
+  "Asia/Jayapura": "Asia/Jayapura",
+};
+
+const offsetMinutesAt = (date: Date, timeZone: string): number => {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    timeZoneName: "shortOffset",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(date);
+
+  const raw = parts.find((part) => part.type === "timeZoneName")?.value ?? "GMT";
+  const match = raw.match(/GMT([+-])(\d{1,2})(?::(\d{2}))?/);
+  if (!match) return 0;
+
+  const sign = match[1] === "-" ? -1 : 1;
+  const hours = Number(match[2]);
+  const minutes = Number(match[3] ?? "0");
+  return sign * (hours * 60 + minutes);
+};
+
+/**
+ * Resolve the user's IANA time zone to WIB, WITA, or WIT.
+ * Prefers known aliases, then falls back to matching the UTC offset.
+ */
+export const resolveIndonesiaZone = (
+  timeZone: string,
+  at: Date = new Date(),
+): TimeZoneId | undefined => {
+  const alias = ZONE_ALIASES[timeZone];
+  if (alias) return alias;
+
+  const localOffset = offsetMinutesAt(at, timeZone);
+  return INDONESIA_ZONES.find((zone) => offsetMinutesAt(at, zone.id) === localOffset)?.id;
+};
+
 const createTimeFormatter = (timeZone?: string) =>
   new Intl.DateTimeFormat(LOCALE, {
     hour: "2-digit",
@@ -80,6 +123,7 @@ export const getIndonesiaClocksSnapshot = (date: Date): readonly ZoneClockSnapsh
 
 export type ZoneClockElements = {
   readonly id: TimeZoneId | string;
+  readonly rootEl: HTMLElement;
   readonly clockEl: HTMLTimeElement;
   readonly dateEl: HTMLElement;
 };
@@ -88,6 +132,7 @@ export type ClockDeps = {
   readonly now?: () => Date;
   readonly setInterval?: typeof globalThis.setInterval;
   readonly clearInterval?: typeof globalThis.clearInterval;
+  readonly timeZone?: () => string;
 };
 
 const applySnapshot = (
@@ -100,6 +145,25 @@ const applySnapshot = (
   dateEl.textContent = snapshot.date;
 };
 
+/** Mark the zone that matches the user's local Indonesian time. */
+export const applyLocalZoneHighlight = (
+  zones: readonly Pick<ZoneClockElements, "id" | "rootEl">[],
+  localZone: TimeZoneId | undefined,
+): void => {
+  for (const zone of zones) {
+    const isLocal = zone.id === localZone;
+    zone.rootEl.classList.toggle("zone--local", isLocal);
+    if (isLocal) {
+      zone.rootEl.setAttribute("aria-current", "true");
+    } else {
+      zone.rootEl.removeAttribute("aria-current");
+    }
+  }
+};
+
+const readLocalTimeZone = (): string =>
+  Intl.DateTimeFormat().resolvedOptions().timeZone;
+
 /** Tick WIB, WITA, and WIT clocks together for side-by-side comparison. */
 export const startIndonesiaClocks = (
   zones: readonly ZoneClockElements[],
@@ -108,6 +172,9 @@ export const startIndonesiaClocks = (
   const now = deps.now ?? (() => new Date());
   const schedule = deps.setInterval ?? globalThis.setInterval.bind(globalThis);
   const cancel = deps.clearInterval ?? globalThis.clearInterval.bind(globalThis);
+  const timeZone = deps.timeZone ?? readLocalTimeZone;
+
+  applyLocalZoneHighlight(zones, resolveIndonesiaZone(timeZone(), now()));
 
   const tick = () => {
     const snapshots = getIndonesiaClocksSnapshot(now());
