@@ -8,7 +8,12 @@ alwaysApply: true
 - Frontend: Astro + TypeScript
 - Styling: vanilla css
 - No backend
+- Testing: Vitest + Astro
 
 ## Product Constraints
 - Theme: lime green
 - Accessibility: big text, big buttons, readable type, clear color combination
+
+## Engineering Constraints
+- Keep behavior deterministic and testable
+- Add test for core business logic
