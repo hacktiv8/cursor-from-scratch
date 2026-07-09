@@ -1,0 +1,14 @@
+---
+alwaysApply: true
+---
+
+# Project: Show date and time realtime
+
+## Tech Stack (non-negotiable)
+- Frontend: Astro + TypeScript
+- Styling: vanilla css
+- No backend
+
+## Product Constraints
+- Theme: lime green
+- Accessibility: big text, big buttons, readable type, clear color combination

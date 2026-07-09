@@ -1,6 +1,3 @@
-const clockEl = document.getElementById("clock");
-const dateEl = document.getElementById("date");
-
 const timeFormatter = new Intl.DateTimeFormat("id-ID", {
   hour: "2-digit",
   minute: "2-digit",
@@ -15,19 +12,21 @@ const dateFormatter = new Intl.DateTimeFormat("id-ID", {
   year: "numeric",
 });
 
-function padIsoTime(date) {
+function padIsoTime(date: Date): string {
   const h = String(date.getHours()).padStart(2, "0");
   const m = String(date.getMinutes()).padStart(2, "0");
   const s = String(date.getSeconds()).padStart(2, "0");
   return `${h}:${m}:${s}`;
 }
 
-function tick() {
-  const now = new Date();
-  clockEl.textContent = timeFormatter.format(now);
-  clockEl.setAttribute("datetime", padIsoTime(now));
-  dateEl.textContent = dateFormatter.format(now);
-}
+export function startClock(clockEl: HTMLTimeElement, dateEl: HTMLElement): void {
+  const tick = () => {
+    const now = new Date();
+    clockEl.textContent = timeFormatter.format(now);
+    clockEl.dateTime = padIsoTime(now);
+    dateEl.textContent = dateFormatter.format(now);
+  };
 
-tick();
-setInterval(tick, 1000);
+  tick();
+  window.setInterval(tick, 1000);
+}

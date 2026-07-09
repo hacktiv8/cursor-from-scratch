@@ -1,0 +1,38 @@
+---
+import "../styles/global.css";
+---
+
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Waktu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Sora:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="atmosphere" aria-hidden="true"></div>
+    <main class="stage">
+      <p class="brand">Waktu</p>
+      <time id="clock" class="clock" datetime="">--:--:--</time>
+      <p id="date" class="date">Memuat tanggal…</p>
+    </main>
+    <script>
+      import { startClock } from "../scripts/clock";
+
+      const clockEl = document.getElementById("clock");
+      const dateEl = document.getElementById("date");
+
+      if (clockEl instanceof HTMLTimeElement && dateEl instanceof HTMLElement) {
+        startClock(clockEl, dateEl);
+      }
+    </script>
+  </body>
+</html>
