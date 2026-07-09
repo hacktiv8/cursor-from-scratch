@@ -1,4 +1,5 @@
 ---
+import Clock from "../components/Clock.astro";
 import "../styles/global.css";
 ---
 
@@ -21,18 +22,7 @@ import "../styles/global.css";
     <div class="atmosphere" aria-hidden="true"></div>
     <main class="stage">
       <p class="brand">Waktu</p>
-      <time id="clock" class="clock" datetime="">--:--:--</time>
-      <p id="date" class="date">Memuat tanggal…</p>
+      <Clock />
     </main>
-    <script>
-      import { startClock } from "../scripts/clock";
-
-      const clockEl = document.getElementById("clock");
-      const dateEl = document.getElementById("date");
-
-      if (clockEl instanceof HTMLTimeElement && dateEl instanceof HTMLElement) {
-        startClock(clockEl, dateEl);
-      }
-    </script>
   </body>
 </html>

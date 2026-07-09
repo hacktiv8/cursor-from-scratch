@@ -17,3 +17,6 @@ alwaysApply: true
 ## Engineering Constraints
 - Keep behavior deterministic and testable
 - Add test for core business logic
+- Keep 3rd party libraries to bare minimum
+- Pin library version in package.json
+- Prefer small components, clear naming, minimal abstraction

@@ -14,9 +14,9 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "astro": "^7.0.7"
+    "astro": "7.0.7"
   },
   "devDependencies": {
-    "vitest": "^4.1.10"
+    "vitest": "4.1.10"
   }
 }
