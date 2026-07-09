@@ -1,5 +1,5 @@
 ---
-import { INDONESIA_ZONES } from "../scripts/clock";
+import { INDONESIA_ZONES, WORLD_ZONES } from "../scripts/clock";
 ---
 
 <section class="zones" aria-label="Perbandingan waktu Indonesia">
@@ -15,23 +15,45 @@ import { INDONESIA_ZONES } from "../scripts/clock";
   }
 </section>
 
-<script>
-  import { startIndonesiaClocks } from "../scripts/clock";
-
-  const zoneEls = Array.from(document.querySelectorAll<HTMLElement>(".zone"));
-  const zones = zoneEls.flatMap((zoneEl) => {
-    const id = zoneEl.dataset.zone;
-    const clockEl = zoneEl.querySelector("time.clock");
-    const dateEl = zoneEl.querySelector(".date");
-
-    if (!id || !(clockEl instanceof HTMLTimeElement) || !(dateEl instanceof HTMLElement)) {
-      return [];
+<section class="world" aria-label="Perbandingan waktu kota dunia">
+  <h2 class="world-heading">Kota dunia</h2>
+  <div class="world-zones">
+    {
+      WORLD_ZONES.map((zone) => (
+        <article class="world-zone" data-zone={zone.id}>
+          <h3 class="world-label">{zone.label}</h3>
+          <p class="world-name">{zone.name}</p>
+          <time class="world-clock" datetime="">--:--:--</time>
+          <p class="world-date">Memuat tanggal…</p>
+        </article>
+      ))
     }
+  </div>
+</section>
 
-    return [{ id, rootEl: zoneEl, clockEl, dateEl }];
-  });
+<script>
+  import { startIndonesiaClocks, startWorldClocks } from "../scripts/clock";
 
-  if (zones.length === 3) {
-    startIndonesiaClocks(zones);
+  const readZones = (rootSelector: string, clockSelector: string, dateSelector: string) =>
+    Array.from(document.querySelectorAll<HTMLElement>(rootSelector)).flatMap((zoneEl) => {
+      const id = zoneEl.dataset.zone;
+      const clockEl = zoneEl.querySelector(clockSelector);
+      const dateEl = zoneEl.querySelector(dateSelector);
+
+      if (!id || !(clockEl instanceof HTMLTimeElement) || !(dateEl instanceof HTMLElement)) {
+        return [];
+      }
+
+      return [{ id, rootEl: zoneEl, clockEl, dateEl }];
+    });
+
+  const indonesiaZones = readZones(".zone", "time.clock", ".date");
+  if (indonesiaZones.length === 3) {
+    startIndonesiaClocks(indonesiaZones);
+  }
+
+  const worldZones = readZones(".world-zone", "time.world-clock", ".world-date");
+  if (worldZones.length === 6) {
+    startWorldClocks(worldZones);
   }
 </script>

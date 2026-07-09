@@ -6,8 +6,10 @@ import {
   formatTime,
   getClockSnapshot,
   getIndonesiaClocksSnapshot,
+  getWorldClocksSnapshot,
   resolveIndonesiaZone,
   startIndonesiaClocks,
+  startWorldClocks,
 } from "./clock";
 
 describe("resolveIndonesiaZone", () => {
@@ -131,6 +133,65 @@ describe("getIndonesiaClocksSnapshot", () => {
         time: "16.00.00",
         date: "Kamis, 9 Juli 2026",
         dateTime: "16:00:00",
+      },
+    ]);
+  });
+});
+
+describe("getWorldClocksSnapshot", () => {
+  it("returns popular city snapshots for side-by-side comparison", () => {
+    // 07:00 UTC → London 08:00 (BST), New York 03:00 (EDT), Tokyo 16:00, Dubai 11:00, Singapore 15:00, Sydney 17:00 (AEST)
+    const instant = new Date("2026-07-09T07:00:00.000Z");
+    const snapshots = getWorldClocksSnapshot(instant);
+
+    expect(snapshots).toEqual([
+      {
+        id: "Europe/London",
+        label: "London",
+        name: "Britania Raya",
+        time: "08.00.00",
+        date: "Kamis, 9 Juli 2026",
+        dateTime: "08:00:00",
+      },
+      {
+        id: "America/New_York",
+        label: "New York",
+        name: "Amerika Serikat",
+        time: "03.00.00",
+        date: "Kamis, 9 Juli 2026",
+        dateTime: "03:00:00",
+      },
+      {
+        id: "Asia/Tokyo",
+        label: "Tokyo",
+        name: "Jepang",
+        time: "16.00.00",
+        date: "Kamis, 9 Juli 2026",
+        dateTime: "16:00:00",
+      },
+      {
+        id: "Asia/Dubai",
+        label: "Dubai",
+        name: "Uni Emirat Arab",
+        time: "11.00.00",
+        date: "Kamis, 9 Juli 2026",
+        dateTime: "11:00:00",
+      },
+      {
+        id: "Asia/Singapore",
+        label: "Singapura",
+        name: "Singapura",
+        time: "15.00.00",
+        date: "Kamis, 9 Juli 2026",
+        dateTime: "15:00:00",
+      },
+      {
+        id: "Australia/Sydney",
+        label: "Sydney",
+        name: "Australia",
+        time: "17.00.00",
+        date: "Kamis, 9 Juli 2026",
+        dateTime: "17:00:00",
       },
     ]);
   });
@@ -263,5 +324,46 @@ describe("startIndonesiaClocks", () => {
     expect(toggles[0]).toHaveBeenCalledWith("zone--local", false);
     expect(toggles[1]).toHaveBeenCalledWith("zone--local", false);
     expect(toggles[2]).toHaveBeenCalledWith("zone--local", true);
+  });
+});
+
+describe("startWorldClocks", () => {
+  const worldIds = [
+    "Europe/London",
+    "America/New_York",
+    "Asia/Tokyo",
+    "Asia/Dubai",
+    "Asia/Singapore",
+    "Australia/Sydney",
+  ] as const;
+
+  const createWorldZoneElements = () =>
+    worldIds.map((id) => ({
+      id,
+      rootEl: {} as HTMLElement,
+      clockEl: { textContent: "", dateTime: "" } as HTMLTimeElement,
+      dateEl: { textContent: "" } as HTMLElement,
+    }));
+
+  it("renders all popular city zones immediately", () => {
+    const zones = createWorldZoneElements();
+    const now = () => new Date("2026-07-09T07:00:00.000Z");
+    const setInterval = vi.fn(
+      () => 1 as unknown as ReturnType<typeof globalThis.setInterval>,
+    );
+    const clearInterval = vi.fn();
+
+    const stop = startWorldClocks(zones, { now, setInterval, clearInterval });
+
+    expect(zones[0]?.clockEl.textContent).toBe("08.00.00");
+    expect(zones[1]?.clockEl.textContent).toBe("03.00.00");
+    expect(zones[2]?.clockEl.textContent).toBe("16.00.00");
+    expect(zones[3]?.clockEl.textContent).toBe("11.00.00");
+    expect(zones[4]?.clockEl.textContent).toBe("15.00.00");
+    expect(zones[5]?.clockEl.textContent).toBe("17.00.00");
+    expect(setInterval).toHaveBeenCalledWith(expect.any(Function), 1000);
+
+    stop();
+    expect(clearInterval).toHaveBeenCalledWith(1);
   });
 });

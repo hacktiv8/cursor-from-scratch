@@ -2,10 +2,27 @@ const LOCALE = "id-ID";
 
 export type TimeZoneId = "Asia/Jakarta" | "Asia/Makassar" | "Asia/Jayapura";
 
+export type WorldTimeZoneId =
+  | "Europe/London"
+  | "America/New_York"
+  | "Asia/Tokyo"
+  | "Asia/Dubai"
+  | "Asia/Singapore"
+  | "Australia/Sydney";
+
 export const INDONESIA_ZONES = [
   { id: "Asia/Jakarta" as const, label: "WIB", name: "Waktu Indonesia Barat" },
   { id: "Asia/Makassar" as const, label: "WITA", name: "Waktu Indonesia Tengah" },
   { id: "Asia/Jayapura" as const, label: "WIT", name: "Waktu Indonesia Timur" },
+] as const;
+
+export const WORLD_ZONES = [
+  { id: "Europe/London" as const, label: "London", name: "Britania Raya" },
+  { id: "America/New_York" as const, label: "New York", name: "Amerika Serikat" },
+  { id: "Asia/Tokyo" as const, label: "Tokyo", name: "Jepang" },
+  { id: "Asia/Dubai" as const, label: "Dubai", name: "Uni Emirat Arab" },
+  { id: "Asia/Singapore" as const, label: "Singapura", name: "Singapura" },
+  { id: "Australia/Sydney" as const, label: "Sydney", name: "Australia" },
 ] as const;
 
 /** IANA aliases that belong to the same Indonesian civil time as a canonical zone. */
@@ -109,7 +126,7 @@ export const getClockSnapshot = (date: Date, timeZone?: string): ClockSnapshot =
 });
 
 export type ZoneClockSnapshot = ClockSnapshot & {
-  readonly id: TimeZoneId;
+  readonly id: TimeZoneId | WorldTimeZoneId;
   readonly label: string;
   readonly name: string;
 };
@@ -117,6 +134,13 @@ export type ZoneClockSnapshot = ClockSnapshot & {
 /** Snapshots for WIB, WITA, and WIT at the same instant. */
 export const getIndonesiaClocksSnapshot = (date: Date): readonly ZoneClockSnapshot[] =>
   INDONESIA_ZONES.map((zone) => ({
+    ...zone,
+    ...getClockSnapshot(date, zone.id),
+  }));
+
+/** Snapshots for popular world cities at the same instant. */
+export const getWorldClocksSnapshot = (date: Date): readonly ZoneClockSnapshot[] =>
+  WORLD_ZONES.map((zone) => ({
     ...zone,
     ...getClockSnapshot(date, zone.id),
   }));
@@ -164,20 +188,21 @@ export const applyLocalZoneHighlight = (
 const readLocalTimeZone = (): string =>
   Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-/** Tick WIB, WITA, and WIT clocks together for side-by-side comparison. */
-export const startIndonesiaClocks = (
+const startZoneClocks = (
   zones: readonly ZoneClockElements[],
+  getSnapshots: (date: Date) => readonly ZoneClockSnapshot[],
   deps: ClockDeps = {},
+  onStart?: (zones: readonly ZoneClockElements[], now: Date, timeZone: string) => void,
 ): (() => void) => {
   const now = deps.now ?? (() => new Date());
   const schedule = deps.setInterval ?? globalThis.setInterval.bind(globalThis);
   const cancel = deps.clearInterval ?? globalThis.clearInterval.bind(globalThis);
   const timeZone = deps.timeZone ?? readLocalTimeZone;
 
-  applyLocalZoneHighlight(zones, resolveIndonesiaZone(timeZone(), now()));
+  onStart?.(zones, now(), timeZone());
 
   const tick = () => {
-    const snapshots = getIndonesiaClocksSnapshot(now());
+    const snapshots = getSnapshots(now());
     for (const zone of zones) {
       const snapshot = snapshots.find((entry) => entry.id === zone.id);
       if (snapshot) {
@@ -190,3 +215,18 @@ export const startIndonesiaClocks = (
   const id = schedule(tick, 1000);
   return () => cancel(id);
 };
+
+/** Tick WIB, WITA, and WIT clocks together for side-by-side comparison. */
+export const startIndonesiaClocks = (
+  zones: readonly ZoneClockElements[],
+  deps: ClockDeps = {},
+): (() => void) =>
+  startZoneClocks(zones, getIndonesiaClocksSnapshot, deps, (zoneEls, at, timeZone) => {
+    applyLocalZoneHighlight(zoneEls, resolveIndonesiaZone(timeZone, at));
+  });
+
+/** Tick popular world city clocks together for side-by-side comparison. */
+export const startWorldClocks = (
+  zones: readonly ZoneClockElements[],
+  deps: ClockDeps = {},
+): (() => void) => startZoneClocks(zones, getWorldClocksSnapshot, deps);
