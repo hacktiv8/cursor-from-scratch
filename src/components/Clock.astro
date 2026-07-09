@@ -1,12 +1,37 @@
-<time id="clock" class="clock" datetime="">--:--:--</time>
-<p id="date" class="date">Memuat tanggal…</p>
+---
+import { INDONESIA_ZONES } from "../scripts/clock";
+---
+
+<section class="zones" aria-label="Perbandingan waktu Indonesia">
+  {
+    INDONESIA_ZONES.map((zone) => (
+      <article class="zone" data-zone={zone.id}>
+        <h2 class="zone-label">{zone.label}</h2>
+        <p class="zone-name">{zone.name}</p>
+        <time class="clock" datetime="">--:--:--</time>
+        <p class="date">Memuat tanggal…</p>
+      </article>
+    ))
+  }
+</section>
+
 <script>
-  import { startClock } from "../scripts/clock";
+  import { startIndonesiaClocks } from "../scripts/clock";
 
-  const clockEl = document.getElementById("clock");
-  const dateEl = document.getElementById("date");
+  const zoneEls = Array.from(document.querySelectorAll<HTMLElement>(".zone"));
+  const zones = zoneEls.flatMap((zoneEl) => {
+    const id = zoneEl.dataset.zone;
+    const clockEl = zoneEl.querySelector("time.clock");
+    const dateEl = zoneEl.querySelector(".date");
 
-  if (clockEl instanceof HTMLTimeElement && dateEl instanceof HTMLElement) {
-    startClock(clockEl, dateEl);
+    if (!id || !(clockEl instanceof HTMLTimeElement) || !(dateEl instanceof HTMLElement)) {
+      return [];
+    }
+
+    return [{ id, clockEl, dateEl }];
+  });
+
+  if (zones.length === 3) {
+    startIndonesiaClocks(zones);
   }
 </script>

@@ -30,7 +30,7 @@ body {
   font-family: var(--font-body);
   color: var(--ink);
   background: var(--lime);
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .atmosphere {
@@ -68,29 +68,80 @@ body {
   letter-spacing: -0.03em;
   color: var(--ink);
   line-height: 1;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   animation: fade-in 1s ease 0.15s both;
+}
+
+.zones {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  width: min(100%, 68rem);
+}
+
+.zone {
+  text-align: center;
+  animation: fade-in 1s ease both;
+}
+
+.zone:nth-child(1) {
+  animation-delay: 0.25s;
+}
+
+.zone:nth-child(2) {
+  animation-delay: 0.4s;
+}
+
+.zone:nth-child(3) {
+  animation-delay: 0.55s;
+}
+
+.zone-label {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.zone-name {
+  margin-top: 0.4rem;
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  font-weight: 500;
+  color: var(--ink-soft);
 }
 
 .clock {
   display: block;
+  margin-top: 1rem;
   font-family: var(--font-body);
-  font-size: clamp(3.5rem, 15vw, 8rem);
+  font-size: clamp(2.75rem, 10vw, 4.5rem);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.04em;
   color: var(--ink);
   line-height: 1;
-  animation: fade-in 1s ease 0.3s both;
 }
 
 .date {
-  margin-top: 1.75rem;
-  font-size: clamp(1.25rem, 3.5vw, 1.75rem);
+  margin-top: 0.85rem;
+  font-size: clamp(1.1rem, 2.8vw, 1.35rem);
   font-weight: 500;
   color: var(--ink-soft);
   letter-spacing: 0.01em;
-  animation: fade-in 1s ease 0.45s both;
+}
+
+@media (min-width: 800px) {
+  .zones {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .clock {
+    font-size: clamp(2.5rem, 5.5vw, 3.75rem);
+  }
 }
 
 @keyframes drift {
@@ -126,8 +177,7 @@ body {
   .atmosphere,
   .stage,
   .brand,
-  .clock,
-  .date {
+  .zone {
     animation: none;
   }
 }
