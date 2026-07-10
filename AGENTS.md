@@ -32,3 +32,20 @@ See [PRODUCT.md](./PRODUCT.md) for full product and design strategy.
 - **Anti-references:** SaaS marketing pages
 - **Principles:** glance first · calm over spectacle · one job · hierarchy over clutter · restraint
 - **A11y:** big text, clear contrast, distance-readable type; honor `prefers-reduced-motion`
+
+## Learned User Preferences
+
+- Prefers Indonesian for product-facing UI copy and feature discussion
+- Prefers TDD (red → green → refactor) with tidy-first separation of structural vs behavioral commits
+- Prefers project-scoped Cursor agents and skills (`.cursor/`) over user-level for this repo
+- When offered MVP vs flagship polish, prefers the flagship-quality pass
+- Monetization evaluation should run only when explicitly requested; deliver a ranked list with effort/impact, starting from low-hanging fruit
+- Keep the wall-clock surface free of ads, CTAs, and paywalls; monetize off-display
+
+## Learned Workspace Facts
+
+- Product is Waktu ("The Lime Field Clock"): a glanceable realtime date/time wall display
+- Indonesian zones shown side by side: WIB (`Asia/Jakarta`), WITA (`Asia/Makassar`), WIT (`Asia/Jayapura`); the user's local Indonesian zone is highlighted larger when detected
+- World comparison cities: London, New York, Tokyo, Dubai, Singapore, Sydney
+- Visual system is documented in `PRODUCT.md` and `DESIGN.md` (Field Lime `#b8f000`, Fraunces + Sora)
+- Project monetization-officer subagent lives at `.cursor/agents/monetization-officer.md`
