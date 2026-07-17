@@ -9,4 +9,27 @@ LLM sifatnya sulit diprediksi atau "liar". Satu perintah bisa bisa diintrepretas
 Buat aplikasi web yang menampilkan tanggal dan jam saat ini secara realtime
 #+END_SRC
 
+Lalu gimana solusinya? Perbaiki cara komunikasinya. Set ekspekasi, jelaskan sedetil mungkin.
+
+Intinya kita harus *memikirkan apa yang mau kita buat dan bagaimana caranya dan komunikasikan ke LLM*. Kalau kita tidak tahu mau bikin apa, apalagi LLM?!
+
+Alat bantunya banyak wujudnya. Ada piramida berpikir, 5w1h, dan banyak lagi.
+
+#+CAPTION: Contoh thinking framework
+#+NAME:   fig:ThinkingFramework
+[[./thinking-framework.png]]
+
+Berikut contoh pemetaannya:
+- Logical thinking: apa yang mau kita buat. Biasanya dalam format product brief atau product description.
+- Analytical thinking: apa yang dibutuhkan untuk membuatnya. Biasanya direpresentasikan sebagai tech stack yang digunakan
+- Computational thinking: penjelasan mendetil dari apa yang mau kita buat. Bisa direpresentasikan sebagai fitur-fitur utama yang mau dikembangkan. Dipisah menjadi slices atau milestone.
+- Procedural thinking: Bagaimana membuatnya agar terwujud. Dengan cara memberikan informasi sedetil mungkin.
+
+Umumnya, kombinasi diatas merupakan representasi dari PRD, SPEC, atau dokumen lainnya.
+
+Mari kita coba wujudkan dari /prompt/ yang kurang jelas menjadi lebih lengkap dan terstruktur dengan fitur-fitur yang ada di Cursor. Tapi sebelum itu, mari kita samakan persepsi terlebih dahulu dengan melihat cara kerja /coding agent/ dibelakang layar. Apa yang terjadi ketika kita mengetikkan instruksi lalu mengirimnya?
+
+#+CAPTION: cara kerja coding agent
+#+NAME: agentic-loop.png
+[[./agentic-loop.png]]
 
