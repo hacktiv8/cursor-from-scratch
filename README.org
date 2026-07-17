@@ -118,7 +118,7 @@ Sekarang mari tambahkan aturan untuk selalu membuat /testing/.
 
 Lakukan perintah =refactor= lagi untuk melihat perbedaan hasilnya dari sebelumnya.
 
-*** Tambahkan beberapa batasan lainnya
+*** COMMENT Tambahkan beberapa batasan lainnya
 
 #+BEGIN_SRC markdown
 # Project: Show date and time realtime
@@ -143,7 +143,7 @@ Lakukan perintah =refactor= lagi untuk melihat perbedaan hasilnya dari sebelumny
 
 Lakukan perintah =refactor= lagi untuk melihat perbedaan hasilnya dari sebelumnya.
 
-*** Menambahkan gaya pemrograman
+*** COMMENT Menambahkan gaya pemrograman
 
 #+BEGIN_SRC markdown
  Project: Show date and time realtime
@@ -170,6 +170,7 @@ Prefer functional programming style over imperative style in TypeScript
 #+END_SRC
 
 Lakukan perintah =refactor= lagi untuk melihat perbedaan hasilnya dari sebelumnya.
+
 ** Menambahkan Skill
 [[https://cursor.com/docs/skills][Skill]] adalah /open standard/ untuk membuat LLM lebih "pintar" dengan cara mengajari agen untuk mengerjakan tugas-tugasnya.
 Skill ini sifatnya lebih portable, dapat digunakan di satu proyek atau proyek lainnya. Berbeda dengan rules yang mungkin akan selalu disertakan bersama dengan perintah atau /prompt/, skill ini lebih bersifat fleksibel sehingga dapat digunakan saat diperlukan saja oleh LLM. Jika LLM merasa tidak perlu skill tambahan, maka skill tidak akan digunakan.
