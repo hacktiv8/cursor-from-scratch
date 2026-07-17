@@ -242,8 +242,36 @@ Follow this process precisely, always prioritizing clean, well-tested code over 
 Always write one test at a time, make it run, then improve structure. Always run all the tests (except long-running tests) each time.
 #+END_SRC
 
-**** Prompts
+**** Pengembangan fitur
+
+Menampilkan tiga bagian waktu Indonesia.
 
 #+BEGIN_SRC text
 Untuk waktu di Indonesia ada tiga bagian: Waktu Indonesia Barat (WIB), Waktu Indonesia Tengah (WITA) dan Waktu Indonesia Timur. Tambahkan ke aplikasi supaya ketiganya dapat dilihat sebagai perbandingan tanggal dan waktu
 #+END_SRC
+
+Mendeteksi lokasi pengguna.
+
+#+BEGIN_SRC text
+Deteksi lokasi user berada di zona waktu yang mana.
+Highlight dan buat zona waktu nya menjadi lebih besar
+dibandingkan zona waktu lain.
+#+END_SRC
+
+Menampilkan waktu dari kota/negara populer lainnya
+
+#+BEGIN_SRC text
+Saya ingin juga menampilkan zona waktu beberapa kota/negara
+populer sebagai perbandingan.
+#+END_SRC
+
+**** Contoh Skill Lainnya
+- [[https://impeccable.style][impeccable.style]]
+- [[https://github.com/mattpocock/skills/][mattpocock/skills]]
+** Delegasi Tugas dengan Subagent
+Agent yang kita gunakan sejauh ini sifatnya generalis. Terkadang ada tugas yang membutuhkan spesialis. Cursor agent bisa mendelegasikan tugas tersebut ke subagent. Subagent juga dapat berjalan secara mandiri, punya context window sendiri, dan bisa dijalankan secara berbarengan sehingga tidak mengganggu agen utama.
+
+Beberapa subagent yang sudah disediakan oleh Cursor:
+- Explore: untuk pencarian dan analisa codebase
+- Bash: Menjalankan perintah shell yang dibutuhkan
+- Browser: Membuka dan menjalankan otomasi untuk aplikasi web
