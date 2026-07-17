@@ -1,0 +1,12 @@
+* Personalisasi Agen Cursor
+
+Materi untuk Cursor.id Meetup Agustus: personalisasi & workflow Cursor agent.
+
+** Pembuka
+LLM sifatnya sulit diprediksi atau "liar". Satu perintah bisa bisa diintrepretasikan berbeda-beda oleh LLM. Mari kita lihat contoh prompt yang bisa beragam artinya.
+
+#+BEGIN_SRC text
+Buat aplikasi web yang menampilkan tanggal dan jam saat ini secara realtime
+#+END_SRC
+
+
