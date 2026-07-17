@@ -98,76 +98,75 @@ Namun karena kita sudah memasang aturan, LLM sedikit banyak akan mengerti bahwa 
 *** Rules untuk /testing/
 Sekarang mari tambahkan aturan untuk selalu membuat /testing/.
 
-#+BEGIN_SRC diff
+#+BEGIN_SRC markdown
  # Project: Show date and time realtime
  
  ## Tech Stack (non-negotiable)
  - Frontend: Astro + TypeScript
  - Styling: vanilla css
  - No backend
-+- Testing: Vitest + Astro
+- Testing: Vitest + Astro
  
  ## Product Constraints
  - Theme: lime green
  - Accessibility: big text, big buttons, readable type, clear color combination
  
-+## Engineering Constraints
-+- Keep behavior deterministic and testable
-+- Add test for core business logic
+## Engineering Constraints
+- Keep behavior deterministic and testable
+- Add test for core business logic
 #+END_SRC
 
 Lakukan perintah =refactor= lagi untuk melihat perbedaan hasilnya dari sebelumnya.
 
 *** Tambahkan beberapa batasan lainnya
 
-#+BEGIN_SRC diff
- # Project: Show date and time realtime
- 
- ## Tech Stack (non-negotiable)
- - Frontend: Astro + TypeScript
- - Styling: vanilla css
- - No backend
- - Testing: Vitest + Astro
- 
- ## Product Constraints
- - Theme: lime green
- - Accessibility: big text, big buttons, readable type, clear color combination
- 
- ## Engineering Constraints
- - Keep behavior deterministic and testable
- - Add test for core business logic
-+- Keep 3rd party libraries to bare minimum
-+- Pin library version in package.json
-+- Prefer small components, clear naming, minimal abstraction
+#+BEGIN_SRC markdown
+# Project: Show date and time realtime
 
+## Tech Stack (non-negotiable)
+- Frontend: Astro + TypeScript
+- Styling: vanilla css
+- No backend
+- Testing: Vitest + Astro
+
+## Product Constraints
+- Theme: lime green
+- Accessibility: big text, big buttons, readable type, clear color combination
+
+## Engineering Constraints
+- Keep behavior deterministic and testable
+- Add test for core business logic
+- Keep 3rd party libraries to bare minimum
+- Pin library version in package.json
+- Prefer small components, clear naming, minimal abstraction
 #+END_SRC
 
 Lakukan perintah =refactor= lagi untuk melihat perbedaan hasilnya dari sebelumnya.
 
 *** Menambahkan gaya pemrograman
 
-#+BEGIN_SRC diff
- # Project: Show date and time realtime
- 
- ## Tech Stack (non-negotiable)
- - Frontend: Astro + TypeScript
- - Styling: vanilla css
- - No backend
- - Testing: Vitest + Astro
- 
- ## Product Constraints
- - Theme: lime green
- - Accessibility: big text, big buttons, readable type, clear color combination
- 
- ## Engineering Constraints
- - Keep behavior deterministic and testable
- - Add test for core business logic
- - Keep 3rd party libraries to bare minimum
- - Pin library version in package.json
- - Prefer small components, clear naming, minimal abstraction
- 
-+## TypeScript-specific
-+Prefer functional programming style over imperative style in TypeScript
+#+BEGIN_SRC markdown
+ Project: Show date and time realtime
+
+## Tech Stack (non-negotiable)
+- Frontend: Astro + TypeScript
+- Styling: vanilla css
+- No backend
+- Testing: Vitest + Astro
+
+## Product Constraints
+- Theme: lime green
+- Accessibility: big text, big buttons, readable type, clear color combination
+
+## Engineering Constraints
+- Keep behavior deterministic and testable
+- Add test for core business logic
+- Keep 3rd party libraries to bare minimum
+- Pin library version in package.json
+- Prefer small components, clear naming, minimal abstraction
+
+## TypeScript-specific
+Prefer functional programming style over imperative style in TypeScript
 #+END_SRC
 
 Lakukan perintah =refactor= lagi untuk melihat perbedaan hasilnya dari sebelumnya.
@@ -244,6 +243,6 @@ Always write one test at a time, make it run, then improve structure. Always run
 
 **** Prompts
 
-#+BEGIN_SRC
+#+BEGIN_SRC text
 Untuk waktu di Indonesia ada tiga bagian: Waktu Indonesia Barat (WIB), Waktu Indonesia Tengah (WITA) dan Waktu Indonesia Timur. Tambahkan ke aplikasi supaya ketiganya dapat dilihat sebagai perbandingan tanggal dan waktu
 #+END_SRC
