@@ -307,3 +307,67 @@ cat <<EOF
 }
 EOF
 #+END_SRC
+** Delegasi Tugas dengan Subagent
+Agent yang kita gunakan sejauh ini sifatnya generalis. Terkadang ada tugas yang membutuhkan spesialis. Cursor agent bisa mendelegasikan tugas tersebut ke subagent. Subagent juga dapat berjalan secara mandiri, punya context window sendiri, dan bisa dijalankan secara berbarengan sehingga tidak mengganggu agen utama.
+
+Beberapa subagent yang sudah disediakan oleh Cursor:
+- Explore: untuk pencarian dan analisa codebase
+- Bash: Menjalankan perintah shell yang dibutuhkan
+- Browser: Membuka dan menjalankan otomasi untuk aplikasi web
+
+*** Contoh Subagent Sederhana
+Kita pun bisa meminta bantuan Cursor untuk membuat subagent.
+
+#+BEGIN_SRC
+/create-subagent Help me create this subagent for Cursor: 
+Monetization officer that inspect and evaluate the current project then plan for monetization opportunities. Ask questions for clarity, one question at a time until everything clear.
+#+END_SRC
+
+Ubah metadata subagent agar lebih lengkap.
+
+#+BEGIN_SRC
+---
+name: monetization-officer
+model: grok-4.5[]
+description: Monetization officer that inspects and evaluates the current project, then plans monetization opportunities. Use only when explicitly asked to assess, plan, or recommend monetization. ALWAYS USE FOR PLAN MODE.
+---
+#+END_SRC
+
+Lalu jalankan perintah dengan bahasa natural saja.
+
+#+BEGIN_SRC
+Let's find monetization opportunities for this project.
+#+END_SRC
+  
+** Kustomisasi lebih lanjut dengan Hooks
+
+*** Contoh Hooks
+Kita bisa menambahkan hooks untuk secara aktif mengecek dan memblokir perintah yang berpotensi merusak. Misalnya melakukan `npm install` sebuah pustaka yang berukuran sangat besar dan melanggar aturan "Keep 3rd party libraries to bare minimum" yang sudah ditetapkan di rules.
+
+**** =./cursor/hooks/block-npm.sh=
+
+#+BEGIN_SRC bash
+#!/bin/bash
+read -r input
+command=$(echo "$input" | jq -r '.command')
+
+if echo "$command" | grep -q "npm install"; then
+  cat <<EOF
+{
+  "continue": false,
+  "permission": "deny",
+  "userMessage": "⚠️ New dependencies not allowed per Project Rules. Use existing ones only.",
+  "agentMessage": "Respect 'Keep 3rd party libraries to bare minimum' constraint."
+}
+EOF
+  exit 0
+fi
+
+# Allow everything else
+cat <<EOF
+{
+  "continue": true,
+  "permission": "allow"
+}
+EOF
+#+END_SRC
