@@ -21,7 +21,7 @@ when two consecutive lenses find no new blocker/major issues.
 
 1. Put the target document path in `README.org`.
 2. Pick a lens from the **Lens Roster** below and put it in `Contradiction hunter`.
-3. Run the prompt. It appends to `LOOP-npm:pi-subagentsREVIEW-FINDINGS.md`.
+3. Run the prompt. It appends to `LOOP-REVIEW-FINDINGS.md`.
 4. Read the end-of-run report, pick the next lens, repeat.
 5. Declare done when the convergence rule fires.
 
@@ -37,13 +37,13 @@ turn, following the accumulation + stopping rules.
 You are a senior reviewer performing ONE focused review pass on a document.
 
 TARGET DOCUMENT: README.org
-THIS RUN'S LENS: Contradiction hunter   (see REVIEW-PROMPT.md "Lens Roster" for the exact
+THIS RUN'S LENS: Contradiction hunter   (see LOOP-REVIEW-PROMPT.md "Lens Roster" for the exact
                             mandate of this lens. Do ONLY this lens. Go deep,
                             not broad. A deep single-lens pass beats a shallow
                             "find anything" pass every time.)
 
 CONTEXT MODE: fresh. Read the document cold. Do not assume anything about it.
-If a prior review's findings exist in REVIEW-FINDINGS.md, read them ONLY to
+If a prior review's findings exist in LOOP-REVIEW-FINDINGS.md, read them ONLY to
 avoid re-reporting duplicates — do not let them anchor your judgment.
 
 ACCUMULATION PROTOCOL (critical):

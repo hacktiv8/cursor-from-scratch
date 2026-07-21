@@ -1,57 +1,77 @@
 #!/usr/bin/env bash
 #
-# loop.sh — iterate `agy --prompt @LOOP-REVIEW-PROMPT.md`, rotating ONE review
-# lens per iteration. The prompt file (LOOP-REVIEW-PROMPT.md) is a template
-# with {DOC} and {LENS} placeholders; agy does NOT substitute them, so this
-# script renders a per-lens copy and feeds it via @include (or inline).
+# loop.sh — iterate `agy --prompt @LOOP-*.md` over a document.
 #
-# Why rotation: re-running the exact same prompt N times plateaus — the agent
-# re-finds the same few issues. Rotating the lens each run is the whole point
-# of LOOP-REVIEW-PROMPT.md. So "iteration" here = the LENS, not a bare counter.
+# Two phases, each with its own prompt (they are deliberately separate — see
+# LOOP-FIX-PROMPT.md "Why separate"):
+#
+#   --phase review  (default)  rotate ONE review lens per iteration against
+#                              LOOP-REVIEW-PROMPT.md, appending findings to
+#                              REVIEW-FINDINGS.md.
+#   --phase fix                consume the findings log with LOOP-FIX-PROMPT.md,
+#                              applying surgical edits to the document, one
+#                              severity-tier batch per iteration.
+#
+# agy does NOT substitute the {DOC}/{LENS}/{BATCH}/... placeholders, so this
+# script renders a per-iteration copy and feeds it via @include (or inline).
 #
 # Usage:
-#   ./loop.sh [DOC] [options]
-#
-#   ./loop.sh                                    # README.org, lenses 1-12, hands-off
+#   ./loop.sh                                    # review: README.org, lenses 1-12
 #   ./loop.sh README.org -n 5                    # cap at 5 lenses
-#   ./loop.sh --lens "Verifier"                  # run a single lens once
-#   ./loop.sh --start 5                          # resume from lens #5
-#   ./loop.sh --type plan                        # use plan lenses 1-16
-#   ./loop.sh --models "sonnet opus" --effort high   # rotate models for diversity
+#   ./loop.sh --lens "Verifier"                  # run a single review lens
+#   ./loop.sh --start 5                          # resume review from lens #5
+#   ./loop.sh --type plan                        # review lenses 1-16
+#   ./loop.sh --models "sonnet opus" --effort high
+#
+#   ./loop.sh --phase fix                        # fix next open severity tier
+#   ./loop.sh --phase fix --batch majors         # fix a specific tier
+#   ./loop.sh --phase fix --batch "ids:5,12"     # fix specific findings
+#   ./loop.sh --phase fix --batch "lens:Verifier"
+#   ./loop.sh --phase fix --no-commit-batches    # don't git-commit after each batch
+#
 #   ./loop.sh --dry-run                          # print commands, run nothing
 #   ./loop.sh --list                             # show the lens roster, exit
 #   ./loop.sh --reset                            # wipe REVIEW-FINDINGS.md + state
 #
 # Options:
 #   DOC              (positional) target document. Default: README.org
-#   -n, --max-iterations N   hard cap on lenses run (0 = whole roster). Default 0
-#   --start N         resume from lens index N (1-based). Default 1
-#   --lenses SPEC     which lenses, e.g. 1-12 (default), 1-16, or 1-4,9,11
-#   --lens NAME       run exactly one lens by name, then exit
-#   --models "a b"    space-separated models to rotate (biggest free win — see prompt)
+#   --phase review|fix   which prompt to iterate. Default: review
+#   -n, --max-iterations N   hard cap on iterations run (0 = no cap). Default 0
+#   --start N         (review) resume from lens index N (1-based). Default 1
+#   --lenses SPEC     (review) e.g. 1-12 (default), 1-16, or 1-4,9,11
+#   --lens NAME       (review) run exactly one lens by name, then exit
+#   --batch SPEC      (fix) blockers|majors|minors|nits|all|next|ids:..|lens:..
+#                     Default: next (highest open severity tier)
+#   --models "a b"    space-separated models to rotate (biggest free win)
 #   --effort LVL      low|medium|high reasoning effort for every run
 #   --type article|plan   article -> lenses 1-12 (default); plan -> 1-16
+#   --commit-batches  (fix) git-commit doc+findings after each batch. Default ON
+#   --no-commit-batches    disable per-batch commits (reversibility lost!)
 #   --reset           delete REVIEW-FINDINGS.md and .loop-review-state
 #   --dry-run         print the exact agy commands without executing
-#   -w, --wait        pause for <enter> between lenses (q to quit)
+#   -w, --wait        pause for <enter> between iterations (q to quit)
 #   --list            print the lens roster and exit
 #   --no-danger       do NOT pass --dangerously-skip-permissions (see SAFETY)
 #   --sandbox         also pass --sandbox (restrict terminal; fs write may still work)
 #
 # Env overrides:
 #   PROMPT_MODE=file|inline   how the rendered prompt is passed. `file` uses
-#                            `agy --prompt @build/prompt-lens-NN.md` (matches
-#                            the idiom you already use). `inline` passes the
+#                            `agy --prompt @build/...md`. `inline` passes the
 #                            rendered text directly — use this if @ includes
 #                            are NOT expanded in agy print mode. Default: file
 #   FINDINGS_FILE=...        default REVIEW-FINDINGS.md
 #
 # SAFETY: by default this passes --dangerously-skip-permissions so the agent
-# can write REVIEW-FINDINGS.md unattended (the accumulation protocol needs it).
-# That auto-approves ALL tool calls, not just the findings file. Guard rails:
-#   * it refuses to run unless the git tree is clean OR you set LOOP_ALLOW_DIRTY=1
-#   * after each lens it prints `git status --short` so you can spot surprises
-#   * run on a branch / worktree, or set --no-danger (but then writes may stall)
+# can write unattended (the accumulation/fix protocols need it). That flag
+# auto-approves ALL tool calls, not just the findings file. Guard rails:
+#   * review phase refuses to run unless the git tree is clean OR
+#     LOOP_ALLOW_DIRTY=1 (review only mutates the findings log, but the agent
+#     has full tool access, so a dirty tree is a footgun).
+#   * fix phase MUTATES the document. It requires the DOC itself to be
+#     committed (so every batch is revertible) and auto-commits per batch by
+#     default. Use --no-commit-batches only if you are committing manually.
+#   * after each iteration it prints `git status --short` so you can spot
+#     surprises. Run on a branch / worktree.
 
 set -uo pipefail
 
@@ -59,16 +79,19 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 # ----------------------------- config -----------------------------
-TEMPLATE="LOOP-REVIEW-PROMPT.md"
+REVIEW_TEMPLATE="LOOP-REVIEW-PROMPT.md"
+FIX_TEMPLATE="LOOP-FIX-PROMPT.md"
 DOC="${DOC:-README.org}"
 FINDINGS_FILE="${FINDINGS_FILE:-REVIEW-FINDINGS.md}"
 STATE_FILE=".loop-review-state"
 BUILD_DIR="build"
 LOG_DIR="logs"
+PHASE="review"
 MAX_ITERATIONS=0
 START_INDEX=1
 LENS_RANGE="1-12"
 SINGLE_LENS=""
+BATCH="next"
 MODELS=()
 EFFORT=""
 RESET=0
@@ -77,6 +100,7 @@ WAIT=0
 LIST=0
 DANGER=1
 SANDBOX=0
+COMMIT_BATCHES=1
 PROMPT_MODE="${PROMPT_MODE:-file}"
 
 # ----------------------------- lens roster -----------------------------
@@ -100,11 +124,22 @@ LENSES=(
   "Failure-at-step-N pass"       # 15 plan-only
   "Scope/effort sanity"          # 16 plan-only
 )
-# After convergence the prompt mandates two final passes regardless:
+# After review convergence the prompt mandates two final passes regardless:
 FINAL_PASSES=(3 4)   # Verifier, Pre-mortem
 
 # ----------------------------- helpers -----------------------------
-usage() { sed -n '3,52p' "$0"; }
+usage() {
+  cat <<'EOF'
+Usage: loop.sh [DOC] [--phase review|fix] [options]
+
+  ./loop.sh                          # review README.org, lenses 1-12
+  ./loop.sh --phase fix              # fix next open severity tier
+  ./loop.sh --phase fix --batch majors
+  ./loop.sh --dry-run | --list | --reset
+
+See the header comment (loop.sh lines 1-90) for the full option reference.
+EOF
+}
 
 slugify() { echo "$1" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//'; }
 
@@ -134,52 +169,98 @@ list_roster() {
   done
 }
 
-# render the prompt template with {DOC}/{LENS} filled; echoes the output path.
-# gsub replacement-special chars (& \) are NOT handled; DOC/lens names avoid them.
-render_prompt() {
+# detect a short format label from the doc extension, for the fix prompt's
+# "preserve format syntax" guardrail.
+detect_format() {
+  case "${DOC##*.}" in
+    org) echo "org-mode (preserve #+BEGIN_SRC, [[link][label]], #+CAPTION, * headings, emphasis)" ;;
+    md|markdown) echo "markdown (preserve fenced code blocks, [link](url), ATX headings)" ;;
+    adoc) echo "asciidoc" ;;
+    *) echo "plain text" ;;
+  esac
+}
+
+# pick the highest-severity tier that still has OPEN findings, for --batch next.
+# reads FINDINGS_FILE best-effort: counts lines whose status field looks open.
+# pipe-delimited entry: ID | severity | lens | location | issue | fix | status
+next_batch() {
+  [ -f "$FINDINGS_FILE" ] || { echo "none"; return; }
+  local tier
+  for tier in blocker major minor nit; do
+    # match the severity token on a line whose last field is not a closed state
+    if awk -F'|' -v t="$tier" '
+      { s=tolower($2); st=tolower($7) }
+      s ~ t && st !~ /fixed|wontfix|obsolete|resolved/ { found=1; exit }
+      END { exit !found }
+    ' "$FINDINGS_FILE"; then
+      case "$tier" in
+        blocker) echo "blockers" ;;
+        major)   echo "majors" ;;
+        minor)   echo "minors" ;;
+        nit)     echo "nits" ;;
+      esac
+      return
+    fi
+  done
+  echo "none"
+}
+
+# render the REVIEW template with {DOC}/{LENS} filled; echoes the output path.
+render_review_prompt() {
   local lens="$1" idx="$2"
   local out="$BUILD_DIR/prompt-lens-$(printf '%02d' "$idx").md"
   mkdir -p "$BUILD_DIR"
   awk -v doc="$DOC" -v lens="$lens" '
     { gsub(/\{DOC\}/, doc); gsub(/\{LENS\}/, lens); print }
-  ' "$TEMPLATE" > "$out"
+  ' "$REVIEW_TEMPLATE" > "$out"
   echo "$out"
 }
 
-LAST_LOG=""
-# run one lens. prints the agy command, executes with retry, tees to a log.
-run_lens() {
-  local idx="$1" lens="$2" iteration="$3"
-  local rendered; rendered="$(render_prompt "$lens" "$idx")"
-  local log="$LOG_DIR/$(printf 'lens-%02d' "$idx")-$(slugify "$lens").log"
-  mkdir -p "$LOG_DIR"
-  LAST_LOG="$log"
+# render the FIX template with {DOC}/{FINDINGS_FILE}/{FORMAT}/{BATCH} filled.
+render_fix_prompt() {
+  local batch="$1"
+  local out="$BUILD_DIR/prompt-fix-$(slugify "$batch").md"
+  mkdir -p "$BUILD_DIR"
+  local fmt; fmt="$(detect_format)"
+  awk -v doc="$DOC" -v findings="$FINDINGS_FILE" -v fmt="$fmt" -v batch="$batch" '
+    { gsub(/\{DOC\}/, doc); gsub(/\{FINDINGS_FILE\}/, findings);
+      gsub(/\{FORMAT\}/, fmt); gsub(/\{BATCH\}/, batch); print }
+  ' "$FIX_TEMPLATE" > "$out"
+  echo "$out"
+}
 
-  local model=""
-  if [ ${#MODELS[@]} -gt 0 ]; then
-    model="${MODELS[$(( (iteration - 1) % ${#MODELS[@]} ))]}"
-  fi
-
-  local -a cmd=(agy)
+# build the agy command into the global AGY_CMD array. Shared by both phases.
+# (sets a global rather than printing NUL-separated because macOS' default
+# /bin/bash is 3.2, which has no mapfile/readarray builtin.)
+build_agy_cmd() {
+  local rendered="$1" iteration="$2"
+  AGY_CMD=(agy)
   case "$PROMPT_MODE" in
-    file)   cmd+=(--prompt "@$rendered") ;;
-    inline) cmd+=(--prompt "$(cat "$rendered")") ;;
+    file)   AGY_CMD+=(--prompt "@$rendered") ;;
+    inline) AGY_CMD+=(--prompt "$(cat "$rendered")") ;;
     *) echo "bad PROMPT_MODE='$PROMPT_MODE' (use file|inline)" >&2; exit 2 ;;
   esac
-  [ "$DANGER"   -eq 1 ] && cmd+=(--dangerously-skip-permissions)
-  [ "$SANDBOX"  -eq 1 ] && cmd+=(--sandbox)
-  [ -n "$model" ]       && cmd+=(--model "$model")
-  [ -n "$EFFORT" ]      && cmd+=(--effort "$EFFORT")
+  [ "$DANGER"  -eq 1 ] && AGY_CMD+=(--dangerously-skip-permissions)
+  [ "$SANDBOX" -eq 1 ] && AGY_CMD+=(--sandbox)
+  if [ ${#MODELS[@]} -gt 0 ]; then
+    AGY_CMD+=(--model "${MODELS[$(( (iteration - 1) % ${#MODELS[@]} ))]}")
+  fi
+  [ -n "$EFFORT" ] && AGY_CMD+=(--effort "$EFFORT")
+}
 
-  printf '\n==> [%d] lens #%d: %s\n' "$iteration" "$idx" "$lens"
+LAST_LOG=""
+# execute an agy command ($1.. = argv), tee to $2 log, retry once with backoff.
+run_agy() {
+  local log="$1"; shift
+  mkdir -p "$LOG_DIR"
+  LAST_LOG="$log"
   if [ "$DRY_RUN" -eq 1 ]; then
-    ( IFS=' '; printf '    $ %s\n' "${cmd[*]}" )
+    ( IFS=' '; printf '    $ %s\n' "$*" )
     return 0
   fi
-
   local attempt rc
   for attempt in 1 2; do
-    if "${cmd[@]}" 2>&1 | tee "$log"; then
+    if "$@" 2>&1 | tee "$log"; then
       [ "$DANGER" -eq 1 ] && { echo "    git changes:"; git status --short | sed 's/^/      /'; }
       return 0
     fi
@@ -187,34 +268,159 @@ run_lens() {
     echo "    ! agy exited $rc (attempt $attempt); retrying in ${attempt}0s..." >&2
     sleep "${attempt}0"
   done
-  echo "    !! giving up on lens #$idx; partial output in $log" >&2
+  echo "    !! giving up; partial output in $log" >&2
   return 1
 }
 
+# git-commit the doc + findings after a fix batch, so each batch is revertible.
+commit_batch() {
+  local batch="$1"
+  [ "$COMMIT_BATCHES" -eq 1 ] || return 0
+  [ "$DRY_RUN" -eq 1 ] && { echo "    (would commit) fix batch: $batch"; return 0; }
+  git add "$DOC" "$FINDINGS_FILE" 2>/dev/null
+  if git diff --cached --quiet; then
+    echo "    no changes to commit (batch may have been a no-op)"
+    return 0
+  fi
+  git commit -q -m "fix($batch): apply $batch batch to $DOC via loop.sh" \
+    && echo "    committed: $(git rev-parse --short HEAD)"
+}
+
+# ----------------------------- phase: review -----------------------------
+run_lens() {
+  local idx="$1" lens="$2" iteration="$3"
+  local rendered; rendered="$(render_review_prompt "$lens" "$idx")"
+  local log="$LOG_DIR/$(printf 'lens-%02d' "$idx")-$(slugify "$lens").log"
+  printf '\n==> [%d] review lens #%d: %s\n' "$iteration" "$idx" "$lens"
+  build_agy_cmd "$rendered" "$iteration"
+  run_agy "$log" "${AGY_CMD[@]}"
+}
+
+review_phase() {
+  if [ -n "$SINGLE_LENS" ]; then
+    run_lens 0 "$SINGLE_LENS" 1
+    return $?
+  fi
+  all_idx=$(expand_range "$LENS_RANGE")
+  [ -z "$all_idx" ] && { echo "no lenses selected" >&2; exit 1; }
+  local selected=() i
+  for i in $all_idx; do
+    [ "$i" -ge 1 ] && [ "$i" -le "${#LENSES[@]}" ] || { echo "lens #$i out of range (1-${#LENSES[@]})" >&2; exit 2; }
+    [ "$i" -ge "$START_INDEX" ] && selected+=("$i")
+  done
+  [ "${#selected[@]}" -eq 0 ] && { echo "nothing to run (check --start / --lenses)" >&2; exit 1; }
+
+  local iteration=0 converged=0 idx
+  for idx in "${selected[@]}"; do
+    iteration=$((iteration + 1))
+    if [ "$MAX_ITERATIONS" -gt 0 ] && [ "$iteration" -gt "$MAX_ITERATIONS" ]; then
+      echo "reached --max-iterations $MAX_ITERATIONS; stopping."; break
+    fi
+    run_lens "$idx" "${LENSES[$((idx-1))]}" "$iteration" || continue
+    [ "$WAIT" -eq 1 ] && { read -rp "    [enter=next lens, q=quit] " ans; [[ "$ans" =~ ^q ]] && break; }
+    # heuristic: the end-of-run report emits "CONVERGED" after 2 clean lenses.
+    if [ "$DRY_RUN" -eq 0 ] && grep -qi "CONVERGED" "$LAST_LOG" 2>/dev/null; then
+      converged=1; echo "==> convergence signaled by lens #$idx."; break
+    fi
+  done
+
+  if [ "$converged" -eq 1 ]; then
+    echo "==> mandatory final passes: ${LENSES[$((FINAL_PASSES[0]-1))]}, ${LENSES[$((FINAL_PASSES[1]-1))]}"
+    for fi in "${FINAL_PASSES[@]}"; do
+      iteration=$((iteration + 1))
+      if [ "$MAX_ITERATIONS" -gt 0 ] && [ "$iteration" -gt "$MAX_ITERATIONS" ]; then break; fi
+      run_lens "$fi" "${LENSES[$((fi-1))]}" "$iteration" || true
+    done
+  fi
+}
+
+# ----------------------------- phase: fix -----------------------------
+run_fix() {
+  local batch="$1" iteration="$2"
+  local rendered; rendered="$(render_fix_prompt "$batch")"
+  local log="$LOG_DIR/fix-$(slugify "$batch")-$(printf '%02d' "$iteration").log"
+  printf '\n==> [%d] fix batch: %s\n' "$iteration" "$batch"
+  build_agy_cmd "$rendered" "$iteration"
+  run_agy "$log" "${AGY_CMD[@]}" || return 1
+  commit_batch "$batch"
+}
+
+fix_phase() {
+  [ -f "$FINDINGS_FILE" ] || { echo "no $FINDINGS_FILE — run --phase review first." >&2; exit 1; }
+
+  local batch="$BATCH"
+  if [ "$batch" = "next" ]; then
+    batch="$(next_batch)"
+    if [ "$batch" = "none" ]; then
+      echo "no open findings in $FINDINGS_FILE — nothing to fix."
+      echo "if not already done, re-review (--phase review) to confirm convergence."
+      exit 0
+    fi
+  fi
+
+  # one iteration by default (fix is interactive-by-nature: review the diff,
+  # then re-review). Loop with -n to walk down the severity tiers unattended.
+  local iteration=1
+  run_fix "$batch" "$iteration" || exit 1
+
+  if [ "$MAX_ITERATIONS" -gt 1 ]; then
+    while [ "$iteration" -lt "$MAX_ITERATIONS" ]; do
+      iteration=$((iteration + 1))
+      local nxt; nxt="$(next_batch)"
+      [ "$nxt" = "none" ] && { echo "==> no more open findings; stop."; break; }
+      [ "$WAIT" -eq 1 ] && { read -rp "    [enter=next batch ($nxt), q=quit] " ans; [[ "$ans" =~ ^q ]] && break; }
+      run_fix "$nxt" "$iteration" || break
+    done
+  fi
+
+  echo
+  echo "==> next: re-review with a fresh lens (different model) to catch regressions"
+  echo "    e.g. ./loop.sh --phase review --lens 'Pre-mortem' --model <other-model>"
+}
+
+# ----------------------------- preflight -----------------------------
 preflight() {
   command -v agy >/dev/null || { echo "agy not found in PATH" >&2; exit 127; }
-  [ -f "$TEMPLATE" ] || { echo "missing $TEMPLATE" >&2; exit 1; }
-  [ -f "$DOC" ]      || { echo "missing target doc: $DOC" >&2; exit 1; }
+  [ -f "$DOC" ] || { echo "missing target doc: $DOC" >&2; exit 1; }
 
   if [ "$DANGER" -eq 1 ] && [ "$DRY_RUN" -eq 0 ]; then
-    if [ -n "$(git status --porcelain 2>/dev/null)" ] && [ "${LOOP_ALLOW_DIRTY:-0}" != 1 ]; then
-      echo "SAFETY: --dangerously-skip-permissions is on but the git tree is dirty."
-      echo "An agent with full tool access could modify files. Commit/stash first,"
-      echo "or set LOOP_ALLOW_DIRTY=1 to proceed anyway:" >&2
-      git status --short >&2
-      exit 1
+    if [ "$PHASE" = "fix" ]; then
+      # fix mutates the doc — require the DOC itself to be committed so every
+      # batch is revertible. Findings file may be dirty (review wrote it).
+      if ! git diff --quiet -- "$DOC" 2>/dev/null \
+         || ! git diff --cached --quiet -- "$DOC" 2>/dev/null; then
+        echo "SAFETY (fix): the target doc '$DOC' has uncommitted changes." >&2
+        echo "Fix mutates it; commit first so each batch is revertible:" >&2
+        git status --short -- "$DOC" >&2
+        exit 1
+      fi
+    else
+      # review only mutates the findings log, but the agent has full tool
+      # access, so refuse on a dirty tree unless explicitly overridden.
+      if [ -n "$(git status --porcelain 2>/dev/null)" ] && [ "${LOOP_ALLOW_DIRTY:-0}" != 1 ]; then
+        echo "SAFETY (review): --dangerously-skip-permissions is on but the git tree is dirty." >&2
+        echo "Commit/stash first, or set LOOP_ALLOW_DIRTY=1:" >&2
+        git status --short >&2
+        exit 1
+      fi
     fi
   fi
 
   echo "config:"
+  echo "  phase          = $PHASE"
   echo "  doc            = $DOC"
   echo "  findings       = $FINDINGS_FILE"
-  echo "  lenses         = $LENS_RANGE (start $START_INDEX, max $MAX_ITERATIONS)"
+  if [ "$PHASE" = "review" ]; then
+    echo "  lenses         = $LENS_RANGE (start $START_INDEX, max $MAX_ITERATIONS)"
+    [ -n "$SINGLE_LENS" ] && echo "  single lens    = $SINGLE_LENS"
+  else
+    echo "  batch          = $BATCH"
+    echo "  commit batches = $([ "$COMMIT_BATCHES" = 1 ] && echo yes || echo no)"
+  fi
   echo "  prompt mode    = $PROMPT_MODE"
   echo "  models         = ${MODELS[*]:-(agy default)}"
   echo "  effort         = ${EFFORT:-(default)}"
   echo "  skip-perms     = $([ "$DANGER" = 1 ] && echo yes || echo no)"
-  [ -n "$SINGLE_LENS" ] && echo "  single lens    = $SINGLE_LENS"
 }
 
 reset_state() {
@@ -226,13 +432,17 @@ reset_state() {
 DOC_ARG=""
 while [ $# -gt 0 ]; do
   case "$1" in
+    --phase)             PHASE="$2"; shift 2 ;;
     -n|--max-iterations) MAX_ITERATIONS="$2"; shift 2 ;;
     --start)             START_INDEX="$2"; shift 2 ;;
     --lenses)            LENS_RANGE="$2"; shift 2 ;;
     --lens)              SINGLE_LENS="$2"; shift 2 ;;
+    --batch)             BATCH="$2"; shift 2 ;;
     --models)            read -ra MODELS <<< "$2"; shift 2 ;;
     --effort)            EFFORT="$2"; shift 2 ;;
     --type)              [ "$2" = "plan" ] && LENS_RANGE="1-16"; shift 2 ;;
+    --commit-batches)    COMMIT_BATCHES=1; shift ;;
+    --no-commit-batches) COMMIT_BATCHES=0; shift ;;
     --reset)             RESET=1; shift ;;
     --dry-run)           DRY_RUN=1; shift ;;
     -w|--wait)           WAIT=1; shift ;;
@@ -248,66 +458,33 @@ while [ $# -gt 0 ]; do
 done
 [ -n "$DOC_ARG" ] && DOC="$DOC_ARG"
 
+case "$PHASE" in
+  review|fix) ;;
+  *) echo "bad --phase '$PHASE' (use review|fix)" >&2; exit 2 ;;
+esac
+
 # ----------------------------- main -----------------------------
 [ "$LIST" -eq 1 ] && { list_roster; exit 0; }
+[ "$PHASE" = "review" ] && { [ -f "$REVIEW_TEMPLATE" ] || { echo "missing $REVIEW_TEMPLATE" >&2; exit 1; }; }
+[ "$PHASE" = "fix" ]    && { [ -f "$FIX_TEMPLATE" ]    || { echo "missing $FIX_TEMPLATE" >&2; exit 1; }; }
+
 preflight
 [ "$RESET" -eq 1 ] && reset_state
 
-# single-lens mode: run once and stop
-if [ -n "$SINGLE_LENS" ]; then
-  run_lens 0 "$SINGLE_LENS" 1
-  exit $?
+if [ "$PHASE" = "fix" ]; then
+  fix_phase
+else
+  review_phase
 fi
 
-# build the ordered list of lens indices from the range, honoring --start
-all_idx=$(expand_range "$LENS_RANGE")
-[ -z "$all_idx" ] && { echo "no lenses selected" >&2; exit 1; }
-selected=()
-for i in $all_idx; do
-  [ "$i" -ge 1 ] && [ "$i" -le "${#LENSES[@]}" ] || { echo "lens #$i out of range (1-${#LENSES[@]})" >&2; exit 2; }
-  [ "$i" -ge "$START_INDEX" ] && selected+=("$i")
-done
-[ "${#selected[@]}" -eq 0 ] && { echo "nothing to run (check --start / --lenses)" >&2; exit 1; }
-
-iteration=0
-converged=0
-for idx in "${selected[@]}"; do
-  iteration=$((iteration + 1))
-  if [ "$MAX_ITERATIONS" -gt 0 ] && [ "$iteration" -gt "$MAX_ITERATIONS" ]; then
-    echo "reached --max-iterations $MAX_ITERATIONS; stopping."
-    break
-  fi
-  run_lens "$idx" "${LENSES[$((idx-1))]}" "$iteration" || continue
-
-  [ "$WAIT" -eq 1 ] && { read -rp "    [enter=next lens, q=quit] " ans; [[ "$ans" =~ ^q ]] && break; }
-
-  # heuristic convergence: the end-of-run report emits "CONVERGED" when 2
-  # consecutive lenses found 0 new blocker/major issues. Fragile by design —
-  # treat as a hint, not ground truth.
-  if [ "$DRY_RUN" -eq 0 ] && grep -qi "CONVERGED" "$LAST_LOG" 2>/dev/null; then
-    converged=1
-    echo "==> convergence signaled by lens #$idx."
-    break
-  fi
-done
-
-# the prompt mandates two final passes after convergence, regardless of order.
-if [ "$converged" -eq 1 ]; then
-  echo "==> running mandatory final passes: ${LENSES[$((FINAL_PASSES[0]-1))]}, ${LENSES[$((FINAL_PASSES[1]-1))]}"
-  for fi in "${FINAL_PASSES[@]}"; do
-    iteration=$((iteration + 1))
-    if [ "$MAX_ITERATIONS" -gt 0 ] && [ "$iteration" -gt "$MAX_ITERATIONS" ]; then break; fi
-    run_lens "$fi" "${LENSES[$((fi-1))]}" "$iteration" || true
-  done
-fi
-
-# summary: best-effort extraction of per-lens "New findings this run" lines.
+# summary: best-effort extraction of per-run report lines.
 echo
 echo "=== summary ==="
-if compgen -G "$LOG_DIR/lens-*.log" >/dev/null; then
-  grep -h -E "New findings this run|Lens run|Convergence status" "$LOG_DIR"/lens-*.log 2>/dev/null | sed 's/^/  /' || true
+if compgen -G "$LOG_DIR"/*.log >/dev/null; then
+  grep -h -E "New findings this run|Lens run|Convergence status|Lines changed|Dispositions:|Findings in batch" \
+    "$LOG_DIR"/*.log 2>/dev/null | sed 's/^/  /' || true
 else
   echo "  (no logs in $LOG_DIR)"
 fi
 echo "findings file: $FINDINGS_FILE"
-echo "logs:          $LOG_DIR/lens-*.log"
+echo "logs:          $LOG_DIR/*.log"
