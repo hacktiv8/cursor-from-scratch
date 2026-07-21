@@ -340,8 +340,16 @@ Let's find monetization opportunities for this project.
 #+END_SRC
   
 ** Kustomisasi lebih lanjut dengan Hooks
+Cara berikutnya untuk customize dan extend cursor dengan menulis script yang dapat dieksekusi di trigger point yang diinginkan. Misalnya sebelum mengirim perintah ke LLM, sebelum menjalankan perintah shell, sebelum `npm install`, dsb.
 
-*** Contoh Hooks
+Berikut beberapa contoh penggunaan hooks:
+- Run formatters after edits
+- Add analytics for events
+- Check for security or secrets
+- Gate risky operations (e.g., SQL writes)
+- Write collaboration logs
+  
+*** Menulis Hooks
 Kita bisa menambahkan hooks untuk secara aktif mengecek dan memblokir perintah yang berpotensi merusak. Misalnya melakukan `npm install` sebuah pustaka yang berukuran sangat besar dan melanggar aturan "Keep 3rd party libraries to bare minimum" yang sudah ditetapkan di rules.
 
 **** =./cursor/hooks/block-npm.sh=
