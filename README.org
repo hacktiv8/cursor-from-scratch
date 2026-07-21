@@ -407,3 +407,26 @@ Use moment.js with timezone support for easy handling of different timezones.
 #+CAPTION: Contoh eksekusi hoooks
 #+NAME:   fig:Hooks
 [[./hooks.png]]
+** Customization Marketplace
+Cursor juga menyediakan marketplace untuk kustomisasi yang merupakan gabungan dari rules, skills, subagents dan hooks. Kita bisa menggunakan hasil kustomisasi buatan teman-teman komunitas.
+
+Contoh menarik: Continual Learning, Superpower atau Compound Engineering.
+
+#+CAPTION: Contoh Customization Marketplace
+#+NAME:   fig:continual-learning
+[[./continual-learning.png]]
+** Penutup
+Cursor bukan sekadar editor kode dengan LLM di dalamnya. Cursor adalah platform yang sangat bisa dipersonalisasi untuk mengubah cara kita bekerja sebagai developer. Dengan memanfaatkan fitur-fitur seperti:
+
+Rules (=.cursor/rules=) → Memberikan konsistensi dan alignment proyek
+Skills → Mengajarkan LLM cara kerja yang lebih baik dan portable
+Subagent → Memberikan spesialisasi tugas
+Hooks → Memberikan kontrol dan guardrail otomatis
+Customization Marketplace → Memanfaatkan pengetahuan komunitas
+
+Kita bisa mengubah LLM yang “liar” dan sulit diprediksi menjadi rekan kerja yang paham konteks proyek, mengikuti standar kita, dan bekerja sesuai filosofi engineering yang kita inginkan.
+Intinya: semakin baik kita mendefinisikan apa yang kita mau, semakin baik pula hasil yang diberikan Cursor. Prompt yang bagus tetap penting, tapi fondasi yang kuat (rules + skills + workflow) jauh lebih powerful.
+
+*** Referensi
+https://cursor.com/docs/customize-cursor
+
