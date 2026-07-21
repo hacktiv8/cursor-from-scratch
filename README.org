@@ -352,7 +352,22 @@ Berikut beberapa contoh penggunaan hooks:
 *** Menulis Hooks
 Kita bisa menambahkan hooks untuk secara aktif mengecek dan memblokir perintah yang berpotensi merusak. Misalnya melakukan `npm install` sebuah pustaka yang berukuran sangat besar dan melanggar aturan "Keep 3rd party libraries to bare minimum" yang sudah ditetapkan di rules.
 
-**** =./cursor/hooks/block-npm.sh=
+**** =./cursor/hooks.json=
+
+#+BEGIN_SRC json
+{
+  "version": 1,
+  "hooks": {
+    "beforeShellExecution": [
+      {
+        "command": ".cursor/hooks/guard-npm.sh"
+      }
+    ]
+  }
+}
+#+END_SRC
+
+**** =./cursor/hooks/guard-npm.sh=
 
 #+BEGIN_SRC bash
 #!/bin/bash
@@ -379,3 +394,16 @@ cat <<EOF
 }
 EOF
 #+END_SRC
+
+Coba dengan mengeksekusi perintah berikut
+
+#+BEGIN_SRC
+Add support for displaying time in a few popular cities (New York, London, Tokyo, Sydney) as comparison to the Indonesian timezones.
+
+Use moment.js with timezone support for easy handling of different timezones.
+#+END_SRC
+
+ 
+#+CAPTION: Contoh eksekusi hoooks
+#+NAME:   fig:Hooks
+[[./hooks.png]]
