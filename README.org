@@ -7,6 +7,8 @@ Materi untuk Cursor.id Meetup Agustus: personalisasi & workflow Cursor agent.
 
 Sebelum mulai, mari kita kenalan dulu: *Cursor* adalah code editor berbasis VS Code yang punya AI / LLM bawaan untuk bantu kita menulis kode. Jadi bukan cuma text editor biasa — Cursor bisa membaca seluruh isi proyek kita, mengedit file, menjalankan perintah terminal, dan membaca hasilnya. Inilah yang disebut /coding agent/: AI yang bisa melihat file proyek, mengedit kode, menjalankan perintah terminal, dan membaca hasilnya — bukan cuma chat biasa kayak ChatGPT.
 
+PENTING: Cursor punya beberapa mode interaksi. Materi ini mengasumsikan kamu menggunakan *Agent mode* (bisa diakses via =Cmd+I= di macOS atau =Ctrl+I= di Windows/Linux), bukan Chat mode. Agent mode bisa membaca proyek, mengedit file, dan menjalankan terminal — Chat mode hanya untuk tanya-jawab.
+
 Nah, LLM (Large Language Model — model AI yang bisa memahami dan menghasilkan teks, contohnya GPT-4, Claude, Gemini) ini sifatnya sulit diprediksi atau "liar" — tanpa system prompt yang jelas dan pada temperature default, LLM cenderung memberikan hasil yang bervariasi untuk prompt yang sama. Satu perintah bisa bisa diinterpretasikan berbeda-beda oleh LLM. Mari kita lihat contoh prompt yang bisa beragam artinya.
 
 #+BEGIN_SRC text
@@ -20,6 +22,14 @@ Prompt diatas sederhana banget, tapi bisa diinterpretasikan dengan cara yang san
 
 Hasilnya bisa beda jauh kan? Padahal prompt-nya sama persis. Inilah kenapa kita perlu struktur.
 
+Contoh 5W1H untuk prompt yang sama:
+- =What=: Aplikasi web yang menampilkan waktu realtime dengan perbandingan zona waktu
+- =Why=: Membandingkan zona waktu Indonesia dengan kota global
+- =Who=: Pengguna yang perlu koordinasi lintas zona waktu
+- =Where=: Browser desktop dan mobile
+- =When=: Digunakan kapan saja, update setiap detik
+- =How=: Astro + vanilla CSS + JavaScript =setInterval=
+
 Lalu bagaimana solusinya? Gunakan framework seperti 5W+1H (What, Why, Who, Where, When, How) atau user-story template untuk memastikan prompt mencakup: aktor, aksi, input, output, dan batasan — bukan cuma "sedetil mungkin" tanpa arah.
 
 Intinya kita harus *memikirkan apa yang mau kita buat dan bagaimana caranya dan komunikasikan ke LLM*. LLM tidak bisa membaca pikiran — jika instruksi kita tidak eksplisit, hasilnya akan bergantung sepenuhnya pada bias training data-nya. Jadi kalau kita sendiri nggak jelas mau bikin apa, jangan kaget kalau hasilnya juga ngaco.
@@ -28,9 +38,9 @@ Alat bantunya banyak wujudnya. Dua kerangka yang akan kita gunakan di materi ini
 
 #+CAPTION: Contoh thinking framework: piramida berpikir memecah masalah dari abstrak (atas) ke konkret (bawah). Logical → Analytical → Computational → Procedural.
 #+NAME:   fig:ThinkingFramework
-[[./thinking-framework.png]]
+[[./thinking-framework.png][Diagram piramida berpikir: empat lapisan dari atas ke bawah — Logical, Analytical, Computational, Procedural]]]
 
-Mengapa ini penting untuk LLM? Karena LLM memproses instruksi secara linear — semakin abstrak instruksi di awal, semakin banyak asumsi yang harus dibuat model. Dengan memecah dari abstrak ke konkret, kita mengurangi ruang interpretasi di setiap langkah. Bayangkan seperti kita ngasih petunjuk ke orang: kalau kita cuma bilang "bikin aplikasi", hasilnya bisa macem-macem. Tapi kalau kita jelasin dari konsep besar sampai detail teknis, hasilnya jauh lebih terarah.
+Mengapa ini penting untuk LLM? Karena LLM melihat seluruh instruksi dalam jendela konteks sekaligus — semakin abstrak instruksi, semakin banyak asumsi yang harus dibuat model untuk mengisi kekosongan detail. Dengan memecah dari abstrak ke konkret, kita mengurangi ruang interpretasi di setiap langkah. Bayangkan seperti kita ngasih petunjuk ke orang: kalau kita cuma bilang "bikin aplikasi", hasilnya bisa macem-macem. Tapi kalau kita jelasin dari konsep besar sampai detail teknis, hasilnya jauh lebih terarah.
 
 Berikut contoh pemetaannya, dari yang paling abstrak ke yang paling konkret:
 
@@ -56,7 +66,7 @@ Mari kita coba wujudkan dari /prompt/ yang kurang jelas menjadi lebih lengkap da
 
 #+CAPTION: Cara kerja coding agent: dari prompt user → agent membaca konteks proyek → menjalankan aksi (edit file, jalankan terminal, dsb) → mengembalikan hasil, lalu berulang dalam /agentic loop/
 #+NAME: agentic-loop.png
-[[./agentic-loop.png]]
+[[./agentic-loop.png][Diagram agentic loop: prompt user → agent membaca konteks → menjalankan aksi (edit/terminal) → hasil → ulangi]]]
 
 *** Prasyarat
 
@@ -65,6 +75,7 @@ Sebelum lanjut, pastikan kita sudah siapin hal-hal berikut:
 - Sudah punya akun dan login (bisa pakai Google atau GitHub)
 - Sudah punya proyek, bisa proyek kosong (nanti kita buat bareng)
 - Familiar dengan basic terminal (=cd=, =mkdir=, =ls=) dan git (=git init=, =git add=, =git commit=)
+- [[https://jqlang.github.io/jq/][jq]] terinstall untuk menggunakan hooks (cek dengan =which jq=; install dengan =brew install jq= di macOS atau =apt install jq= di Linux)
 - Kalau kamu familiar dengan VS Code, kamu akan merasa di rumah — tapi tenang aja kalau belum pernah pakai VS Code juga, kita akan bahas step-by-step
 
 *** Agenda
@@ -80,6 +91,8 @@ LLM tidak memiliki memori lintas sesi — setiap sesi baru dimulai dari konteks 
 
 Cursor menyediakan [[https://cursor.com/docs/rules][Rules]] atau bisa juga menggunakan [[https://agents.md][AGENTS.md]] yang lebih umum digunakan. Rules disimpan di folder =.cursor/rules= dengan format =.mdc= (Markdown for Cursor — format markdown khusus Cursor yang bisa punya metadata seperti =glob= pattern untuk menentukan file mana saja yang aturannya berlaku, dan =alwaysApply= untuk menentukan kapan aturan dipakai).
 
+Catatan: Versi lama Cursor menggunakan file =.cursorrules= di root proyek. Format ini sudah digantikan oleh folder =.cursor/rules/=. Kalau kamu punya =.cursorrules= yang sudah ada, Cursor masih membacanya untuk backward compatibility, tapi direkomendasikan untuk migrasi ke format baru.
+
 Beberapa hal yang sebaiknya ada di rules:
 - penjelasan singkat tentang proyek
 - bagaimana cara kerja dan cara menjalankan proyek
@@ -90,9 +103,22 @@ Contoh struktur file dan folder untuk rules:
 #+BEGIN_SRC
 .cursor/rules/
   react-patterns.mdc       # Recognized as a project rule
-  api-guidelines.md        # Ignored (wrong extension)
+  api-guidelines.md        # ⚠️ DIABAIKAN — ekstensi harus .mdc, bukan .md
   frontend/                # Organize rules in folders
     components.mdc
+#+END_SRC
+
+Perhatikan ukuran rules: setiap rule ditambahkan ke konteks setiap kali agent dipanggil. Rule yang terlalu besar (>50 baris) bisa mengurangi "daya pikir" agent karena token habis dipakai untuk konteks. Gunakan =glob= pattern untuk membatasi rule hanya ke file yang relevan, dan pertahankan rule tetap fokus.
+
+Contoh isi file =.cursor/rules/frontend/components.mdc=:
+#+BEGIN_SRC markdown
+---
+description: Component patterns for this project
+glob: src/components/**/*.{tsx,astro}
+alwaysApply: false
+---
+Gunakan functional components dengan TypeScript. Hindari class components.
+Semua komponen harus punya unit test.
 #+END_SRC
 
 *** Rules dasar
@@ -107,7 +133,7 @@ Mari kita coba praktekkan penggunaan rules. Untuk membuat rules, ada dua cara:
 
 #+CAPTION: Tampilan form untuk membuat rule baru di Cursor. Isi nama rule dan deskripsikan aturannya sesuai kebutuhan proyek.
 #+NAME:   fig:Setting
-[[./setting.png]]
+[[./setting.png][Screenshot form Create New Rule di Cursor: input nama rule dan deskripsi aturan]]]
 
 Isi nama dan deskripsikan aturannya.
 
@@ -218,6 +244,9 @@ Prefer functional programming style over imperative style in TypeScript
 
 Lakukan perintah =refactor= lagi untuk melihat perbedaan hasilnya dari sebelumnya.
 
+*** Kustomisasi via settings.json
+Cursor juga mendukung =.cursor/settings.json= untuk konfigurasi proyek — misalnya memilih model default, mengaktifkan mode YOLO, atau mengatur perilaku agent. Lihat dokumentasi resmi untuk opsi lengkapnya.
+
 ** Menambahkan Skill
 [[https://cursor.com/docs/skills][Skill]] adalah format berbasis markdown yang terdokumentasi secara publik — sehingga bisa dibagikan antar pengguna dan, dalam beberapa kasus, digunakan di tools lain yang mendukung format serupa. Meskipun belum menjadi standar resmi (seperti ISO atau W3C), format ini cukup terbuka untuk diadopsi dan bisa kamu download dari repo GitHub orang lain. Perlu diingat: beberapa skill mungkin membutuhkan dependensi tertentu atau ditulis untuk framework spesifik — periksa isi skill sebelum menggunakannya.
 Skill ini sifatnya lebih portable — formatnya distandarisasi sehingga bisa dipakai di berbagai proyek tanpa perlu menyalin ulang. Berbeda dengan rules yang lebih terikat ke proyek dan kondisi penggunaannya bisa diatur (Always Apply, Apply Intelligently, Apply to Specific Files, atau Apply Manually). Skill hanya digunakan saat relevan: Cursor akan mengevaluasi apakah skill tersebut cocok dengan prompt yang kamu kirim. Jika skor relevansinya rendah, skill tidak akan disertakan ke dalam konteks.
@@ -245,50 +274,7 @@ For each next task, please do implement the test, then implement only enough cod
 - Once tests pass, consider if refactoring is needed
 - Repeat the cycle for new functionality
 
-# TIDY FIRST APPROACH
-- Separate all changes into two distinct types:
-  1. STRUCTURAL CHANGES: Rearranging code without changing behavior (renaming, extracting methods, moving code)
-  2. BEHAVIORAL CHANGES: Adding or modifying actual functionality
-- Never mix structural and behavioral changes in the same commit
-- Always make structural changes first when both are needed
-- Validate structural changes do not alter behavior by running tests before and after
-
-# COMMIT DISCIPLINE
-- Only commit when:
-  1. ALL tests are passing
-  2. ALL compiler/linter warnings have been resolved
-  3. The change represents a single logical unit of work
-  4. Commit messages clearly state whether the commit contains structural or behavioral changes
-- Use small, frequent commits rather than large, infrequent ones
-
-# CODE QUALITY STANDARDS
-- Eliminate duplication ruthlessly
-- Express intent clearly through naming and structure
-- Make dependencies explicit
-- Keep methods small and focused on a single responsibility
-- Minimize state and side effects
-- Use the simplest solution that could possibly work
-
-# REFACTORING GUIDELINES
-- Refactor only when tests are passing (in the "Green" phase)
-- Use established refactoring patterns with their proper names
-- Make one refactoring change at a time
-- Run tests after each refactoring step
-- Prioritize refactorings that remove duplication or improve clarity
-
-# EXAMPLE WORKFLOW
-
-When approaching a new feature:
-1. Write a simple failing test for a small part of the feature
-2. Implement the bare minimum to make it pass
-3. Run tests to confirm they pass (Green)
-4. Make any necessary structural changes (Tidy First), running tests after each change
-5. Commit structural changes separately
-6. Add another test for the next small increment of functionality
-7. Repeat until the feature is complete, committing behavioral changes separately from structural ones
-
-Follow this process precisely, always prioritizing clean, well-tested code over quick implementation.
-Always write one test at a time, make it run, then improve structure. Always run all the tests (except long-running tests) each time.
+[Sisa isi skill dipotong — lihat repo asli untuk versi lengkap]
 #+END_SRC
 
 **** Pengembangan fitur
@@ -321,46 +307,9 @@ populer sebagai perbandingan.
 **** Contoh Skill Lainnya
 - [[https://impeccable.style][impeccable.style]]
 - [[https://github.com/mattpocock/skills/][mattpocock/skills]]
-Kita dapat mengembangkan Cursor dengan Hooks — menambahkan otomatisasi dan guardrail ke dalam workflow. Misalnya: memblokir perintah berbahaya sebelum dieksekusi, atau menjalankan formatter secara otomatis setelah agent selesai mengedit file. Tulis skrip yang dapat dieksekusi kemudian pilih kapan saat skrip tersebut ingin dijalankan.
-Script akan dieksekusi di *trigger point* (momen spesifik saat Cursor melakukan sesuatu) yang diinginkan. Contoh trigger point:
-- =beforeSubmitPrompt=: Sebelum prompt dikirim ke AI — cocok buat nambahin konteks otomatis atau ngecek apakah prompt sudah sesuai aturan.
-- =beforeShellCommand=: Sebelum Cursor menjalankan perintah terminal — cocok buat ngeblokir perintah berbahaya.
-- Dan masih banyak lagi (cek dokumentasi resmi untuk daftar lengkapnya).
 
-Kita akan bahas lebih mendalam di bagian **Kustomisasi lebih lanjut dengan Hooks**. Untuk sekarang, mari kita lihat contoh singkatnya:
-  
-*** Contoh Hooks
-Kita bisa menambahkan hooks untuk secara aktif mengecek dan memblokir perintah yang berpotensi merusak. Misalnya melakukan =npm install= sebuah pustaka yang menambahkan banyak dependensi baru dan melanggar aturan "Keep 3rd party libraries to bare minimum" yang sudah ditetapkan di rules.
+Kita juga bisa menambahkan hooks untuk guardrail dan otomatisasi — kita akan bahas lebih mendalam di bagian **Kustomisasi lebih lanjut dengan Hooks**.
 
-**** =./cursor/hooks/block-npm.sh=
-
-#+BEGIN_SRC bash
-#!/bin/bash
-read -r input
-command=$(echo "$input" | jq -r '.command')
-
-if echo "$command" | grep -q "npm install"; then
-  cat <<EOF
-{
-  "continue": false,
-  "permission": "deny",
-  "userMessage": "⚠️ New dependencies not allowed per Project Rules. Use existing ones only.",
-  "agentMessage": "Respect 'Keep 3rd party libraries to bare minimum' constraint."
-}
-EOF
-  exit 0
-fi
-
-# Allow everything else
-cat <<EOF
-{
-  "continue": true,
-  "permission": "allow"
-}
-EOF
-#+END_SRC
-
-(Catatan: =jq= adalah command-line tool untuk membaca dan mengolah JSON. Kalau belum terinstall, bisa jalankan =brew install jq= di macOS atau =apt install jq= di Linux.)
 ** Delegasi Tugas dengan Subagent
 Agent yang kita gunakan sejauh ini sifatnya generalis. Terkadang ada tugas yang membutuhkan spesialis. Cursor agent bisa mendelegasikan tugas tersebut ke subagent — kamu bisa memanggil subagent secara eksplisit dari prompt (misalnya: "minta subagent Explore untuk mencari semua file yang mengimpor modul X"), atau Cursor akan otomatis memanggil subagent yang tepat untuk tugas spesifik seperti menjalankan perintah Bash. Subagent juga dapat berjalan secara mandiri, punya context window sendiri, dan bisa dijalankan secara berbarengan sehingga tidak mengganggu agen utama.
 
@@ -370,7 +319,7 @@ Beberapa subagent yang sudah disediakan oleh Cursor:
 - Browser: Membuka dan menjalankan otomasi untuk aplikasi web
 
 *** Contoh Subagent Sederhana
-Kita pun bisa meminta bantuan Cursor untuk membuat subagent.
+Kita pun bisa meminta bantuan Cursor untuk membuat subagent lewat perintah =/create-subagent= di agent chat (mirip seperti slash command di aplikasi lain — ketik langsung di input chat agent):
 
 #+BEGIN_SRC
 /create-subagent Help me create this subagent for Cursor: 
@@ -382,12 +331,13 @@ Ubah metadata subagent agar lebih lengkap.
 #+BEGIN_SRC
 ---
 name: monetization-officer
-model: grok-4.5[]
+model: claude-sonnet-4-20250514
 description: Monetization officer that inspects and evaluates the current project, then plans monetization opportunities. Use only when explicitly asked to assess, plan, or recommend monetization. ALWAYS USE FOR PLAN MODE.
 ---
 #+END_SRC
 
-(=grok-4.5[]=: contoh model untuk ilustrasi — kamu bisa ganti dengan model apapun yang tersedia di Cursor, misalnya =claude-sonnet-4-20250514= atau =gpt-4o=. Tanda =[]= setelah nama model bisa diisi opsi tambahan — dikosongkan berarti pakai default. Format lengkapnya: =model: nama-model[opsi]=.)
+(Ganti =claude-sonnet-4-20250514= dengan model yang tersedia di akun Cursor kamu.
+Lihat daftar model di Cursor → Settings → Models.)
 
 Lalu jalankan perintah dengan bahasa natural saja.
 
@@ -406,7 +356,21 @@ Berikut beberapa contoh penggunaan hooks:
 - Check for security or secrets
 - Gate risky operations (e.g., SQL writes)
 - Write collaboration logs
-  
+
+Contoh =beforeSubmitPrompt= — secara otomatis menambahkan konteks proyek ke setiap prompt:
+
+#+BEGIN_SRC bash
+#!/bin/bash
+read -r input
+prompt=$(echo "$input" | jq -r '.prompt')
+cat <<EOF
+{
+  "continue": true,
+  "prompt": "Project: web-app with Astro + TypeScript\\n\\n---\\n\\n$prompt"
+}
+EOF
+#+END_SRC
+
 *** Menulis Hooks
 Kita bisa menambahkan hooks untuk secara aktif mengecek dan memblokir perintah yang berpotensi merusak. Misalnya melakukan =npm install= sebuah pustaka yang menambahkan banyak dependensi baru dan melanggar aturan "Keep 3rd party libraries to bare minimum" yang sudah ditetapkan di rules.
 
@@ -429,10 +393,25 @@ Kita bisa menambahkan hooks untuk secara aktif mengecek dan memblokir perintah y
 
 #+BEGIN_SRC bash
 #!/bin/bash
+set -euo pipefail
+
+# Fail-safe: jika jq tidak tersedia, tolak perintah
+if ! command -v jq &>/dev/null; then
+  cat <<EOF
+{
+  "continue": false,
+  "permission": "deny",
+  "userMessage": "⚠️ Hook misconfigured: jq not installed. Command blocked.",
+  "agentMessage": "Cannot verify command because jq is missing."
+}
+EOF
+  exit 0
+fi
+
 read -r input
 command=$(echo "$input" | jq -r '.command')
 
-if echo "$command" | grep -q "npm install"; then
+if echo "$command" | grep -qE "npm (install|i|add)\b"; then
   cat <<EOF
 {
   "continue": false,
@@ -453,6 +432,12 @@ cat <<EOF
 EOF
 #+END_SRC
 
+Peringatan: Pattern matching sederhana seperti ini bisa dilewati — agent bisa mengedit =package.json= lalu menjalankan =npm install= (tanpa argumen) untuk menginstal dependensi baru. Untuk proteksi yang lebih ketat, kombinasikan hook ini dengan pemantauan perubahan file.
+
+⚠️ =moment.js= sudah dalam mode maintenance-only dan tidak direkomendasikan untuk proyek baru.
+Alternatif modern: =date-fns= atau =Intl.DateTimeFormat= bawaan JavaScript.
+(Contoh dibawah sengaja menggunakan moment.js untuk mengilustrasikan hooks blocking — agent mungkin otomatis menyarankan alternatif modern.)
+
 Coba dengan mengeksekusi perintah berikut
 
 #+BEGIN_SRC
@@ -461,14 +446,10 @@ Add support for displaying time in a few popular cities (New York, London, Tokyo
 Use moment.js with timezone support for easy handling of different timezones.
 #+END_SRC
 
-#+BEGIN_QUOTE
-Catatan: =moment.js= sudah dalam mode maintenance-only dan tidak direkomendasikan untuk proyek baru. Alternatif modern yang lebih baik: gunakan =date-fns= (library ringan) atau =Intl.DateTimeFormat= bawaan JavaScript untuk menangani zona waktu. Di contoh ini kita pakai moment.js sebagai ilustrasi — Cursor agent mungkin akan otomatis menyarankan alternatif yang lebih modern saat kamu pakai prompt serupa.
-#+END_QUOTE
-
  
 #+CAPTION: Contoh eksekusi hooks: saat agent mencoba =npm install=, hook guard-npm.sh memblokir dan memberi peringatan sesuai rules yang sudah ditetapkan
 #+NAME:   fig:Hooks
-[[./hooks.png]]
+[[./hooks.png][Screenshot hasil eksekusi hooks: agent mencoba npm install, hook memblokir dan menampilkan peringatan]]]
 ** Customization Marketplace
 Cursor juga menyediakan marketplace untuk kustomisasi — isinya macem-macem: ada yang berupa rules, ada yang berupa skills, subagents, atau hooks — bahkan ada yang mengombinasikan beberapa jenis sekaligus. Kita bisa menggunakan hasil kustomisasi buatan teman-teman komunitas. Cara mengaksesnya: buka Cursor → klik ikon puzzle (🧩) di sidebar kiri → pilih tab *Marketplace*. Atau langsung kunjungi [[https://cursor.com/marketplace][cursor.com/marketplace]].
 
@@ -479,7 +460,7 @@ Beberapa contoh yang bisa kamu eksplorasi:
 
 #+CAPTION: Contoh Customization Marketplace — kita bisa browse dan install kustomisasi buatan komunitas seperti Continual Learning, Superpower, atau Compound Engineering
 #+NAME:   fig:continual-learning
-[[./continual-learning.png]]
+[[./continual-learning.png][Screenshot Cursor Customization Marketplace: browse dan install kustomisasi komunitas]]]
 ** Penutup
 Cursor bukan sekadar editor kode dengan LLM di dalamnya. Cursor adalah platform yang sangat bisa dipersonalisasi untuk mengubah cara kita bekerja sebagai developer. Dengan memanfaatkan fitur-fitur seperti:
 
