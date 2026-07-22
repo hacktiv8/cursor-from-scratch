@@ -48,7 +48,7 @@ Contoh 5W1H untuk prompt yang sama:
 
 Lalu bagaimana solusinya? Gunakan framework seperti 5W+1H (What, Why, Who, Where, When, How) atau user-story template untuk memastikan prompt mencakup: aktor, aksi, input, output, dan batasan — bukan cuma "sedetil mungkin" tanpa arah.
 
-Intinya kita harus *memikirkan apa yang mau kita buat dan bagaimana caranya dan komunikasikan ke LLM*. LLM tidak bisa membaca pikiran — jika instruksi kita tidak eksplisit, hasilnya akan bergantung sepenuhnya pada bias training data-nya. Jadi kalau kita sendiri nggak jelas mau bikin apa, jangan kaget kalau hasilnya juga ngaco.
+Intinya, kita harus *memikirkan apa yang mau kita buat, bagaimana cara membuatnya, dan cara mengomunikasikannya ke LLM*. LLM tidak bisa membaca pikiran — jika instruksi kita tidak eksplisit, hasilnya akan bergantung sepenuhnya pada bias training data-nya. Jadi kalau kita sendiri nggak jelas mau bikin apa, jangan kaget kalau hasilnya juga ngaco.
 
 Sekarang, sebelum kita masuk ke kerangka berpikir, mari kita samakan persepsi dulu dengan melihat cara kerja /coding agent/ dibelakang layar. Apa yang terjadi ketika kita mengetikkan instruksi lalu mengirimnya?
 
@@ -67,7 +67,7 @@ Sebelum lanjut, pastikan kita sudah siapin hal-hal berikut:
 - Sudah punya akun dan login (bisa pakai Google atau GitHub — jika gagal login, coba periksa koneksi atau gunakan password-based login lewat Settings → Account)
 - Sudah punya proyek, bisa proyek kosong (nanti kita buat bareng)
 - Familiar dengan basic terminal (=cd=, =mkdir=, =ls=) dan git (=git init=, =git add=, =git commit=)
-- [[https://jqlang.github.io/jq/][jq]] terinstall untuk menggunakan hooks (cek dengan =which jq= di macOS/Linux atau =where jq= di Windows; install dengan =brew install jq= di macOS, =apt install jq= di Linux, atau =winget install jqlang.jq= di Windows — bisa juga download dari https://jqlang.github.io/jq/download/)
+- [[https://jqlang.github.io/jq/][jq]] terinstall untuk menggunakan hooks (cek dengan =which jq= di macOS/Linux atau =where jq= di Windows; install dengan =brew install jq= di macOS, =apt install jq= di Linux, atau =winget install jqlang.jq= di Windows — bisa juga download dari [[https://jqlang.github.io/jq/download/][jqlang.github.io/jq/download]])
 - Kalau kamu familiar dengan VS Code, kamu akan merasa di rumah. Kalau belum pernah, jangan khawatir — navigasi dasarnya intuitif: sidebar kiri (=⌘B=) untuk file explorer, =Cmd+Shift+P= untuk command palette
 - (Rules dan settings Cursor bersifat per-folder: Cursor akan mencari folder =.cursor= di direktori yang dibuka. Untuk monorepo, taruh =.cursor= di root repo, bukan di sub-packages.)
 
@@ -103,7 +103,7 @@ Alat bantunya banyak wujudnya. Dua kerangka yang akan kita gunakan di materi ini
 #+CAPTION: Contoh thinking framework: piramida berpikir memecah masalah dari abstrak (atas) ke konkret (bawah). Logical → Analytical → Computational → Procedural.
 #+NAME:   fig:ThinkingFramework
 [[./thinking-framework.png][Diagram piramida berpikir: empat lapisan dari atas ke bawah — Logical, Analytical, Computational, Procedural]]
-(Gambar membutuhkan file di direktori yang sama. Jika tidak muncul, pastikan sudah =git pull= dengan benar atau buka langsung di Cursor.)]
+(Gambar membutuhkan file di direktori yang sama. Jika tidak muncul, pastikan sudah =git pull= dengan benar atau buka langsung di Cursor.)
 
 Mengapa ini penting untuk LLM? Karena LLM melihat seluruh instruksi dalam jendela konteks sekaligus — semakin abstrak instruksi, semakin banyak asumsi yang harus dibuat model untuk mengisi kekosongan detail. Dengan memecah dari abstrak ke konkret, kita mengurangi ruang interpretasi di setiap langkah. Bayangkan seperti kita ngasih petunjuk ke orang: kalau kita cuma bilang "bikin aplikasi", hasilnya bisa macem-macem. Tapi kalau kita jelasin dari konsep besar sampai detail teknis, hasilnya jauh lebih terarah.
 
@@ -144,7 +144,7 @@ Beberapa hal yang sebaiknya ada di rules:
 
 Contoh struktur file dan folder untuk rules:
 
-#+BEGIN_SRC
+#+BEGIN_SRC text
 .cursor/rules/
   react-patterns.mdc       # Recognized as a project rule
   api-guidelines.md        # ⚠️ DIABAIKAN — ekstensi harus .mdc, bukan .md
@@ -169,7 +169,7 @@ Semua komponen harus punya unit test.
 #+END_SRC
 
 *** Rules dasar
-Mari kita coba praktekkan penggunaan rules. Untuk membuat rules, ada dua cara:
+Mari kita coba praktikkan penggunaan rules. Untuk membuat rules, ada dua cara:
 
 1. *Lewat terminal*: Buka terminal, =cd= ke folder proyek kamu, lalu jalankan:
    #+BEGIN_SRC bash
@@ -180,7 +180,7 @@ Mari kita coba praktekkan penggunaan rules. Untuk membuat rules, ada dua cara:
 
 #+CAPTION: Tampilan form untuk membuat rule baru di Cursor. Isi nama rule dan deskripsikan aturannya sesuai kebutuhan proyek.
 #+NAME:   fig:Setting
-[[./setting.png][Screenshot form Create New Rule di Cursor: input nama rule dan deskripsi aturan]]]
+[[./setting.png][Screenshot form Create New Rule di Cursor: input nama rule dan deskripsi aturan]]
 
 Isi nama dan deskripsikan aturannya.
 
@@ -197,7 +197,7 @@ Isi nama dan deskripsikan aturannya.
 - Accessibility: big text, big buttons, readable type, clear color combination
 #+END_SRC
 
-Menariknya di cursor kita bisa memberi kondisi kapan saja rules ini berlaku. Ada empat mode yang bisa dipilih:
+Menariknya di Cursor kita bisa memberi kondisi kapan saja rules ini berlaku. Ada empat mode yang bisa dipilih:
 - *Always Apply*: Aturan dipakai di /setiap/ prompt, nggak peduli konteksnya apa.
 - *Apply Intelligently*: Cursor yang memutuskan sendiri kapan aturan ini relevan berdasarkan isi prompt.
 - *Apply to Specific Files*: Aturan cuma berlaku untuk file yang cocok dengan =glob= pattern (misal =*.tsx= untuk file React, atau =*.test.ts= untuk file testing).
@@ -205,7 +205,7 @@ Menariknya di cursor kita bisa memberi kondisi kapan saja rules ini berlaku. Ada
 
 Sekarang, dengan aturan yang baru ditetapkan, mari kita coba dengan /prompt/ generik.
 
-#+BEGIN_SRC
+#+BEGIN_SRC text
 refactor
 #+END_SRC
 
@@ -327,14 +327,14 @@ Beberapa subagent yang sudah disediakan oleh Cursor:
 *** Contoh Subagent Sederhana
 Kita pun bisa meminta bantuan Cursor untuk membuat subagent lewat perintah =/create-subagent= di agent chat (mirip seperti slash command di aplikasi lain — ketik langsung di input chat agent):
 
-#+BEGIN_SRC
+#+BEGIN_SRC text
 /create-subagent Help me create this subagent for Cursor: 
-Monetization officer that inspect and evaluate the current project then plan for monetization opportunities. Ask questions for clarity, one question at a time until everything clear.
+Monetization officer that inspects and evaluates the current project then plans for monetization opportunities. Ask questions for clarity, one question at a time until everything clear.
 #+END_SRC
 
 Ubah metadata subagent agar lebih lengkap.
 
-#+BEGIN_SRC
+#+BEGIN_SRC yaml
 ---
 name: monetization-officer
 model: claude-sonnet-4-20250514
@@ -347,7 +347,7 @@ Lihat daftar model di Cursor → Settings → Models. Jika model nggak tersedia,
 
 Lalu jalankan perintah dengan bahasa natural saja.
 
-#+BEGIN_SRC
+#+BEGIN_SRC text
 Let's find monetization opportunities for this project.
 #+END_SRC
   
@@ -452,7 +452,7 @@ Alternatif modern: =date-fns= atau =Intl.DateTimeFormat= bawaan JavaScript.
 
 Coba dengan mengeksekusi perintah berikut
 
-#+BEGIN_SRC
+#+BEGIN_SRC text
 Add support for displaying time in a few popular cities (New York, London, Tokyo, Sydney) as comparison to the Indonesian timezones.
 
 Use moment.js with timezone support for easy handling of different timezones.
@@ -461,7 +461,7 @@ Use moment.js with timezone support for easy handling of different timezones.
  
 #+CAPTION: Contoh eksekusi hooks: saat agent mencoba =npm install=, hook guard-npm.sh memblokir dan memberi peringatan sesuai rules yang sudah ditetapkan
 #+NAME:   fig:Hooks
-[[./hooks.png][Screenshot hasil eksekusi hooks: agent mencoba npm install, hook memblokir dan menampilkan peringatan]]]
+[[./hooks.png][Screenshot hasil eksekusi hooks: agent mencoba npm install, hook memblokir dan menampilkan peringatan]]
 ** Customization Marketplace
 Cursor juga menyediakan marketplace untuk kustomisasi — isinya macem-macem: ada yang berupa rules, ada yang berupa skills, subagents, atau hooks — bahkan ada yang mengombinasikan beberapa jenis sekaligus. Kita bisa menggunakan hasil kustomisasi buatan teman-teman komunitas. Cara mengaksesnya: buka Cursor → klik ikon puzzle (🧩) di sidebar kiri → pilih tab *Marketplace*. (Catatan: Marketplace memerlukan akun Cursor yang login. Beberapa item mungkin memerlukan subscription tertentu.) Atau langsung kunjungi [[https://cursor.com/marketplace][cursor.com/marketplace]].
 
@@ -472,7 +472,7 @@ Beberapa contoh yang bisa kamu eksplorasi:
 
 #+CAPTION: Contoh Customization Marketplace — kita bisa browse dan install kustomisasi buatan komunitas seperti Continual Learning, Superpower, atau Compound Engineering
 #+NAME:   fig:continual-learning
-[[./continual-learning.png][Screenshot Cursor Customization Marketplace: browse dan install kustomisasi komunitas]]]
+[[./continual-learning.png][Screenshot Cursor Customization Marketplace: browse dan install kustomisasi komunitas]]
 *** Referensi
 - [[https://cursor.com/docs/customize-cursor][Dokumentasi Resmi Kustomisasi Cursor]]
 - [[https://cursor.com/docs/rules][Dokumentasi Rules]]
