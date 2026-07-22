@@ -3,6 +3,9 @@
 
 Materi untuk Cursor.id Meetup Agustus: personalisasi & workflow Cursor agent.
 
+#+ATTR_HTML: :class sidenote
+*Catatan:* Materi ini ditulis oleh manusia, dengan bantuan LLM.
+
 ** Pembuka
 
 Pernah nge-prompt Cursor dan hasilnya jauh dari ekspektasi? Tenang, kamu nggak sendirian. LLM itu sifatnya "liar" - prompt yang sama bisa menghasilkan kode yang sangat berbeda. Materi ini bukan cuma tentang cara pakai Cursor, tapi cara /mengendalikan/ hasilnya melalui personalisasi.
