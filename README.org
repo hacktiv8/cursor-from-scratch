@@ -7,37 +7,50 @@ Materi untuk Cursor.id Meetup Agustus: personalisasi & workflow Cursor agent.
 
 Sebelum mulai, mari kita kenalan dulu: *Cursor* adalah code editor berbasis VS Code yang punya AI / LLM bawaan untuk bantu kita menulis kode. Jadi bukan cuma text editor biasa — Cursor bisa membaca seluruh isi proyek kita, mengedit file, menjalankan perintah terminal, dan membaca hasilnya. Inilah yang disebut /coding agent/: AI yang bisa melihat file proyek, mengedit kode, menjalankan perintah terminal, dan membaca hasilnya — bukan cuma chat biasa kayak ChatGPT.
 
-Nah, LLM (Large Language Model — model AI yang bisa memahami dan menghasilkan teks, contohnya GPT-4, Claude, Gemini) ini sifatnya sulit diprediksi atau "liar". Satu perintah bisa bisa diinterpretasikan berbeda-beda oleh LLM. Mari kita lihat contoh prompt yang bisa beragam artinya.
+Nah, LLM (Large Language Model — model AI yang bisa memahami dan menghasilkan teks, contohnya GPT-4, Claude, Gemini) ini sifatnya sulit diprediksi atau "liar" — tanpa system prompt yang jelas dan pada temperature default, LLM cenderung memberikan hasil yang bervariasi untuk prompt yang sama. Satu perintah bisa bisa diinterpretasikan berbeda-beda oleh LLM. Mari kita lihat contoh prompt yang bisa beragam artinya.
 
 #+BEGIN_SRC text
 Buat aplikasi web yang menampilkan tanggal dan jam saat ini secara realtime
 #+END_SRC
 
-Lalu bagaimana solusinya? Perbaiki cara komunikasinya. Set ekspektasi, jelaskan sedetil mungkin.
+Prompt diatas sederhana banget, tapi bisa diinterpretasikan dengan cara yang sangat berbeda. Coba lihat:
+- Interpretasi A: CLI tool yang nge-print date ke terminal setiap detik
+- Interpretasi B: Full-stack web app dengan WebSocket untuk real-time update
+- Interpretasi C: Static page dengan JavaScript =setInterval= sederhana
 
-Intinya kita harus *memikirkan apa yang mau kita buat dan bagaimana caranya dan komunikasikan ke LLM*. Kalau kita tidak tahu mau bikin apa, apalagi LLM?!
+Hasilnya bisa beda jauh kan? Padahal prompt-nya sama persis. Inilah kenapa kita perlu struktur.
 
-Alat bantunya banyak wujudnya. Ada *piramida berpikir* (kerangka untuk memecah masalah dari abstrak ke konkret, makin ke bawah makin detail), *5W1H* (metode menjawab =What=/=Why=/=Who=/=Where=/=When=/=How= untuk menjelaskan sesuatu secara lengkap), dan banyak lagi.
+Lalu bagaimana solusinya? Gunakan framework seperti 5W+1H (What, Why, Who, Where, When, How) atau user-story template untuk memastikan prompt mencakup: aktor, aksi, input, output, dan batasan — bukan cuma "sedetil mungkin" tanpa arah.
+
+Intinya kita harus *memikirkan apa yang mau kita buat dan bagaimana caranya dan komunikasikan ke LLM*. LLM tidak bisa membaca pikiran — jika instruksi kita tidak eksplisit, hasilnya akan bergantung sepenuhnya pada bias training data-nya. Jadi kalau kita sendiri nggak jelas mau bikin apa, jangan kaget kalau hasilnya juga ngaco.
+
+Alat bantunya banyak wujudnya. Dua kerangka yang akan kita gunakan di materi ini adalah *piramida berpikir* (kerangka untuk memecah masalah dari abstrak ke konkret, makin ke bawah makin detail), dan *5W1H* (metode menjawab =What=/=Why=/=Who=/=Where=/=When=/=How= untuk menjelaskan sesuatu secara lengkap).
 
 #+CAPTION: Contoh thinking framework: piramida berpikir memecah masalah dari abstrak (atas) ke konkret (bawah). Logical → Analytical → Computational → Procedural.
 #+NAME:   fig:ThinkingFramework
 [[./thinking-framework.png]]
 
+Mengapa ini penting untuk LLM? Karena LLM memproses instruksi secara linear — semakin abstrak instruksi di awal, semakin banyak asumsi yang harus dibuat model. Dengan memecah dari abstrak ke konkret, kita mengurangi ruang interpretasi di setiap langkah. Bayangkan seperti kita ngasih petunjuk ke orang: kalau kita cuma bilang "bikin aplikasi", hasilnya bisa macem-macem. Tapi kalau kita jelasin dari konsep besar sampai detail teknis, hasilnya jauh lebih terarah.
+
 Berikut contoh pemetaannya, dari yang paling abstrak ke yang paling konkret:
 
 **** Logical thinking: /apa/ yang mau kita buat
-Ini level paling atas — kita mendefinisikan ide besarnya. Biasanya dalam format /product brief/ atau /product description/. Contoh: "Aplikasi web yang menampilkan tanggal dan jam realtime untuk berbagai zona waktu di Indonesia."
+Ini level paling atas — kita mendefinisikan ide besarnya. Untuk contoh kali ini, kita representasikan dalam format /product brief/ atau /product description/. Contoh: "Aplikasi web yang menampilkan tanggal dan jam realtime untuk berbagai zona waktu di Indonesia."
 
 **** Analytical thinking: /apa yang dibutuhkan/ untuk membuatnya
-Di level ini kita tentukan alat dan bahannya. Biasanya direpresentasikan sebagai /tech stack/ yang digunakan. Contoh: "Frontend pakai Astro + TypeScript, styling pakai vanilla CSS, nggak perlu backend."
+Di level ini kita tentukan alat dan bahannya. Untuk contoh kali ini, kita representasikan sebagai /tech stack/ yang digunakan. Contoh: "Frontend pakai Astro + TypeScript, styling pakai vanilla CSS, nggak perlu backend."
 
 **** Computational thinking: penjelasan /mendetil/ dari apa yang mau kita buat
+(Catatan: Istilah "computational thinking" disini kita adaptasi dari definisi aslinya di dunia CS education — yang mencakup decomposition, pattern recognition, abstraction, dan algorithm design — untuk konteks spesifik coding agent: memecah ide besar menjadi bagian-bagian kecil yang bisa langsung dikerjakan oleh LLM.)
+
 Di sini kita pecah ide besar jadi bagian-bagian kecil yang bisa dikerjakan. Bisa direpresentasikan sebagai fitur-fitur utama, lalu dipisah menjadi *slices* (potongan fitur kecil yang bisa dikerjakan dan di-review dalam satu waktu), *milestone* (tonggak pencapaian dalam pengembangan), *user stories* (deskripsi fitur dari sudut pandang pengguna), tiket, dll.
 
 **** Procedural thinking: /bagaimana/ membuatnya agar terwujud
 Level paling konkret — kita kasih instruksi sedetil mungkin. Contoh: batasan proyek, fitur apa yang dipilih untuk dikembangkan, mana yang belum perlu dikembangkan, dan fitur mana yang "dibuang". Juga termasuk /coding standard/, aturan testing, dan workflow yang kita mau.
 
-Umumnya, kombinasi diatas merupakan representasi dari *PRD* (Product Requirements Document — dokumen yang menjelaskan fitur apa yang harus dibuat), *SPEC* (spesifikasi teknis — dokumen yang menjelaskan bagaimana cara membuatnya), atau dokumen lainnya.
+Keempat lapisan diatas adalah kerangka yang kita adaptasi dari berbagai framework pemecahan masalah (seperti Bloom's taxonomy dan computational thinking) — khusus disederhanakan untuk memudahkan kita ngasih instruksi ke coding agent.
+
+Jika keempat lapisan ini didokumentasikan secara lengkap, hasilnya setara dengan *PRD* (Product Requirements Document — dokumen yang menjelaskan fitur apa yang harus dibuat) atau *SPEC* (spesifikasi teknis — dokumen yang menjelaskan bagaimana cara membuatnya), tergantung seberapa teknis detail yang kita tulis.
 
 Mari kita coba wujudkan dari /prompt/ yang kurang jelas menjadi lebih lengkap dan terstruktur dengan fitur-fitur yang ada di Cursor. Tapi sebelum itu, mari kita samakan persepsi terlebih dahulu dengan melihat cara kerja /coding agent/ dibelakang layar. Apa yang terjadi ketika kita mengetikkan instruksi lalu mengirimnya?
 
@@ -61,9 +74,9 @@ Sebelum lanjut, pastikan kita sudah siapin hal-hal berikut:
 Referensi: [[https://cursor.com/docs/customize-cursor]]
 
 ** Memberi Instruksi dengan RULES / AGENTS.MD
-Agar hasil sesuai ekspektasi, selalu tambahkan instruksi yang jelas: mau buat apa, buatnya pakai apa, fiturnya apa saja dan bagaimana langkah-langkahnya.
+Untuk hasil yang konsisten dan sesuai ekspektasi pada tugas yang kompleks, sebaiknya tambahkan instruksi yang jelas: mau buat apa, buatnya pakai apa, fiturnya apa saja dan bagaimana langkah-langkahnya. Untuk tugas sederhana (satu baris, satu file), instruksi minimal mungkin sudah cukup.
 
-Karena LLM tidak bisa mengingat apapun, setiap kali mengirim perintah atau /prompt/, instruksi ini harus disertakan.
+LLM tidak memiliki memori lintas sesi — setiap sesi baru dimulai dari konteks kosong. Di dalam satu sesi, instruksi perlu diulang jika konteks sudah melebihi jendela konteks (context window) atau jika instruksi awal sudah "tergeser" oleh percakapan panjang.
 
 Cursor menyediakan [[https://cursor.com/docs/rules][Rules]] atau bisa juga menggunakan [[https://agents.md][AGENTS.md]] yang lebih umum digunakan. Rules disimpan di folder =.cursor/rules= dengan format =.mdc= (Markdown for Cursor — format markdown khusus Cursor yang bisa punya metadata seperti =glob= pattern untuk menentukan file mana saja yang aturannya berlaku, dan =alwaysApply= untuk menentukan kapan aturan dipakai).
 
@@ -125,7 +138,7 @@ refactor
 
 Perintah /refactor/ diatas bisa dibilang tidak jelas dan bisa banyak interpretasi. Apa yang perlu di refactor? Apakah teknologinya, kodenya, testing, dsb.
 
-Namun karena kita sudah memasang aturan, LLM sedikit banyak akan mengerti bahwa kondisi proyek saat ini belum memenuhi aturan yang dibuat sehingga proses refactor akan dijalankan.
+Namun karena kita sudah memasang aturan, rules tersebut akan disertakan sebagai bagian dari system prompt setiap kali kamu mengirim perintah ke LLM. Dengan adanya instruksi "refactor code to match project conventions" di rules, LLM akan memprioritaskan perubahan yang menyelaraskan kode dengan aturan yang sudah ditetapkan.
 
 *** Rules untuk /testing/
 Sekarang mari tambahkan aturan untuk selalu membuat /testing/.
@@ -206,8 +219,8 @@ Prefer functional programming style over imperative style in TypeScript
 Lakukan perintah =refactor= lagi untuk melihat perbedaan hasilnya dari sebelumnya.
 
 ** Menambahkan Skill
-[[https://cursor.com/docs/skills][Skill]] adalah /open standard/ (format skill yang bisa dipakai di berbagai tools AI, nggak cuma Cursor — kamu bisa download skill dari repo GitHub orang lain dan pakai di proyek mana pun) untuk membuat LLM lebih "pintar" dengan cara mengajari agen untuk mengerjakan tugas-tugasnya.
-Skill ini sifatnya lebih portable, dapat digunakan di satu proyek atau proyek lainnya. Berbeda dengan rules yang mungkin akan selalu disertakan bersama dengan perintah atau /prompt/, skill ini lebih bersifat fleksibel sehingga dapat digunakan saat diperlukan saja oleh LLM. Jika LLM merasa tidak perlu skill tambahan, maka skill tidak akan digunakan.
+[[https://cursor.com/docs/skills][Skill]] adalah format berbasis markdown yang terdokumentasi secara publik — sehingga bisa dibagikan antar pengguna dan, dalam beberapa kasus, digunakan di tools lain yang mendukung format serupa. Meskipun belum menjadi standar resmi (seperti ISO atau W3C), format ini cukup terbuka untuk diadopsi dan bisa kamu download dari repo GitHub orang lain. Perlu diingat: beberapa skill mungkin membutuhkan dependensi tertentu atau ditulis untuk framework spesifik — periksa isi skill sebelum menggunakannya.
+Skill ini sifatnya lebih portable — formatnya distandarisasi sehingga bisa dipakai di berbagai proyek tanpa perlu menyalin ulang. Berbeda dengan rules yang lebih terikat ke proyek dan kondisi penggunaannya bisa diatur (Always Apply, Apply Intelligently, Apply to Specific Files, atau Apply Manually). Skill hanya digunakan saat relevan: Cursor akan mengevaluasi apakah skill tersebut cocok dengan prompt yang kamu kirim. Jika skor relevansinya rendah, skill tidak akan disertakan ke dalam konteks.
 
 *** Contoh Skill: Tidy TDD
 
@@ -308,20 +321,16 @@ populer sebagai perbandingan.
 **** Contoh Skill Lainnya
 - [[https://impeccable.style][impeccable.style]]
 - [[https://github.com/mattpocock/skills/][mattpocock/skills]]
-Kita dapat mengembangkan Cursor lebih lanjut dengan Hooks. Tulis skrip yang dapat dieksekusi kemudian pilih kapan saat skrip tersebut ingin dijalankan.
+Kita dapat mengembangkan Cursor dengan Hooks — menambahkan otomatisasi dan guardrail ke dalam workflow. Misalnya: memblokir perintah berbahaya sebelum dieksekusi, atau menjalankan formatter secara otomatis setelah agent selesai mengedit file. Tulis skrip yang dapat dieksekusi kemudian pilih kapan saat skrip tersebut ingin dijalankan.
 Script akan dieksekusi di *trigger point* (momen spesifik saat Cursor melakukan sesuatu) yang diinginkan. Contoh trigger point:
 - =beforeSubmitPrompt=: Sebelum prompt dikirim ke AI — cocok buat nambahin konteks otomatis atau ngecek apakah prompt sudah sesuai aturan.
 - =beforeShellCommand=: Sebelum Cursor menjalankan perintah terminal — cocok buat ngeblokir perintah berbahaya.
 - Dan masih banyak lagi (cek dokumentasi resmi untuk daftar lengkapnya).
-Beberapa contoh penggunaan hooks:
-- Menjalankan formatters setelah kode diubah
-- Menambahkan analitik untuk event
-- Cek keamanan dan file rahasia seperti env
-- Menghindari operasi berbahaya (seperti SQL update)
-- Menulis log otomatis
+
+Kita akan bahas lebih mendalam di bagian **Kustomisasi lebih lanjut dengan Hooks**. Untuk sekarang, mari kita lihat contoh singkatnya:
   
 *** Contoh Hooks
-Kita bisa menambahkan hooks untuk secara aktif mengecek dan memblokir perintah yang berpotensi merusak. Misalnya melakukan `npm install` sebuah pustaka yang berukuran sangat besar dan melanggar aturan "Keep 3rd party libraries to bare minimum" yang sudah ditetapkan di rules.
+Kita bisa menambahkan hooks untuk secara aktif mengecek dan memblokir perintah yang berpotensi merusak. Misalnya melakukan =npm install= sebuah pustaka yang menambahkan banyak dependensi baru dan melanggar aturan "Keep 3rd party libraries to bare minimum" yang sudah ditetapkan di rules.
 
 **** =./cursor/hooks/block-npm.sh=
 
@@ -353,7 +362,7 @@ EOF
 
 (Catatan: =jq= adalah command-line tool untuk membaca dan mengolah JSON. Kalau belum terinstall, bisa jalankan =brew install jq= di macOS atau =apt install jq= di Linux.)
 ** Delegasi Tugas dengan Subagent
-Agent yang kita gunakan sejauh ini sifatnya generalis. Terkadang ada tugas yang membutuhkan spesialis. Cursor agent bisa mendelegasikan tugas tersebut ke subagent. Subagent juga dapat berjalan secara mandiri, punya context window sendiri, dan bisa dijalankan secara berbarengan sehingga tidak mengganggu agen utama.
+Agent yang kita gunakan sejauh ini sifatnya generalis. Terkadang ada tugas yang membutuhkan spesialis. Cursor agent bisa mendelegasikan tugas tersebut ke subagent — kamu bisa memanggil subagent secara eksplisit dari prompt (misalnya: "minta subagent Explore untuk mencari semua file yang mengimpor modul X"), atau Cursor akan otomatis memanggil subagent yang tepat untuk tugas spesifik seperti menjalankan perintah Bash. Subagent juga dapat berjalan secara mandiri, punya context window sendiri, dan bisa dijalankan secara berbarengan sehingga tidak mengganggu agen utama.
 
 Beberapa subagent yang sudah disediakan oleh Cursor:
 - Explore: untuk pencarian dan analisa codebase
@@ -378,7 +387,7 @@ description: Monetization officer that inspects and evaluates the current projec
 ---
 #+END_SRC
 
-(=grok-4.5[]=: tanda =[]= setelah nama model bisa diisi opsi tambahan — dikosongkan berarti pakai default. Format lengkapnya: =model: nama-model[opsi]=.)
+(=grok-4.5[]=: contoh model untuk ilustrasi — kamu bisa ganti dengan model apapun yang tersedia di Cursor, misalnya =claude-sonnet-4-20250514= atau =gpt-4o=. Tanda =[]= setelah nama model bisa diisi opsi tambahan — dikosongkan berarti pakai default. Format lengkapnya: =model: nama-model[opsi]=.)
 
 Lalu jalankan perintah dengan bahasa natural saja.
 
@@ -387,7 +396,7 @@ Let's find monetization opportunities for this project.
 #+END_SRC
   
 ** Kustomisasi lebih lanjut dengan Hooks
-Cara berikutnya untuk customize dan extend cursor dengan menulis script yang dapat dieksekusi di trigger point yang diinginkan. Misalnya sebelum mengirim perintah ke LLM, sebelum menjalankan perintah shell, sebelum =npm install=, dsb.
+Cara berikutnya untuk customize dan extend Cursor: Hooks memungkinkan kita menambahkan otomatisasi dan guardrail ke dalam workflow — misalnya memblokir perintah berbahaya sebelum dieksekusi, atau menjalankan formatter secara otomatis setelah agent selesai mengedit file. Intinya, hooks adalah skrip yang dieksekusi di trigger point yang diinginkan. Misalnya sebelum mengirim perintah ke LLM, sebelum menjalankan perintah shell, sebelum =npm install=, dsb.
 
 Sebelumnya kita sudah lihat contoh hooks sederhana dengan file langsung di folder =.cursor/hooks/= (pendekatan simpel — cocok buat eksperimen cepat). Nah, Cursor juga punya cara yang lebih deklaratif lewat file =hooks.json= — kita bisa mendefinisikan trigger point dan script mana yang dijalankan secara lebih terstruktur (cocok buat workflow yang kompleks). Dua pendekatan ini bisa dipakai sesuai kebutuhan.
 
@@ -399,7 +408,7 @@ Berikut beberapa contoh penggunaan hooks:
 - Write collaboration logs
   
 *** Menulis Hooks
-Kita bisa menambahkan hooks untuk secara aktif mengecek dan memblokir perintah yang berpotensi merusak. Misalnya melakukan `npm install` sebuah pustaka yang berukuran sangat besar dan melanggar aturan "Keep 3rd party libraries to bare minimum" yang sudah ditetapkan di rules.
+Kita bisa menambahkan hooks untuk secara aktif mengecek dan memblokir perintah yang berpotensi merusak. Misalnya melakukan =npm install= sebuah pustaka yang menambahkan banyak dependensi baru dan melanggar aturan "Keep 3rd party libraries to bare minimum" yang sudah ditetapkan di rules.
 
 **** =./cursor/hooks.json=
 
@@ -461,9 +470,12 @@ Catatan: =moment.js= sudah dalam mode maintenance-only dan tidak direkomendasika
 #+NAME:   fig:Hooks
 [[./hooks.png]]
 ** Customization Marketplace
-Cursor juga menyediakan marketplace untuk kustomisasi yang merupakan gabungan dari rules, skills, subagents dan hooks. Kita bisa menggunakan hasil kustomisasi buatan teman-teman komunitas. Cara mengaksesnya: buka Cursor → klik ikon puzzle (🧩) di sidebar kiri → pilih tab *Marketplace*. Atau langsung kunjungi [[https://cursor.com/marketplace][cursor.com/marketplace]].
+Cursor juga menyediakan marketplace untuk kustomisasi — isinya macem-macem: ada yang berupa rules, ada yang berupa skills, subagents, atau hooks — bahkan ada yang mengombinasikan beberapa jenis sekaligus. Kita bisa menggunakan hasil kustomisasi buatan teman-teman komunitas. Cara mengaksesnya: buka Cursor → klik ikon puzzle (🧩) di sidebar kiri → pilih tab *Marketplace*. Atau langsung kunjungi [[https://cursor.com/marketplace][cursor.com/marketplace]].
 
-Contoh menarik: Continual Learning, Superpower atau Compound Engineering.
+Beberapa contoh yang bisa kamu eksplorasi:
+- *Continual Learning*: skill yang mengajarkan agent untuk mencatat keputusan dan learnings dari sesi ke sesi — jadi agent kamu makin lama makin paham proyek.
+- *Superpower*: koleksi shortcut dan optimasi workflow untuk produktivitas maksimal.
+- *Compound Engineering*: pendekatan untuk mendokumentasikan solusi dari masalah yang sudah terpecahkan — supaya kita nggak ulangi kesalahan yang sama.
 
 #+CAPTION: Contoh Customization Marketplace — kita bisa browse dan install kustomisasi buatan komunitas seperti Continual Learning, Superpower, atau Compound Engineering
 #+NAME:   fig:continual-learning
@@ -477,8 +489,8 @@ Subagent → Memberikan spesialisasi tugas
 Hooks → Memberikan kontrol dan guardrail otomatis
 Customization Marketplace → Memanfaatkan pengetahuan komunitas
 
-Kita bisa mengubah LLM yang “liar” dan sulit diprediksi menjadi rekan kerja yang paham konteks proyek, mengikuti standar kita, dan bekerja sesuai filosofi engineering yang kita inginkan.
-Intinya: semakin baik kita mendefinisikan apa yang kita mau, semakin baik pula hasil yang diberikan Cursor. Prompt yang bagus tetap penting, tapi fondasi yang kuat (rules + skills + workflow) jauh lebih powerful.
+Dengan rules, skills, dan hooks yang tepat, kita bisa mengurangi variabilitas output dan meningkatkan konsistensi dengan standar proyek — mendekati, meskipun tidak sepenuhnya setara dengan, produktivitas rekan kerja manusia yang sudah familier dengan codebase. Hasilnya tidak akan 100% sempurna, tapi error-nya cenderung lebih terprediksi dan lebih mudah diperbaiki.
+Intinya: semakin baik kita mendefinisikan apa yang kita mau, semakin baik pula hasil yang diberikan Cursor. Prompt yang bagus tetap penting, tapi fondasi yang kuat (rules + skills + workflow) memastikan konsistensi tanpa perlu menulis ulang instruksi setiap kali.
 
 *** Referensi
 - [[https://cursor.com/docs/customize-cursor][Dokumentasi Resmi Kustomisasi Cursor]]
