@@ -4,7 +4,7 @@
 Materi untuk Cursor.id Meetup Agustus: personalisasi & workflow Cursor agent.
 
 #+ATTR_HTML: :class sidenote
-*Catatan:* Materi ini ditulis oleh manusia, dengan bantuan LLM. Informasi lebih lanjut bisa cek https://rizafahmi.com/ai/
+*Catatan:* Materi ini ditulis oleh manusia, dengan bantuan LLM. Informasi lebih lanjut bisa cek [[https://rizafahmi.com/ai/][rizafahmi.com/ai/]]
 
 ** Pembuka
 
@@ -24,12 +24,12 @@ Di akhir sesi ini, kita akan bisa:
 *** Prasyarat
 
 Kalau ingin mengikuti materi ini, pastikan kita sudah siapin hal-hal berikut:
-- Sudah install Cursor versi 3.2 atau yang lebih baru, dapat diunduh di https://cursor.com/download.
+- Sudah install Cursor versi 3.2 atau yang lebih baru, dapat diunduh di https://cursor.com/download
 - Sudah punya akun dan login (bisa pakai Google atau GitHub)
 - Sudah install git dan punya akun GitHub
 - Clone repo ini dengan menjalankan `git clone https://github.com/hacktiv8/cursor-from-scratch`
 - Jalankan `npm install` atau perintah serupa. Butuh nodejs, deno atau bun tentunya
-- Familiar dengan basic terminal (=cd=, =mkdir=, =ls=) dan git (=git init=, =git add=, =git commit=, =git reset=, =git checkout=, dll)
+- Familiar dengan basic terminal (=cd=, =mkdir=, =ls=) dan git (=git init=, =git add=, =git commit=, =git reset=, =git checkout=, dll).
 
 *** Mode Interaksi Cursor
 
@@ -42,19 +42,19 @@ Sepanjang sesi ini kita akan menggunakan coding agent Cursor versi 3 atau yang l
 Cursor sebagai /harness/ - yang mengendalikan LLM biar output-nya lebih terarah - atau /coding agent/ menggunakan Large Language Model yang sifatnya sulit ditebak. Input yang sama bisa menghasilkan output yang berbeda atau dengan kata lain: "liar". Satu perintah bisa diinterpretasikan berbeda-beda oleh LLM. Mari kita lihat contoh prompt berikut.
 
 #+BEGIN_SRC text
-Buat aplikasi web yang menampilkan tanggal dan jam saat ini secara realtime
+Buat aplikasi web yang menampilkan tanggal dan jam saat ini secara real-time
 #+END_SRC
 
-Prompt diatas sederhana banget, tapi bisa diinterpretasikan dengan cara yang sangat berbeda. Coba lihat:
+Prompt di atas sederhana banget, tapi bisa diinterpretasikan dengan cara yang sangat berbeda. Coba lihat:
 - Interpretasi A: Full-stack web app dengan WebSocket untuk real-time update
 - Interpretasi B: Static page dengan JavaScript =setInterval= sederhana
-- Interpretasi C: Aplikasi backend dengan bahasa pemrograman Python, Rust atau PHP
+- Interpretasi C: Aplikasi backend dengan bahasa pemrograman Python, Rust, atau PHP
 
 Hasilnya bisa beda jauh kan? Padahal perintahnya sama persis. Inilah kenapa kita perlu struktur.
 
 Intinya, kita harus *memikirkan apa yang mau kita buat, bagaimana cara membuatnya, dan cara mengomunikasikannya ke LLM*. LLM tidak bisa membaca pikiran - jika instruksi kita tidak eksplisit, hasilnya akan bergantung sepenuhnya pada data yang pernah dipelajari sebelumnya. Jadi kalau kita sendiri nggak jelas mau bikin apa, jangan kaget kalau hasilnya juga ngaco.
 
-#+CAPTION: Ketika kita mengirimkan perintah ke /coding agent/, selain perintah kita, /coding agent/ juga turut mengirimkan /system prompt/, /rules atau AGENTS.md/, /SKILL.md/ jika dirasa butuh, kode yang berkaitan dengan perintah, dan percakapan sebelumnya dikirim ke LLM untuk kemudian diproses hingga menghasilkan keluaran, jawaban atau baris kode.
+#+CAPTION: Ketika kita mengirimkan perintah ke /coding agent/, selain perintah kita, /coding agent/ juga turut mengirimkan /system prompt/, /rules atau AGENTS.md/, /SKILL.md/ jika dirasa butuh, kode yang berkaitan dengan perintah, dan percakapan sebelumnya dikirim ke LLM untuk kemudian diproses hingga menghasilkan output, jawaban, atau baris kode.
 #+NAME: agentic-loop.png
 [[./agentic-loop.png][Diagram agentic loop: prompt user → agent membaca konteks → menjalankan aksi (edit/terminal) → hasil → ulangi]]
 
@@ -65,14 +65,14 @@ TODO: quote tentang ga nge-prompt lagi
 
 #+TOC: headlines 2 local
 
-Referensi: [[https://cursor.com/docs/customize-cursor]]
+Referensi: [[https://cursor.com/docs/customize-cursor][Dokumentasi Kustomisasi Cursor]]
 
 ** COMMENT Kerangka Berpikir untuk Prompt yang Efektif
 
 Alat bantunya banyak wujudnya. Dua kerangka yang akan kita gunakan di materi ini adalah *piramida berpikir* (kerangka untuk memecah masalah dari abstrak ke konkret, makin ke bawah makin detail), dan *5W1H* (metode menjawab =What=/=Why=/=Who=/=Where=/=When=/=How= untuk menjelaskan sesuatu secara lengkap).
 
 #+CAPTION: Contoh thinking framework: piramida berpikir memecah masalah dari abstrak (atas) ke konkret (bawah). Logical → Analytical → Computational → Procedural.
-#+NAME:   fig:ThinkingFramework
+#+NAME: fig:ThinkingFramework
 [[./thinking-framework.png][Diagram piramida berpikir: empat lapisan dari atas ke bawah - Logical, Analytical, Computational, Procedural]]
 (Gambar membutuhkan file di direktori yang sama. Jika tidak muncul, pastikan sudah =git pull= dengan benar atau buka langsung di Cursor.)
 
@@ -80,20 +80,20 @@ Mengapa ini penting untuk LLM? Karena LLM melihat seluruh instruksi dalam jendel
 
 Berikut contoh pemetaannya, dari yang paling abstrak ke yang paling konkret:
 
-*** Logical thinking: /apa/ yang mau kita buat
-Ini level paling atas - kita mendefinisikan ide besarnya. Untuk contoh kali ini, kita representasikan dalam format /product brief/ atau /product description/. Contoh: "Aplikasi web yang menampilkan tanggal dan jam realtime untuk berbagai zona waktu di Indonesia."
+*** Logical thinking: apa yang mau kita buat
+Ini level paling atas - kita mendefinisikan ide besarnya. Untuk contoh kali ini, kita representasikan dalam format /product brief/ atau /product description/. Contoh: "Aplikasi web yang menampilkan tanggal dan jam real-time untuk berbagai zona waktu di Indonesia."
 
-*** Analytical thinking: /apa yang dibutuhkan/ untuk membuatnya
+*** Analytical thinking: apa yang dibutuhkan untuk membuatnya
 Di level ini kita tentukan alat dan bahannya. Untuk contoh kali ini, kita representasikan sebagai /tech stack/ yang digunakan. Contoh: "Frontend pakai Astro + TypeScript, styling pakai vanilla CSS, nggak perlu backend."
 
-*** Computational thinking: penjelasan /mendetil/ dari apa yang mau kita buat
+*** Computational thinking: penjelasan mendetail dari apa yang mau kita buat
 
 Di sini kita pecah ide besar jadi bagian-bagian kecil yang bisa dikerjakan. Bisa direpresentasikan sebagai fitur-fitur utama, lalu dipisah menjadi *slices* (potongan fitur kecil yang bisa dikerjakan dan di-review dalam satu waktu), *milestone* (tonggak pencapaian dalam pengembangan), *user stories* (deskripsi fitur dari sudut pandang pengguna), tiket, dll.
 
-*** Procedural thinking: /bagaimana/ membuatnya agar terwujud
+*** Procedural thinking: bagaimana membuatnya agar terwujud
 Level paling konkret - kita kasih instruksi sedetil mungkin. Contoh: batasan proyek, fitur apa yang dipilih untuk dikembangkan, mana yang belum perlu dikembangkan, dan fitur mana yang "dibuang". Juga termasuk /coding standard/, aturan testing, dan workflow yang kita mau.
 
-Keempat lapisan diatas adalah kerangka yang kita adaptasi dari berbagai framework pemecahan masalah (seperti Bloom's taxonomy dan computational thinking) - khusus disederhanakan untuk memudahkan kita ngasih instruksi ke coding agent.
+Keempat lapisan di atas adalah kerangka yang kita adaptasi dari berbagai framework pemecahan masalah (seperti Bloom's taxonomy dan computational thinking) - khusus disederhanakan untuk memudahkan kita ngasih instruksi ke coding agent.
 
 Jika keempat lapisan ini didokumentasikan secara lengkap, hasilnya setara dengan *PRD* (Product Requirements Document - dokumen yang menjelaskan fitur apa yang harus dibuat) atau *SPEC* (spesifikasi teknis - dokumen yang menjelaskan bagaimana cara membuatnya), tergantung seberapa teknis detail yang kita tulis.
 
@@ -110,7 +110,7 @@ supaya nggak konflik.
 Beberapa hal yang sebaiknya ada di rules:
 - penjelasan singkat tentang proyek
 - bagaimana cara kerja dan cara menjalankan proyek
-- /coding standard/ atau arsitektur
+- coding standard atau arsitektur
 
 Contoh struktur file dan folder untuk rules:
 
@@ -137,17 +137,17 @@ Mari kita coba praktikkan penggunaan rules. Untuk membuat rules, ada dua cara:
 2. *Lewat UI Cursor*: Buka Cursor → klik ikon Settings (⚙️) di sidebar kiri → pilih tab *Rules* → klik tombol =+ New Rule=. Sebuah form akan muncul seperti gambar di bawah.
 
 #+CAPTION: Tampilan form untuk membuat rule baru di Cursor. Isi nama rule dan deskripsikan aturannya sesuai kebutuhan proyek.
-#+NAME:   fig:Setting
+#+NAME: fig:Setting
 [[./setting.png][Screenshot form Create New Rule di Cursor: input nama rule dan deskripsi aturan]]
 
 Isi nama dan deskripsikan aturannya. Contohnya, untuk proyek kita ini bisa menggunakan aturan sebagai berikut:
 
 #+BEGIN_SRC markdown
-# Project: Show date and time realtime
+# Project: Show date and time real-time
 
 ## Tech Stack (non-negotiable)
 - Frontend: Astro + TypeScript
-- Styling: vanilla css
+- Styling: vanilla CSS
 - No backend
 
 ## Product Constraints
@@ -167,7 +167,7 @@ Sekarang, dengan aturan yang baru ditetapkan, mari kita coba dengan /prompt/ gen
 refactor
 #+END_SRC
 
-Perintah /refactor/ diatas bisa dibilang tidak jelas dan bisa banyak interpretasi. Apa yang perlu di refactor? Apakah teknologinya, kodenya, testing, dsb.
+Perintah /refactor/ di atas bisa dibilang tidak jelas dan bisa banyak interpretasi. Apa yang perlu di refactor? Apakah teknologinya, kodenya, testing, dsb.
 
 Namun karena kita sudah memasang aturan, maka ketika perintah tadi akan dikirimkan bersama dengan rules yang sudah kita definisikan sebelumnya sebagai bagian dari /system prompt/. Sehingga Cursor akan lebih paham apa yang harus dikerjakan.
 
@@ -285,7 +285,7 @@ Sama seperti rules, skill juga masuk ke context window agent. Kalau skill-nya te
 
 **** Pengembangan fitur
 
-Latihan: gunakan prompt berikut bersama skill TDD diatas untuk mengembangkan fitur aplikasi date-time kita secara bertahap. Aplikasi yang sudah kita buat dengan aturan Astro + TypeScript dari bagian Rules sebelumnya akan kita kembangkan dengan tiga fitur baru.
+Latihan: gunakan prompt berikut bersama skill TDD di atas untuk mengembangkan fitur aplikasi date-time kita secara bertahap. Aplikasi yang sudah kita buat dengan aturan Astro + TypeScript dari bagian Rules sebelumnya akan kita kembangkan dengan tiga fitur baru.
 
 Menampilkan tiga bagian waktu Indonesia.
 
@@ -320,8 +320,8 @@ Agent yang kita gunakan sejauh ini sifatnya generalis. Terkadang ada tugas yang 
 
 Beberapa subagent yang sudah disediakan oleh Cursor:
 - Explore: untuk pencarian dan analisa codebase
-- Bash: Menjalankan perintah shell yang dibutuhkan
-- Browser: Membuka dan menjalankan otomasi untuk aplikasi web
+- Bash: menjalankan perintah shell yang dibutuhkan
+- Browser: membuka dan menjalankan otomasi untuk aplikasi web
 
 *** Contoh Subagent Sederhana
 Kita pun bisa meminta bantuan Cursor untuk membuat subagent lewat perintah =/create-subagent= di agent chat:
@@ -348,7 +348,7 @@ Let's find monetization opportunities for this project.
 #+END_SRC
   
 ** Kustomisasi lebih lanjut dengan Hooks
-Cara berikutnya untuk kustomisasi dan mengembangkan kursor lebih lanjut. Hooks memungkinkan kita menambahkan otomatisasi dan /guardrail/ ke dalam workflow - misalnya memblokir perintah berbahaya sebelum dieksekusi, atau menjalankan formatter secara otomatis setelah agent selesai mengedit file. Intinya, hooks adalah skrip yang dieksekusi di saat yang diinginkan (/trigger point/). Misalnya sebelum mengirim perintah ke LLM, sebelum menjalankan perintah shell, sebelum =npm install=, dsb.
+Cara berikutnya untuk kustomisasi dan mengembangkan Cursor lebih lanjut. Hooks memungkinkan kita menambahkan otomatisasi dan /guardrail/ ke dalam workflow - misalnya memblokir perintah berbahaya sebelum dieksekusi, atau menjalankan formatter secara otomatis setelah agent selesai mengedit file. Intinya, hooks adalah skrip yang dieksekusi di saat yang diinginkan (/trigger point/). Misalnya sebelum mengirim perintah ke LLM, sebelum menjalankan perintah shell, sebelum =npm install=, dsb.
 
 Berikut beberapa contoh penggunaan hooks:
 - Run formatters after edits
@@ -437,10 +437,10 @@ Add support for displaying time in a few popular cities (New York, London, Tokyo
 Use moment.js with timezone support for easy handling of different timezones.
 #+END_SRC
 
- ⚠️ Sengaja kita pakai =moment.js= di prompt diatas untuk memicu hook =guard-npm.sh=. Sebaiknya gunakan =date-fns= atau =Intl.DateTimeFormat= bawaan JavaScript jika ingin berinteraksi dengan tanggal dan jam.
+ ⚠️ Sengaja kita pakai =moment.js= di prompt di atas untuk memicu hook =guard-npm.sh=. Sebaiknya gunakan =date-fns= atau =Intl.DateTimeFormat= bawaan JavaScript jika ingin berinteraksi dengan tanggal dan jam.
  
 #+CAPTION: Contoh eksekusi hooks: saat agent mencoba =npm install=, hook guard-npm.sh memblokir dan memberi peringatan sesuai rules yang sudah ditetapkan
-#+NAME:   fig:Hooks
+#+NAME: fig:Hooks
 [[./hooks.png][Screenshot hasil eksekusi hooks: agent mencoba npm install, hook memblokir dan menampilkan peringatan]]
 ** Customization Marketplace
 Cursor juga menyediakan marketplace untuk kustomisasi - isinya macam-macam: ada yang berupa rules, ada yang berupa skills, subagents, atau hooks - bahkan ada yang mengombinasikan beberapa jenis sekaligus. Kita bisa menggunakan hasil kustomisasi buatan teman-teman komunitas. Cara mengaksesnya: buka Cursor → klik ikon puzzle (🧩) di sidebar kiri → pilih tab *Marketplace*. 
@@ -451,7 +451,7 @@ Beberapa contoh yang bisa kamu eksplorasi:
 - *Compound Engineering*: pendekatan untuk mendokumentasikan solusi dari masalah yang sudah terpecahkan - supaya kita nggak ulangi kesalahan yang sama.
 
 #+CAPTION: Contoh Customization Marketplace - kita bisa browse dan install kustomisasi buatan komunitas seperti Continual Learning, Superpower, atau Compound Engineering
-#+NAME:   fig:continual-learning
+#+NAME: fig:continual-learning
 [[./continual-learning.png][Screenshot Cursor Customization Marketplace: browse dan install kustomisasi komunitas]]
 ** Penutup
 
@@ -492,7 +492,7 @@ Beri masukan buat saya untuk sesi ini di https://feedback.rizafahmi.com/
 - *Hooks*: Skrip yang dieksekusi otomatis di trigger point tertentu (misal =beforeSubmitPrompt=, =beforeShellExecution=).
 - =jq=: Command-line tool untuk membaca dan mengolah JSON (wajib untuk hooks).
 - *LLM (Large Language Model)*: Model AI yang bisa memahami dan menghasilkan teks. Contoh: GPT-4, Claude, Gemini.
-- =.mdc= (Markdown for Cursor)*: Format markdown khusus Cursor dengan dukungan metadata seperti =glob= dan =alwaysApply=.
+- =.mdc= (Markdown for Cursor): Format markdown khusus Cursor dengan dukungan metadata seperti =glob= dan =alwaysApply=.
 - *Milestone*: Tonggak pencapaian dalam pengembangan - dipakai di lapisan Computational thinking.
 - *Non Deterministic*: Sifat LLM di mana input yang sama bisa menghasilkan output yang berbeda setiap kali.
 - *npm (Node Package Manager)*: Tool untuk meng-install dan mengelola library JavaScript. Dipakai lewat perintah =npm install=.
