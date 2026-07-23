@@ -10,7 +10,7 @@ Materi untuk Cursor.id Meetup Agustus: personalisasi & workflow Cursor agent.
 
 Pernah menulis perintah untuk coding agent seperti Cursor dan hasilnya jauh dari ekspektasi? Sepertinya kamu nggak sendirian. Coding agent menggunakan Large Language Model (LLM), yang sifat dasarnya "liar" - instruksi yang sama bisa menghasilkan kode yang jauh berbeda.
 
-Intinya: semakin baik kita mendefinisikan apa yang kita mau, semakin baik pula hasil yang diberikan Cursor. Prompt yang bagus tetap penting, tapi fondasi yang kuat - rules + skills + workflow - memastikan konsistensi tanpa perlu menulis ulang instruksi setiap kali.
+Intinya: semakin baik kita mendefinisikan apa yang kita mau, semakin baik pula hasil yang diberikan Cursor. Prompt yang bagus tetap penting, tapi fondasi yang kuat - rules + skills + workflow - meningkatkan konsistensi tanpa perlu menulis ulang instruksi setiap kali.
 
 *** Yang Akan Kita Pelajari
 
@@ -122,7 +122,8 @@ Contoh struktur file dan folder untuk rules:
     components.mdc
 #+END_SRC
 
-Perhatikan ukuran rules: setiap rule ditambahkan ke konteks setiap kali agent dipanggil. Rule yang terlalu besar bisa mengurangi "daya pikir" agent karena token habis dipakai untuk konteks. Sebagai panduan, usahakan setiap rule tidak lebih dari ~50 baris - tapi ini bukan batas keras dari Cursor, jadi kalau aturannya kompleks, pertimbangkan pakai =glob= pattern untuk membatasi relevansi. Kalau total semua rule melebihi kapasitas konteks, Cursor akan memangkas otomatis - aturan dengan prioritas lebih rendah atau kurang relevan akan dihilangkan lebih dulu.
+Perhatikan ukuran rules: Rule dengan mode =Always Apply= ditambahkan ke konteks setiap kali agent dipanggil. Untuk mode lainnya, rule hanya disertakan di saat yang relevan saja. Setiap rule akan mengurangi kapasitas /context window/. Akibatnya agent bisa 'lupa' konteks yang mungkin penting atau memberikan jawaban yang kurang akurat.
+Disarankan untuk setiap rules sebaiknya jangan terlalu panjang. Jika sudah lebih dari 100-an baris, bisa pisahkan ke rules file baru dan /mention/ filenya di rule terkait. Kalau aturannya kompleks, pertimbangkan menggunakan =glob= pattern untuk membatasi relevansi. Kalau total semua rule melebihi kapasitas konteks agent akan secara otomatis memangkas aturan dengan prioritas lebih rendah atau kurang relevan akan diabaikan.
 
 *** Rules dasar
 Mari kita coba praktikkan penggunaan rules. Untuk membuat rules, ada dua cara:
@@ -155,7 +156,7 @@ Isi nama dan deskripsikan aturannya. Contohnya, untuk proyek kita ini bisa mengg
 
 Menariknya di Cursor kita bisa memberi kondisi kapan saja rules ini berlaku. Ada empat mode yang bisa dipilih:
 - *Always Apply*: Aturan dipakai di /setiap/ prompt, nggak peduli konteksnya apa.
-- *Apply Intelligently*: Cursor yang memutuskan sendiri kapan aturan ini relevan berdasarkan isi prompt. Ini yang belum tentu dipunyai /coding agent/ lain.
+- *Apply Intelligently*: Cursor yang memutuskan sendiri kapan aturan ini relevan berdasarkan isi prompt. Fitur ini adalah salah satu fitur pembeda dari tools lain yang umumnya hanya mendukung always-apply atau manual invocation.
 - *Apply to Specific Files*: Aturan cuma berlaku untuk file yang cocok dengan =glob= pattern (misal =*.tsx= untuk file React, atau =*.test.ts= untuk file testing).
 - *Apply Manually*: Kamu yang panggil sendiri lewat =@Rules= saat lagi butuh.
 
@@ -167,7 +168,7 @@ refactor
 
 Perintah /refactor/ diatas bisa dibilang tidak jelas dan bisa banyak interpretasi. Apa yang perlu di refactor? Apakah teknologinya, kodenya, testing, dsb.
 
-Namun karena kita sudah memasang aturan, rules tersebut akan disertakan sebagai bagian dari system prompt setiap kali kamu mengirim perintah ke LLM. Dengan adanya instruksi "refactor code to match project conventions" di rules, LLM akan memprioritaskan perubahan yang menyelaraskan kode dengan aturan yang sudah ditetapkan.
+Namun karena kita sudah memasang aturan, maka ketika perintah tadi akan dikirimkan bersama dengan rules yang sudah kita definisikan sebelumnya sebagai bagian dari /system prompt/. Sehingga Cursor akan lebih paham apa yang harus dikerjakan.
 
 *** Rules untuk /testing/
 Sekarang mari tambahkan aturan untuk selalu membuat /testing/.
@@ -210,7 +211,7 @@ Oh iya, selain rules, Cursor juga mendukung konfigurasi lewat =.cursor/settings.
 ** Menambahkan Skill
 [[https://cursor.com/docs/skills][Skill]] adalah format berbasis markdown yang terdokumentasi secara publik atau bahasa kerennya /open standard/ - artinya spesifikasinya terbuka dan siapa pun bisa membuat skill yang kompatibel. Format ini cukup terbuka untuk diadopsi dan bisa kamu unduh dari repo GitHub orang lain. Perlu diingat: beberapa skill mungkin membutuhkan library atau tools tambahan yang harus di-install terlebih dahulu, atau ditulis untuk framework spesifik - periksa isi skill sebelum menggunakannya.
 
-Skill ini sifatnya lebih portable - formatnya distandarisasi sehingga bisa dipakai di berbagai proyek tanpa perlu menyalin ulang. Berbeda dengan rules yang lebih terikat ke proyek dan kondisi penggunaannya bisa diatur (Always Apply, Apply Intelligently, Apply to Specific Files, atau Apply Manually). Skill hanya digunakan saat relevan: Cursor akan mengevaluasi apakah skill tersebut cocok dengan prompt yang kamu kirim. Jika skor relevansinya rendah, skill tidak akan disertakan ke dalam konteks. Kalau kamu merasa skill seharusnya aktif tapi nggak dipakai, kamu bisa menyebutkan nama skill secara eksplisit di prompt (misal "Gunakan skill TDD untuk task ini"). Atau setel rule dengan =alwaysApply= sebagai fallback.
+Skill ini sifatnya lebih portable - formatnya standar sehingga bisa dipakai di berbagai proyek tanpa perlu menyalin ulang. Berbeda dengan rules yang lebih terikat ke proyek dan kondisi penggunaannya bisa diatur (Always Apply, Apply Intelligently, Apply to Specific Files, atau Apply Manually). Skill hanya digunakan saat relevan: berdasarkan pengamatan, Cursor akan mengevaluasi apakah skill tersebut cocok dengan prompt yang kamu kirim. Jika dianggap kurang relevan, skill tidak akan disertakan ke dalam konteks. Kalau kamu merasa skill seharusnya aktif tapi nggak dipakai, kamu bisa menyebutkan nama skill secara eksplisit di prompt (misal "Gunakan skill TDD untuk task ini"). Atau setel rule dengan =alwaysApply= sebagai fallback.
 
 *** Contoh Skill: Tidy TDD
 
@@ -491,9 +492,9 @@ Cursor adalah /coding agent/ atau /harness coding tools/ yang bisa dipersonalisa
 
 Dengan rules, skills, dan hooks yang tepat, kita bisa mengurangi variabilitas output dan meningkatkan konsistensi dengan standar proyek. Hasilnya mungkin tidak akan 100% sempurna, tapi error-nya cenderung lebih dapat diprediksi dan lebih mudah diperbaiki.
 
-Intinya: semakin baik kita mendefinisikan apa yang kita mau, semakin baik pula hasil yang diberikan Cursor. Prompt yang bagus tetap penting, tapi fondasi yang kuat (rules + skills + workflow) memastikan konsistensi tanpa perlu menulis ulang instruksi setiap kali.
+Intinya: semakin baik kita mendefinisikan apa yang kita mau, semakin baik pula hasil yang diberikan Cursor. Prompt yang bagus tetap penting, tapi fondasi yang kuat (rules + skills + workflow) meningkatkan konsistensi tanpa perlu menulis ulang instruksi setiap kali.
 
-Kita bisa mengubah LLM yang "liar" dan sulit diprediksi menjadi lebih paham konteks, mengikuti standar kode, dan menghasilkan kode yang konsisten.
+Kita bisa mengubah LLM yang "liar" dan sulit diprediksi menjadi lebih paham konteks, mengikuti standar kode, dan menghasilkan kode yang lebih konsisten.
 
 Selamat ngoprek! 🚀
 
