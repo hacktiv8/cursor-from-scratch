@@ -104,7 +104,8 @@ Untuk mendapatkan hasil yang lebih konsisten dan sesuai ekspektasi pada tugas ya
 
 Cursor menyediakan [[https://cursor.com/docs/rules][Rules]] atau bisa juga menggunakan [[https://agents.md][AGENTS.md]] yang lebih umum digunakan oleh /coding agent/ lain. Rules disimpan di folder =.cursor/rules= dengan format =.mdc= (Markdown for Cursor - format markdown khusus Cursor yang bisa punya metadata seperti =glob= pattern (pola pencocokan nama file - misalnya =*.tsx= artinya "semua file yang berakhiran .tsx") untuk menentukan file mana saja yang aturannya berlaku, dan =alwaysApply= untuk menentukan kapan aturan dipakai).
 
-Catatan: Versi lama Cursor menggunakan file =.cursorrules= di root proyek. Format ini sudah digantikan oleh folder =.cursor/rules/=. Kalau kamu punya =.cursorrules= yang sudah ada, Cursor masih membacanya untuk backward compatibility, tapi direkomendasikan untuk migrasi ke format baru.
+Catatan: Kalau sudah punya =.cursorrules= dari versi Cursor sebelumnya, bisa buat folder =.cursor/rules/= lalu pindahkan isinya ke file =.cursor/rules/project.mdc=. Tambahkan metadata YAML di awal file kalau perlu atur =glob= atau =alwaysApply=. Setelah itu, hapus atau rename =.cursorrules= (misal jadi =.cursorrules.bak=)
+supaya nggak konflik.
 
 Beberapa hal yang sebaiknya ada di rules:
 - penjelasan singkat tentang proyek
