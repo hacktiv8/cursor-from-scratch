@@ -24,7 +24,7 @@ Di akhir sesi ini, kita akan bisa:
 *** Prasyarat
 
 Kalau ingin mengikuti materi ini, pastikan kita sudah siapin hal-hal berikut:
-- Sudah install Cursor versi ketiga, dapat diunduh di https://cursor.com/download.
+- Sudah install Cursor versi 3.2 atau yang lebih baru, dapat diunduh di https://cursor.com/download.
 - Sudah punya akun dan login (bisa pakai Google atau GitHub)
 - Sudah install git dan punya akun GitHub
 - Clone repo ini dengan menjalankan `git clone https://github.com/hacktiv8/cursor-from-scratch`
@@ -211,7 +211,7 @@ Oh iya, selain rules, Cursor juga mendukung konfigurasi lewat =.cursor/settings.
 ** Menambahkan Skill
 [[https://cursor.com/docs/skills][Skill]] adalah format berbasis markdown yang terdokumentasi secara publik atau bahasa kerennya /open standard/ - artinya spesifikasinya terbuka dan siapa pun bisa membuat skill yang kompatibel. Format ini cukup terbuka untuk diadopsi dan bisa kamu unduh dari repo GitHub orang lain. Perlu diingat: beberapa skill mungkin membutuhkan library atau tools tambahan yang harus di-install terlebih dahulu, atau ditulis untuk framework spesifik - periksa isi skill sebelum menggunakannya.
 
-Skill ini sifatnya lebih portable - formatnya standar sehingga bisa dipakai di berbagai proyek tanpa perlu menyalin ulang. Berbeda dengan rules yang lebih terikat ke proyek dan kondisi penggunaannya bisa diatur (Always Apply, Apply Intelligently, Apply to Specific Files, atau Apply Manually). Skill hanya digunakan saat relevan: berdasarkan pengamatan, Cursor akan mengevaluasi apakah skill tersebut cocok dengan prompt yang kamu kirim. Jika dianggap kurang relevan, skill tidak akan disertakan ke dalam konteks. Kalau kamu merasa skill seharusnya aktif tapi nggak dipakai, kamu bisa menyebutkan nama skill secara eksplisit di prompt (misal "Gunakan skill TDD untuk task ini"). Atau setel rule dengan =alwaysApply= sebagai fallback.
+Skill ini sifatnya lebih portable - formatnya standar sehingga bisa dipakai di berbagai proyek tanpa perlu menyalin ulang. Berbeda dengan rules yang lebih terikat ke proyek dan kondisi penggunaannya bisa diatur (Always Apply, Apply Intelligently, Apply to Specific Files, atau Apply Manually). Skill hanya digunakan saat relevan: berdasarkan pengamatan, Cursor akan mengevaluasi apakah skill tersebut cocok dengan prompt yang kamu kirim. Jika dianggap kurang relevan, skill tidak akan disertakan ke dalam konteks. Kalau kamu merasa skill seharusnya aktif tapi nggak dipakai, kamu bisa menyebutkan nama skill secara eksplisit di prompt (misal "Gunakan skill TDD untuk task ini").
 
 *** Contoh Skill: Tidy TDD
 
@@ -281,6 +281,8 @@ When approaching a new feature:
 Follow this process precisely, always prioritizing clean, well-tested code over quick implementation.
 Always write one test at a time, make it run, then improve structure. Always run all the tests (except long-running tests) each time.
 #+END_SRC
+
+Sama seperti rules, skill juga masuk ke context window agent. Kalau skill-nya terlalu panjang, sebagian konteks untuk kode dan percakapan akan terpangkas. Untuk skill yang kompleks, pertimbangkan untuk memecahnya jadi beberapa skill yang lebih fokus.
 
 **** Pengembangan fitur
 
@@ -417,6 +419,12 @@ cat <<EOF
 EOF
 #+END_SRC
 
+Jangan lupa bikin script-nya executable agar /coding agent/ dapat menjalankannya:
+#+BEGIN_SRC bash
+chmod +x .cursor/hooks/guard-npm.sh
+#+END_SRC
+```
+
 Jika hook script gagal (non-zero exit) atau menghasilkan output JSON yang nggak valid, Cursor akan menganggap hook tersebut gagal dan - tergantung versi - mungkin memblokir aksi atau menampilkan peringatan. Selalu uji hook script secara terpisah sebelum dipasang.
 
 Kalau ada beberapa hook untuk trigger yang sama, hook akan dieksekusi sesuai urutan di array. Jika ada satu hook yang mengembalikan "deny", maka aksi akan diblokir - meskipun hook lain mengembalikan "allow".
@@ -429,8 +437,7 @@ Add support for displaying time in a few popular cities (New York, London, Tokyo
 Use moment.js with timezone support for easy handling of different timezones.
 #+END_SRC
 
-⚠️ =moment.js= sudah dalam mode maintenance-only dan tidak direkomendasikan untuk proyek baru.
-Alternatif modern: =date-fns= atau =Intl.DateTimeFormat= bawaan JavaScript.
+ ⚠️ Sengaja kita pakai =moment.js= di prompt diatas untuk memicu hook =guard-npm.sh=. Sebaiknya gunakan =date-fns= atau =Intl.DateTimeFormat= bawaan JavaScript jika ingin berinteraksi dengan tanggal dan jam.
  
 #+CAPTION: Contoh eksekusi hooks: saat agent mencoba =npm install=, hook guard-npm.sh memblokir dan memberi peringatan sesuai rules yang sudah ditetapkan
 #+NAME:   fig:Hooks
