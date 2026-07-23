@@ -99,7 +99,7 @@ Jika keempat lapisan ini didokumentasikan secara lengkap, hasilnya setara dengan
 
 Mari kita coba wujudkan dari /prompt/ yang kurang jelas menjadi lebih lengkap dan terstruktur dengan fitur-fitur yang ada di Cursor - dimulai dari rules di bagian berikutnya.
 
-** Memberi Instruksi dengan RULES / AGENTS.MD
+** Memberi Instruksi dengan Rules / AGENTS.md
 Untuk mendapatkan hasil yang lebih konsisten dan sesuai ekspektasi pada tugas yang kompleks, sebaiknya tambahkan instruksi yang jelas: mau buat apa, buatnya pakai apa, fiturnya apa saja dan bagaimana langkah-langkahnya. Untuk tugas sederhana (satu baris, satu file), instruksi minimal mungkin sudah cukup.
 
 Cursor menyediakan [[https://cursor.com/docs/rules][Rules]] atau bisa juga menggunakan [[https://agents.md][AGENTS.md]] yang lebih umum digunakan oleh /coding agent/ lain. Rules disimpan di folder =.cursor/rules= dengan format =.mdc= (Markdown for Cursor - format markdown khusus Cursor yang bisa punya metadata seperti =glob= pattern (pola pencocokan nama file - misalnya =*.tsx= artinya "semua file yang berakhiran .tsx") untuk menentukan file mana saja yang aturannya berlaku, dan =alwaysApply= untuk menentukan kapan aturan dipakai).
@@ -207,8 +207,6 @@ Prefer functional programming style over imperative style in TypeScript
 
 Lakukan perintah =refactor= lagi untuk melihat perbedaan hasilnya dari sebelumnya.
 
-Oh iya, selain rules, Cursor juga mendukung konfigurasi lewat =.cursor/settings.json= (misal: pilih model default, aktifkan mode YOLO, atur perilaku agent). Pastikan JSON-nya valid, nggak boleh ada trailing comma. Kalau setting nggak berefek, coba restart Cursor.
-
 ** Menambahkan Skill
 [[https://cursor.com/docs/skills][Skill]] adalah format berbasis markdown yang terdokumentasi secara publik atau bahasa kerennya /open standard/ - artinya spesifikasinya terbuka dan siapa pun bisa membuat skill yang kompatibel. Format ini cukup terbuka untuk diadopsi dan bisa kamu unduh dari repo GitHub orang lain. Perlu diingat: beberapa skill mungkin membutuhkan library atau tools tambahan yang harus di-install terlebih dahulu, atau ditulis untuk framework spesifik - periksa isi skill sebelum menggunakannya.
 
@@ -311,6 +309,7 @@ populer sebagai perbandingan.
 #+END_SRC
 
 **** Contoh Skill Lainnya
+Contoh skill lain yang bisa kamu coba:
 - [[https://impeccable.style][impeccable.style]]
 - [[https://github.com/mattpocock/skills/][mattpocock/skills]]
 
@@ -454,6 +453,27 @@ Beberapa contoh yang bisa kamu eksplorasi:
 #+CAPTION: Contoh Customization Marketplace - kita bisa browse dan install kustomisasi buatan komunitas seperti Continual Learning, Superpower, atau Compound Engineering
 #+NAME:   fig:continual-learning
 [[./continual-learning.png][Screenshot Cursor Customization Marketplace: browse dan install kustomisasi komunitas]]
+** Penutup
+
+Cursor adalah /coding agent/ atau /harness coding tools/ yang bisa dipersonalisasi untuk mengikuti cara kita bekerja sebagai developer.
+
+Dengan rules, skills, dan hooks yang tepat, kita bisa mengurangi variabilitas output dan meningkatkan konsistensi dengan standar proyek. Hasilnya mungkin tidak akan 100% sempurna, tapi error-nya cenderung lebih dapat diprediksi dan lebih mudah diperbaiki.
+
+Intinya: semakin baik kita mendefinisikan apa yang kita mau, semakin baik pula hasil yang diberikan Cursor. Prompt yang bagus tetap penting, tapi fondasi yang kuat (rules + skills + workflow) meningkatkan konsistensi tanpa perlu menulis ulang instruksi setiap kali.
+
+Kita bisa mengubah LLM yang "liar" dan sulit diprediksi menjadi lebih paham konteks, mengikuti standar kode, dan menghasilkan kode yang lebih konsisten.
+
+Selamat ngoprek! 🚀
+
+*** Beri Masukan
+
+Beri masukan buat saya untuk sesi ini di https://feedback.rizafahmi.com/
+
+#+CAPTION: Tampilan Cursor 3
+#+NAME: qrcode.png
+[[./qrcode.png][QR Code untuk memberi masukan]]
+
+
 *** Referensi
 - [[https://cursor.com/docs/customize-cursor][Dokumentasi Resmi Kustomisasi Cursor]]
 
@@ -493,16 +513,3 @@ Beberapa contoh yang bisa kamu eksplorasi:
 - *User Stories*: Deskripsi fitur dari sudut pandang pengguna.
 - *Vitest*: Tools untuk menjalankan test di JavaScript/TypeScript (mirip Jest).
 - *VS Code*: Code editor gratis dari Microsoft, fondasi tempat Cursor dibangun.
-
-** Penutup
-
-Cursor adalah /coding agent/ atau /harness coding tools/ yang bisa dipersonalisasi untuk mengikuti cara kita bekerja sebagai developer.
-
-Dengan rules, skills, dan hooks yang tepat, kita bisa mengurangi variabilitas output dan meningkatkan konsistensi dengan standar proyek. Hasilnya mungkin tidak akan 100% sempurna, tapi error-nya cenderung lebih dapat diprediksi dan lebih mudah diperbaiki.
-
-Intinya: semakin baik kita mendefinisikan apa yang kita mau, semakin baik pula hasil yang diberikan Cursor. Prompt yang bagus tetap penting, tapi fondasi yang kuat (rules + skills + workflow) meningkatkan konsistensi tanpa perlu menulis ulang instruksi setiap kali.
-
-Kita bisa mengubah LLM yang "liar" dan sulit diprediksi menjadi lebih paham konteks, mengikuti standar kode, dan menghasilkan kode yang lebih konsisten.
-
-Selamat ngoprek! 🚀
-
