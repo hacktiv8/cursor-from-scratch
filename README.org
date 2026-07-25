@@ -79,7 +79,7 @@ Berikut ini adalah materi yang akan kita bahas.
 | Bagian | Durasi |
 |--------+--------|
 | Pembuka | 5 m |
-| Rules / AGENTS.md | 20 m |
+| Rules | 20 m |
 | Skills | 10 m |
 | Hooks | 15 m |
 | Bonus: Subagent |
@@ -95,7 +95,7 @@ Silakan interupsi kapan saja jika ada kendala, topik diskusi atau bertanya. Sesi
 #+NAME: qr-questions-monkey.png
 [[./qr-questions-monkey.png][QR Code menuju diskusi online]]
 
-** Memberi Instruksi dengan Rules / AGENTS.md
+** Memberi Instruksi dengan Rules
 #+ATTR_HTML: :class sidenote
 *Estimasi waktu:* ~20 menit.
 
@@ -334,7 +334,7 @@ Berikut beberapa contoh penggunaan hooks:
 
 Kita bisa menambahkan hooks untuk secara aktif mengecek dan memblokir perintah yang berpotensi merusak. Misalnya melakukan =npm install= sebuah pustaka yang menambahkan banyak dependensi baru dan melanggar aturan "Keep 3rd party libraries to bare minimum" yang sudah ditetapkan di rules.
 
-**** =./cursor/hooks.json=
+**** =.cursor/hooks.json=
 
 #+BEGIN_SRC json
 {
@@ -349,7 +349,7 @@ Kita bisa menambahkan hooks untuk secara aktif mengecek dan memblokir perintah y
 }
 #+END_SRC
 
-**** =./cursor/hooks/guard-npm.sh=
+**** =.cursor/hooks/guard-npm.sh=
 
 #+BEGIN_SRC bash
 #!/bin/bash
@@ -393,10 +393,10 @@ EOF
 #+END_SRC
 
 Jangan lupa bikin script-nya executable agar /coding agent/ dapat menjalankannya:
+
 #+BEGIN_SRC bash
 chmod +x .cursor/hooks/guard-npm.sh
 #+END_SRC
-```
 
 Jika hook script gagal (non-zero exit) atau menghasilkan output JSON yang nggak valid, Cursor akan menganggap hook tersebut gagal dan - tergantung versi - mungkin memblokir aksi atau menampilkan peringatan. Selalu uji hook script secara terpisah sebelum dipasang.
 
