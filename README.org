@@ -86,38 +86,6 @@ Silakan interupsi kapan saja jika ada kendala, topik diskusi atau bertanya. Sesi
 #+NAME: qr-questions-monkey.png
 [[./qr-questions-monkey.png][QR Code menuju diskusi online]]
 
-** COMMENT Kerangka Berpikir untuk Prompt yang Efektif
-
-Alat bantunya banyak wujudnya. Dua kerangka yang akan kita gunakan di materi ini adalah *piramida berpikir* (kerangka untuk memecah masalah dari abstrak ke konkret, makin ke bawah makin detail), dan *5W1H* (metode menjawab =What=/=Why=/=Who=/=Where=/=When=/=How= untuk menjelaskan sesuatu secara lengkap).
-
-#+CAPTION: Contoh thinking framework: piramida berpikir memecah masalah dari abstrak (atas) ke konkret (bawah). Logical → Analytical → Computational → Procedural.
-#+NAME: fig:ThinkingFramework
-[[./thinking-framework.png][Diagram piramida berpikir: empat lapisan dari atas ke bawah - Logical, Analytical, Computational, Procedural]]
-(Gambar membutuhkan file di direktori yang sama. Jika tidak muncul, pastikan sudah =git pull= dengan benar atau buka langsung di Cursor.)
-
-Mengapa ini penting untuk LLM? Karena LLM melihat seluruh instruksi dalam jendela konteks sekaligus - semakin abstrak instruksi, semakin banyak asumsi yang harus dibuat model untuk mengisi kekosongan detail. Dengan memecah dari abstrak ke konkret, kita mengurangi ruang interpretasi di setiap langkah. Bayangkan seperti kita ngasih petunjuk ke orang: kalau kita cuma bilang "bikin aplikasi", hasilnya bisa macem-macem. Tapi kalau kita jelasin dari konsep besar sampai detail teknis, hasilnya jauh lebih terarah.
-
-Berikut contoh pemetaannya, dari yang paling abstrak ke yang paling konkret:
-
-*** Logical thinking: apa yang mau kita buat
-Ini level paling atas - kita mendefinisikan ide besarnya. Untuk contoh kali ini, kita representasikan dalam format /product brief/ atau /product description/. Contoh: "Aplikasi web yang menampilkan tanggal dan jam real-time untuk berbagai zona waktu di Indonesia."
-
-*** Analytical thinking: apa yang dibutuhkan untuk membuatnya
-Di level ini kita tentukan alat dan bahannya. Untuk contoh kali ini, kita representasikan sebagai /tech stack/ yang digunakan. Contoh: "Frontend pakai Astro + TypeScript, styling pakai vanilla CSS, nggak perlu backend."
-
-*** Computational thinking: penjelasan mendetail dari apa yang mau kita buat
-
-Di sini kita pecah ide besar jadi bagian-bagian kecil yang bisa dikerjakan. Bisa direpresentasikan sebagai fitur-fitur utama, lalu dipisah menjadi *slices* (potongan fitur kecil yang bisa dikerjakan dan di-review dalam satu waktu), *milestone* (tonggak pencapaian dalam pengembangan), *user stories* (deskripsi fitur dari sudut pandang pengguna), tiket, dll.
-
-*** Procedural thinking: bagaimana membuatnya agar terwujud
-Level paling konkret - kita kasih instruksi sedetil mungkin. Contoh: batasan proyek, fitur apa yang dipilih untuk dikembangkan, mana yang belum perlu dikembangkan, dan fitur mana yang "dibuang". Juga termasuk /coding standard/, aturan testing, dan workflow yang kita mau.
-
-Keempat lapisan di atas adalah kerangka yang kita adaptasi dari berbagai framework pemecahan masalah (seperti Bloom's taxonomy dan computational thinking) - khusus disederhanakan untuk memudahkan kita ngasih instruksi ke coding agent.
-
-Jika keempat lapisan ini didokumentasikan secara lengkap, hasilnya setara dengan *PRD* (Product Requirements Document - dokumen yang menjelaskan fitur apa yang harus dibuat) atau *SPEC* (spesifikasi teknis - dokumen yang menjelaskan bagaimana cara membuatnya), tergantung seberapa teknis detail yang kita tulis.
-
-Mari kita coba wujudkan dari /prompt/ yang kurang jelas menjadi lebih lengkap dan terstruktur dengan fitur-fitur yang ada di Cursor - dimulai dari rules di bagian berikutnya.
-
 ** Memberi Instruksi dengan Rules / AGENTS.md
 #+ATTR_HTML: :class sidenote
 *Estimasi waktu:* ~20 menit.
