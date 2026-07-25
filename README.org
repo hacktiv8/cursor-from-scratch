@@ -544,7 +544,7 @@ Selamat ngoprek! 🚀
 
 *** Beri Masukan
 
-Beri masukan agar saya bisa lebih baik di kesempatan berikutnya: https://feedback.rizafahmi.com/
+Beri masukan agar saya bisa lebih baik di kesempatan berikutnya. Apa yang menarik dari sesi ini? Apa yang butuh diperbaiki? https://feedback.rizafahmi.com/
 
 #+CAPTION: QR Code untuk masukan
 #+NAME: qr-monkey-feedback.png
