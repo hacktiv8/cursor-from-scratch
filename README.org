@@ -1,5 +1,4 @@
 * Personalisasi Agen Cursor
-#+OPTIONS: toc:nil
 
 Materi untuk Cursor.id Meetup Agustus: personalisasi & workflow Cursor agent.
 
