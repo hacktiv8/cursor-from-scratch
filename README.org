@@ -33,6 +33,15 @@ Kalau ingin mengikuti materi ini, pastikan kita sudah siapin hal-hal berikut:
 - Sudah install git dan punya akun GitHub
 - Clone repo ini dengan menjalankan `git clone https://github.com/hacktiv8/cursor-from-scratch`
 - Jalankan `npm install` atau perintah serupa di folder proyek. Butuh nodejs, deno atau bun tentunya
+  #+BEGIN_SRC shell
+git clone https://github.com/hacktiv8/cursor-from-scratch
+cd cursor-from-scratch
+npm install # or
+pnpm install # or
+bun install # or
+deno install
+  #+END_SRC
+  
 - Familiar dengan basic terminal (=cd=, =mkdir=, =ls=) dan git (=git init=, =git add=, =git commit=, =git reset=, =git checkout=, dll).
 
 *** Mode Interaksi Cursor
