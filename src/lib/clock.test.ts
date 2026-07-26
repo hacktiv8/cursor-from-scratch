@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getClockSnapshot, pad } from "./clock";
+import { getClockSnapshot, getIndonesianClocks, pad } from "./clock";
 
 describe("pad", () => {
   it("pads single-digit numbers", () => {
@@ -41,5 +41,66 @@ describe("getClockSnapshot", () => {
     expect(snap.date).toContain("2026");
     expect(snap.date).toContain("26");
     expect(snap.zone).toMatch(/UTC[+-]\d{2}:\d{2}$/);
+  });
+});
+
+describe("getIndonesianClocks", () => {
+  it("returns WIB, WITA, and WIT snapshots for the same instant", () => {
+    const now = new Date("2026-07-26T05:05:03.000Z");
+    const clocks = getIndonesianClocks(now);
+
+    expect(clocks).toHaveLength(3);
+    expect(clocks.map((c) => c.id)).toEqual(["WIB", "WITA", "WIT"]);
+    expect(clocks.map((c) => c.name)).toEqual([
+      "Waktu Indonesia Barat",
+      "Waktu Indonesia Tengah",
+      "Waktu Indonesia Timur",
+    ]);
+
+    expect(clocks[0]).toMatchObject({
+      hours: "12",
+      minutes: "05",
+      seconds: "03",
+      offset: "UTC+07:00",
+    });
+    expect(clocks[1]).toMatchObject({
+      hours: "13",
+      minutes: "05",
+      seconds: "03",
+      offset: "UTC+08:00",
+    });
+    expect(clocks[2]).toMatchObject({
+      hours: "14",
+      minutes: "05",
+      seconds: "03",
+      offset: "UTC+09:00",
+    });
+  });
+
+  it("keeps dates aligned to each zone when crossing midnight", () => {
+    const now = new Date("2026-07-26T16:30:00.000Z");
+    const clocks = getIndonesianClocks(now);
+
+    expect(clocks[0]).toMatchObject({
+      hours: "23",
+      minutes: "30",
+      datetime: "2026-07-26T23:30:00",
+    });
+    expect(clocks[0].date).toContain("26");
+    expect(clocks[0].date.toLowerCase()).toContain("juli");
+
+    expect(clocks[1]).toMatchObject({
+      hours: "00",
+      minutes: "30",
+      datetime: "2026-07-27T00:30:00",
+    });
+    expect(clocks[1].date).toContain("27");
+
+    expect(clocks[2]).toMatchObject({
+      hours: "01",
+      minutes: "30",
+      datetime: "2026-07-27T01:30:00",
+    });
+    expect(clocks[2].date).toContain("27");
   });
 });

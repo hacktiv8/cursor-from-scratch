@@ -29,7 +29,7 @@ body {
   color: var(--ink);
   font-family: var(--font-display);
   background: var(--field);
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .atmosphere {
@@ -64,7 +64,7 @@ body {
 }
 
 .brand {
-  margin: 0 0 1.75rem;
+  margin: 0;
   font-size: clamp(1.1rem, 2.4vw, 1.45rem);
   font-weight: 700;
   letter-spacing: 0.28em;
@@ -74,19 +74,71 @@ body {
   animation: rise 0.8s ease forwards 0.05s;
 }
 
+.lede {
+  margin: 0.65rem 0 2rem;
+  max-width: 28ch;
+  font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink-mute);
+  opacity: 0;
+  animation: rise 0.85s ease forwards 0.12s;
+}
+
+.indo-clocks {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.75rem;
+  width: min(100%, 68rem);
+}
+
+.zone-clock {
+  display: grid;
+  justify-items: center;
+  gap: 0.35rem;
+  opacity: 0;
+  animation: rise 0.9s ease forwards;
+}
+
+.zone-clock:nth-child(1) {
+  animation-delay: 0.2s;
+}
+
+.zone-clock:nth-child(2) {
+  animation-delay: 0.32s;
+}
+
+.zone-clock:nth-child(3) {
+  animation-delay: 0.44s;
+}
+
+.zone-id {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--lime-deep);
+}
+
+.zone-name {
+  margin: 0 0 0.55rem;
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
 .clock {
   display: inline-flex;
   align-items: baseline;
   margin: 0;
   font-family: var(--font-mono);
-  font-size: clamp(3.6rem, 15vw, 9rem);
+  font-size: clamp(2.6rem, 8vw, 4.5rem);
   font-weight: 500;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.04em;
   line-height: 1;
   color: var(--ink);
-  opacity: 0;
-  animation: rise 0.9s ease forwards 0.18s;
 }
 
 .clock .sep {
@@ -98,46 +150,53 @@ body {
 }
 
 .date {
-  margin: 1.35rem 0 0;
+  margin: 0.65rem 0 0;
   max-width: 22ch;
-  font-size: clamp(1.25rem, 3.6vw, 2rem);
+  font-size: clamp(1.05rem, 2.4vw, 1.35rem);
   font-weight: 600;
   line-height: 1.35;
   color: var(--ink-soft);
-  opacity: 0;
-  animation: rise 0.9s ease forwards 0.32s;
 }
 
-.zone {
-  margin: 0.75rem 0 0;
+.zone-offset {
+  margin: 0.15rem 0 0;
   font-family: var(--font-mono);
-  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  font-size: clamp(0.9rem, 1.8vw, 1.05rem);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-mute);
-  opacity: 0;
-  animation: rise 0.9s ease forwards 0.44s;
 }
 
 .tick {
   animation: soft-tick 0.35s ease;
 }
 
+@media (min-width: 800px) {
+  .indo-clocks {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .zone-clock + .zone-clock {
+    border-left: 1px solid rgba(36, 56, 22, 0.18);
+    padding-left: 1.25rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .atmosphere,
   .brand,
-  .clock,
-  .date,
-  .zone,
+  .lede,
+  .zone-clock,
   .clock .sep,
   .tick {
     animation: none;
   }
 
   .brand,
-  .clock,
-  .date,
-  .zone {
+  .lede,
+  .zone-clock {
     opacity: 1;
   }
 }

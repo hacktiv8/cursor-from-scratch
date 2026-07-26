@@ -1,12 +1,12 @@
-import { getClockSnapshot } from "../lib/clock";
+import { getIndonesianClocks } from "../lib/clock";
 
-type ClockElements = {
+type ZoneElements = {
+  root: HTMLElement;
   clock: HTMLTimeElement;
   hours: HTMLElement;
   minutes: HTMLElement;
   seconds: HTMLElement;
   date: HTMLElement;
-  zone: HTMLElement;
 };
 
 function requireEl<T extends Element>(root: ParentNode, selector: string): T {
@@ -17,34 +17,53 @@ function requireEl<T extends Element>(root: ParentNode, selector: string): T {
   return el;
 }
 
-export function bindClock(root: ParentNode = document): () => void {
-  const clock = requireEl<HTMLTimeElement>(root, "#clock");
-  const els: ClockElements = {
+function bindZone(root: HTMLElement): ZoneElements {
+  const clock = requireEl<HTMLTimeElement>(root, "time.clock");
+  return {
+    root,
     clock,
     hours: requireEl(clock, '[data-part="hours"]'),
     minutes: requireEl(clock, '[data-part="minutes"]'),
     seconds: requireEl(clock, '[data-part="seconds"]'),
-    date: requireEl(root, "#date"),
-    zone: requireEl(root, "#zone"),
+    date: requireEl(root, '[data-part="date"]'),
   };
+}
+
+export function bindClock(root: ParentNode = document): () => void {
+  const section = requireEl<HTMLElement>(root, "#indo-clocks");
+  const zones = new Map(
+    Array.from(section.querySelectorAll<HTMLElement>(".zone-clock")).map(
+      (el) => [el.dataset.zone ?? "", bindZone(el)] as const,
+    ),
+  );
+
+  if (zones.size !== 3) {
+    throw new Error("Expected three Indonesian zone clocks");
+  }
 
   let prevSeconds: string | null = null;
 
   const tick = () => {
-    const snap = getClockSnapshot();
-    if (prevSeconds === snap.seconds) return;
+    const snaps = getIndonesianClocks();
+    const marker = snaps.map((s) => s.seconds).join(":");
+    if (prevSeconds === marker) return;
+    prevSeconds = marker;
 
-    prevSeconds = snap.seconds;
-    els.hours.textContent = snap.hours;
-    els.minutes.textContent = snap.minutes;
-    els.seconds.textContent = snap.seconds;
-    els.clock.setAttribute("datetime", snap.datetime);
-    els.date.textContent = snap.date;
-    els.zone.textContent = snap.zone;
+    for (const snap of snaps) {
+      const els = zones.get(snap.id);
+      if (!els) {
+        throw new Error(`Missing zone clock for ${snap.id}`);
+      }
+      els.hours.textContent = snap.hours;
+      els.minutes.textContent = snap.minutes;
+      els.seconds.textContent = snap.seconds;
+      els.clock.setAttribute("datetime", snap.datetime);
+      els.date.textContent = snap.date;
 
-    els.seconds.classList.remove("tick");
-    void els.seconds.offsetWidth;
-    els.seconds.classList.add("tick");
+      els.seconds.classList.remove("tick");
+      void els.seconds.offsetWidth;
+      els.seconds.classList.add("tick");
+    }
   };
 
   tick();
