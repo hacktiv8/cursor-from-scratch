@@ -1,0 +1,2652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Review Report: README.org — 2026-07-22 20:54:55 WIB</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg-secondary: #161b22;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --success: #3fb950;
+    --warning: #d2991d;
+    --danger: #f85149;
+    --badge-bg: #1f2937;
+    --finding-bg: #161b22;
+    --finding-border: #21262d;
+    --code-bg: #1c2128;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  header h1 {
+    font-size: 1.75rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .meta {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.25rem 1rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+
+  .meta dt { font-weight: 600; }
+
+  .summary {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .summary h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .summary table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  .summary th {
+    text-align: left;
+    color: var(--text-muted);
+    font-weight: 500;
+    padding: 0.4rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .summary td {
+    padding: 0.4rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .summary td:last-child {
+    text-align: center;
+    font-weight: 700;
+  }
+
+  .summary tr:last-child td { border-bottom: none; }
+
+  .summary a { color: var(--accent); text-decoration: none; }
+  .summary a:hover { text-decoration: underline; }
+
+  .reviewer-section {
+    margin-bottom: 2rem;
+    padding: 1.25rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  .reviewer-section.clean {
+    border-left: 3px solid var(--success);
+  }
+
+  .reviewer-section h2 {
+    font-size: 1.15rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    background: var(--badge-bg);
+    color: var(--text-muted);
+  }
+
+  .badge.clean {
+    background: rgba(63, 185, 80, 0.15);
+    color: var(--success);
+  }
+
+  .finding {
+    background: var(--finding-bg);
+    border: 1px solid var(--finding-border);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+
+  .finding input[type="checkbox"] {
+    margin-top: 0.25rem;
+    flex-shrink: 0;
+    accent-color: var(--success);
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .finding label {
+    flex: 1;
+    cursor: pointer;
+  }
+
+  .finding:has(input:checked) {
+    opacity: 0.5;
+    text-decoration: line-through;
+  }
+
+  .finding:has(input:checked):hover {
+    opacity: 0.75;
+  }
+
+  .no-issues {
+    color: var(--success);
+    font-style: italic;
+  }
+
+  .voice-guardian {
+    margin-bottom: 2rem;
+  }
+
+  .voice-guardian details {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+  }
+
+  .voice-guardian summary {
+    cursor: pointer;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .voice-guardian summary h2 {
+    display: inline;
+    font-size: 1rem;
+  }
+
+  .voice-profile {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    white-space: pre-wrap;
+  }
+
+  .appendix {
+    margin-top: 2rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
+  }
+
+  .appendix details {
+    font-size: 0.85rem;
+  }
+
+  .appendix summary {
+    cursor: pointer;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .appendix .file-content {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    font-family: ui-monospace, 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  .disclaimer {
+    font-size: 0.8rem;
+    color: var(--warning);
+    margin-bottom: 1rem;
+    padding: 0.5rem 0.75rem;
+    background: rgba(210, 153, 29, 0.1);
+    border-radius: 6px;
+    border-left: 3px solid var(--warning);
+  }
+
+  footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Review Report</h1>
+  <dl class="meta">
+    <dt>Source file:</dt>
+    <dd>README.org</dd>
+    <dt>Generated:</dt>
+    <dd>2026-07-22 20:54:55 WIB</dd>
+    <dt>Reviewers:</dt>
+    <dd>6</dd>
+    <dt>Model:</dt>
+    <dd>default</dd>
+  </dl>
+</header>
+
+<div class="disclaimer">
+  <strong>Note:</strong> Line numbers in findings are AI estimates. Search for the quoted text to find the exact location in your source file.
+</div>
+
+<div class="summary">
+  <h2>Summary</h2>
+  <table>
+    <thead><tr><th>Reviewer</th><th>Issues</th></tr></thead>
+    <tbody>
+        <tr class="issues">
+          <td><a href="#beginner">beginner</a></td>
+          <td>00</td>
+        </tr>        <tr class="issues">
+          <td><a href="#skeptic">skeptic</a></td>
+          <td>00</td>
+        </tr>        <tr class="issues">
+          <td><a href="#expert">expert</a></td>
+          <td>00</td>
+        </tr>        <tr class="issues">
+          <td><a href="#edge-case-hunter">edge-case-hunter</a></td>
+          <td>00</td>
+        </tr>        <tr class="issues">
+          <td><a href="#editor">editor</a></td>
+          <td>00</td>
+        </tr>        <tr class="issues">
+          <td><a href="#copy-editor">copy-editor</a></td>
+          <td>00</td>
+        </tr>
+    </tbody>
+  </table>
+</div>
+
+    <section class="voice-guardian">
+      <details>
+        <summary><h2>Voice &amp; Tone Profile</h2></summary>
+        <div class="voice-profile">
+```<br>
+## Voice Profile<br>
+<br>
+- **Formality**: Casual conversational Indonesian (ngobrol style). This reads like a meetup talk transcribed, not an academic paper. Uses informal colloquialisms throughout: "nggak", "banget", "ngaco", "macem-macem", "siapin", "bikin", "jelasin", "ngoprek". Never shifts into formal/academic register.<br>
+<br>
+- **Person**: Predominantly first-person plural "kita" (we) — positions author and audience as co-learners on a journey together. Occasional second-person "kamu" (you) for direct address ("Sepertinya kamu nggak sendirian", "Kalau kamu punya .cursorrules…"). Rarely uses third-person. The "kita" creates warmth and camaraderie throughout.<br>
+<br>
+- **Sentence rhythm**: Alternates between short, punchy, spoken-style sentences and longer explanatory paragraphs. Frequent structural line breaks (org-mode headings, bullet lists, source blocks, captions). Short emphatic lines act as spoken emphasis beats: "Hasilnya bisa beda jauh kan?" / "Intinya: semakin baik kita mendefinisikan apa yang kita mau, semakin baik pula hasil yang diberikan Cursor." Longer paragraphs explain concepts, then land on a concise takeaway. Feels designed for scanning and oral delivery simultaneously.<br>
+<br>
+- **Code-switching**: Heavy, deliberate, and natural. English tech terms are woven directly into Indonesian sentences without translation: "coding agent", "LLM", "system prompt", "non deterministic", "rules", "skills", "subagent", "hooks", "glob pattern", "alwaysApply", "refactor", "testing", "tech stack", "guardrail", "harness", "agentic loop", "coding standard", "cloud", "real-time", "parse", "open standard", "trigger point". The author does not italicize or quote these — they're treated as loanwords absorbed into the Indonesian flow. This is not accidental; it reflects Indonesian tech-community speech patterns.<br>
+<br>
+- **Emotional register**: Encouraging, warm, playful. The author normalizes struggle ("Sepertinya kamu nggak sendirian"), uses the playful metaphor of LLMs being "liar" (wild), and frames learning as a shared adventure. Never scolding or authoritative. The closing "Selamat ngoprek! 🚀" encapsulates this — celebratory, informal, inviting. Even warnings (⚠️ about moment.js deprecation, hooks circumvention) are framed as helpful nudges, not scolding.<br>
+<br>
+- **Rhetorical devices**:<br>
+  - **Rhetorical questions as engagement hooks**: "Pernah menulis perintah untuk coding agent seperti Cursor dan hasilnya jauh dari ekspektasi?" / "Hasilnya bisa beda jauh kan?" / "Padahal perintahnya sama persis."<br>
+  - **`/word/` slash emphasis (org-mode italics)**: Used systematically to mark English/technical terms within Indonesian prose — `/harness/`, `/coding agent/`, `/system prompt/`, `/non deterministic/`, `/rules/`, `/testing/`, `/prompt/`, `/refactor/`, `/what/`, `/why/`, `/product brief/`, `/tech stack/`, `/mendetil/`, `/coding standard/`, `/agentic loop/`, `/open standard/`, `/guardrail/`, `/trigger point/`, `/codebase/`. This is the most distinctive visual signature of the author's voice.<br>
+  - **`=word=` verbatim markers (org-mode code)**: Used for inline code, file paths, commands — `=.cursor/rules=`, `=.mdc=`, `=git init=`, `=setInterval=`, `=jq=`. Creates a rhythmic visual alternation between prose and code-marked terms.<br>
+  - **Direct address**: "Sepertinya kamu nggak sendirian", "Mari kita coba…", "Kalau kamu punya…", "Kita bisa…"<br>
+  - **Everyday analogies**: "Bayangkan seperti kita ngasih petunjuk ke orang: kalau kita cuma bilang 'bikin aplikasi', hasilnya bisa macem-macem."<br>
+  - **"Intinya:" as a summary signal**: Used multiple times to open distilled takeaway sentences ("Intinya: semakin baik kita mendefinisikan apa yang kita mau…", "Intinya, kita harus *memikirkan apa yang mau kita buat…*")<br>
+  - **Em dash as pause/elaboration marker**: "sifat dasarnya 'liar' — instruksi yang sama bisa menghasilkan kode yang jauh berbeda" / "sulit diprediksi — dengan kata lain: 'liar'"<br>
+  - **Single quotes for colloquial emphasis**: '"liar"', '"bikin aplikasi"', '"dibuang"'<br>
+<br>
+- **Distinctive quirks**:<br>
+  - Org-mode formatting as voice: `/term/` for emphasis, `=term=` for code, `*term*` for bold — these are structural but also create the author's visual rhythm. The `/word/` pattern is the single most recognizable feature.<br>
+  - Colloquial Indonesian verb forms consistently used: "nggak" (not), "banget" (very), "ngaco" (messed up), "macem-macem" (various), "siapin" (prepare), "bikin" (make), "jelasin" (explain), "ngoprek" (tinker), "gitu" (like that), "kaget" (surprised).<br>
+  - "Coba lihat:" / "Mari kita coba:" as invitation-to-explore transitions.<br>
+  - Double-word typo left in: "Satu perintah bisa bisa diinterpretasikan" — feels like natural spoken repetition preserved in text, adding to the conversational feel.<br>
+  - Sparse, deliberate emoji: only ⚠️ (warnings) and 🚀 (closing celebration). Not overused.<br>
+  - "Oh iya," as a casual aside transition ("Oh iya, selain rules, Cursor juga mendukung konfigurasi lewat…").<br>
+  - The TODO and COMMENT markers are visible in the org-mode source — they show the author's drafting process, reinforcing the workshop/meetup-prep nature.<br>
+  - Sections close with a forward-looking invitation: "Mari kita coba wujudkan dari /prompt/ yang kurang jelas menjadi lebih lengkap…"<br>
+<br>
+- **Tone consistency**: Consistent throughout the main body. The Glosarium section is definitional by nature but stays in the same colloquial Indonesian and maintains the `=term=`, `/term/`, and bold formatting habits. The Penutup mirrors the Pembuka's "Intinya:" framing almost verbatim — a deliberate bookend. The only slight drift is in the COMMENT-ed out sections (which are workshop draft notes with less polish) and the source code blocks (which are in English by necessity). Neither is a tone inconsistency — they're different modes within the same voice.<br>
+<br>
+## Non-Negotiable Voice Rules<br>
+<br>
+1. **Preserve the `/word/` slash-emphasis pattern for English/technical terms.** This is the author's primary visual signature. Never convert `/coding agent/` to "coding agent", italics, bold, or quotes. The slash delimiters are intentional org-mode italics and must stay.<br>
+<br>
+2. **Never translate English tech terms into Indonesian.** Terms like "coding agent", "LLM", "system prompt", "glob pattern", "guardrail", "trigger point", "agentic loop", "tech stack", "open standard", "codebase" are used as-is, woven naturally into Indonesian sentences. Do not substitute "agen pengkode" for "coding agent" or "model bahasa besar" for "LLM".<br>
+<br>
+3. **Preserve colloquial Indonesian register.** Informal words are deliberate and consistent: "nggak" (not "tidak"), "banget" (not "sangat"), "ngaco", "macem-macem", "siapin", "bikin", "jelasin", "ngoprek", "gitu", "kaget". Never formalize these. The voice is a meetup talk, not a textbook.<br>
+<br>
+4. **Maintain the "kita" (we) learning-journey perspective.** The author and reader are co-explorers. Never shift to a lecturing "Anda harus…" or third-person "pengembang sebaiknya…" tone. Use "kita" for shared discovery, "kamu" sparingly for direct address.<br>
+<br>
+5. **Keep the "Intinya:" summary cadence and the em-dash elaboration pattern.** Short, punchy takeaway sentences after longer explanations are structural voice markers. The em dash (—) as a pause-before-clarification is deliberate rhythm, not random punctuation.<br>
+```<br>
+        </div>
+      </details>
+    </section>
+
+    <section id="beginner" class="reviewer-section">
+      <h2>beginner <span class="badge">00 issues</span></h2>
+      <div class="findings">
+I've now read the entire file. Here's my comprehensive beginner review:<br>
+<br>
+---<br>
+<br>
+## Beginner Review Report — `README.org`<br>
+<br>
+---<br>
+<br>
+### Finding 1<br>
+- **Location**: `Pembuka` (paragraph 1)<br>
+- **Problem**: `LLM` is used without any definition. A beginner has no idea what this acronym means. It's defined much later in the Glosarium at the end of the document, far too late.<br>
+- **Suggested fix**: Expand on first use. Change:<br>
+  &gt; Coding agent menggunakan LLM, yang sifat dasarnya "liar"<br>
+  <br>
+  to:<br>
+  &gt; Coding agent menggunakan **LLM (Large Language Model — model AI yang dilatih untuk memahami dan menghasilkan teks/kode)**, yang sifat dasarnya "liar"<br>
+<br>
+- **Tone note**: The inline expansion stays informal ("dilatih" not "dilatih pada korpus data masif"). Keep the parenthetical nesting style the author already uses elsewhere (see the `PRD` definition at `** Procedural thinking`).<br>
+<br>
+---<br>
+<br>
+### Finding 2<br>
+- **Location**: `Pembuka` (paragraph 1)<br>
+- **Problem**: `/non deterministic/` is a slash-emphasis term thrown in with no explanation. Even with context clues ("liar"), a beginner doesn't know what non-deterministic means in the context of LLMs.<br>
+- **Suggested fix**: Add a brief spoken-style gloss. Change:<br>
+  &gt; sifatnya sulit diprediksi, /non deterministic/ atau dengan kata lain: "liar"<br>
+  <br>
+  to:<br>
+  &gt; sifatnya sulit diprediksi — /non deterministic/, artinya input yang sama bisa menghasilkan output yang berbeda setiap kali — atau dengan kata lain: "liar"<br>
+<br>
+- **Tone note**: Uses the author's em-dash elaboration pattern. Fits naturally.<br>
+<br>
+---<br>
+<br>
+### Finding 3<br>
+- **Location**: `Pembuka`, last paragraph (`⚠️`)<br>
+- **Problem**: **Density bomb.** This single sentence unpacks at least 7 new concepts at once: `/system prompt/`, `/rules atau AGENTS.md/`, `/SKILL.md/`, "kode yang berkaitan dengan perintah", "percakapan sebelumnya", `/cloud/`, "diproses hingga menghasilkan keluaran". A beginner's eyes will glaze over.<br>
+- **Suggested fix**: Break into bullet points or multiple shorter sentences that explain each piece step by step. Replace the current single-sentence paragraph with something like:<br>
+  &gt; ⚠️ Ketika kita mengirim perintah ke /coding agent/, yang dikirim ke LLM bukan cuma perintah kita. Cursor juga menyertakan:<br>
+  &gt; - /system prompt/: instruksi default dari Cursor yang mengatur perilaku dasar agent<br>
+  &gt; - /rules/ atau =AGENTS.md=: aturan yang kita tulis (bahasan berikutnya)<br>
+  &gt; - /SKILL.md/: skill yang relevan jika ada<br>
+  &gt; - Kode dari file yang berkaitan dengan perintah kita<br>
+  &gt; - Riwayat percakapan sebelumnya<br>
+  &gt;<br>
+  &gt; Semua ini dikirim ke LLM yang berjalan di /cloud/ untuk diproses sampai menghasilkan jawaban atau kode.<br>
+<br>
+- **Tone note**: No clash. Bullet lists are already a pattern in the doc. Keeps the same conversational register.<br>
+<br>
+---<br>
+<br>
+### Finding 4<br>
+- **Location**: `Yang Akan Kita Pelajari`<br>
+- **Problem**: Lists "Customization Marketplace" without any explanation of what it is. The other items in the list have brief functions after → arrows, but Marketplace has none — just "Memanfaatkan pengetahuan komunitas." This is too vague. A beginner can't picture what "pengetahuan komunitas" means or how it relates to Cursor.<br>
+- **Suggested fix**: Add a mini-description consistent with the others:<br>
+  &gt; - Customization Marketplace → Menginstal rules, skills, subagent, atau hooks buatan komunitas langsung dari dalam Cursor<br>
+<br>
+---<br>
+<br>
+### Finding 5<br>
+- **Location**: `Prasyarat`<br>
+- **Problem**: **Missing prerequisites.** Node.js and npm are never mentioned, but the entire workshop uses Astro, TypeScript, Vitest, npm install, and package.json. A beginner following along will hit a wall at the very first `npm install`.<br>
+- **Suggested fix**: Add to the prerequisites list:<br>
+  &gt; - Sudah install **Node.js** (versi 18 atau lebih baru). Cek dengan `node --version` di terminal. Kalau belum, unduh dari https://nodejs.org (pilih versi LTS).<br>
+  &gt; - Pastikan `npm` sudah terinstall (biasanya otomatis bareng Node.js). Cek dengan `npm --version`.<br>
+<br>
+- **Tone note**: The "cek dengan..." pattern is already used implicitly. This fits the voice.<br>
+<br>
+---<br>
+<br>
+### Finding 6<br>
+- **Location**: `Prasyarat`<br>
+- **Problem**: Lists git commands like `git reset` and `git checkout` as "basic terminal" familiarity. `git reset` especially is an intermediate-to-advanced command that can destroy work. A true beginner would be intimidated by this list.<br>
+- **Suggested fix**: Narrow the list to genuinely basic commands, or add a reassuring note. Change:<br>
+  &gt; - Familiar dengan basic terminal (`cd`, `mkdir`, `ls`) dan git (`git init`, `git add`, `git commit`, `git reset`, `git checkout`, dll)<br>
+  <br>
+  to:<br>
+  &gt; - Familiar dengan basic terminal (`cd`, `mkdir`, `ls`) dan git (`git clone`, `git add`, `git commit` — kita nggak akan pakai yang aneh-aneh)<br>
+<br>
+- **Tone note**: The self-deprecating "nggak akan pakai yang aneh-aneh" fits the warm, encouraging register.<br>
+<br>
+---<br>
+<br>
+### Finding 7<br>
+- **Location**: `Mode Interaksi Cursor` (paragraph 2)<br>
+- **Problem**: `/harness/` is introduced as a key term ("Cursor sebagai /harness/ atau /coding agent/") but is **never defined anywhere in the entire document**, not even in the Glosarium. This is a critical gap — the author's own voice signature treats it as important, but a beginner has zero context for what "harness" means in tech.<br>
+- **Suggested fix**: Add a brief inline definition on first use, and add to Glosarium. Change:<br>
+  &gt; Cursor sebagai /harness/ atau /coding agent/ menggunakan Large Language Model<br>
+  <br>
+  to:<br>
+  &gt; Cursor sebagai /harness/ — tools yang "mengekang" LLM biar output-nya lebih terarah dan terkontrol — atau /coding agent/ menggunakan Large Language Model<br>
+<br>
+- **Tone note**: Definition in the author's conversational style with scare quotes and em-dash.<br>
+<br>
+---<br>
+<br>
+### Finding 8<br>
+- **Location**: `Mode Interaksi Cursor` (paragraph 2)<br>
+- **Problem**: `system prompt` is used without definition. It's first mentioned here ("Tanpa /system prompt/ yang jelas") but never defined. It's one of the most important concepts in the entire document and a beginner has no mental model for it.<br>
+- **Suggested fix**: Add a short definition at first use:<br>
+  &gt; Tanpa /system prompt/ — instruksi default yang dikirim Cursor ke LLM setiap kali kita ngirim perintah — yang jelas, LLM cenderung memberikan hasil yang bervariasi...<br>
+<br>
+---<br>
+<br>
+### Finding 9<br>
+- **Location**: `Mode Interaksi Cursor` (paragraph 2)<br>
+- **Problem**: "bias training data-nya" — the concept of training data and bias is a machine learning concept assumed known. A beginner won't understand why there's "bias" or what "training data" is.<br>
+- **Suggested fix**: Add a brief parenthetical:<br>
+  &gt; ...hasilnya akan bergantung sepenuhnya pada bias training data-nya (data yang dipakai saat melatih model — kalau datanya banyak contoh kode Python, ya model cenderung ngasih Python). Jadi kalau kita sendiri nggak jelas...<br>
+<br>
+- **Tone note**: The parenthetical with casual "ya" fits the conversational style.<br>
+<br>
+---<br>
+<br>
+### Finding 10<br>
+- **Location**: `Mode Interaksi Cursor` (image caption before `⚠️`)<br>
+- **Problem**: `/agentic loop/` is used in the diagram caption but never defined or explained. The Glosarium doesn't include it.<br>
+- **Suggested fix**: Add a sentence explaining it before the diagram, or add to Glosarium. Since the caption itself is busy, add a sentence before the image:<br>
+  &gt; Proses ini berulang terus dalam apa yang disebut /agentic loop/: agent mengerjakan tugas → lihat hasil → putuskan langkah selanjutnya → kerjakan lagi → sampai selesai. Inilah yang membedakan /coding agent/ dari chatbot biasa: agent bisa "berpikir" dan bertindak dalam siklus, bukan cuma jawab sekali.<br>
+<br>
+---<br>
+<br>
+### Finding 11<br>
+- **Location**: `Mode Interaksi Cursor` (`⚠️` paragraph)<br>
+- **Problem**: Mentions "dikirim ke LLM yang ada di /cloud/" — the concept of cloud-hosted LLMs is assumed. A beginner might literally not know that Cursor's AI runs on remote servers, not on their laptop.<br>
+- **Suggested fix**: Add a brief clarification:<br>
+  &gt; ...dikirim ke LLM yang ada di /cloud/ (server di internet — bukan dijalankan di laptop kita)...<br>
+<br>
+---<br>
+<br>
+### Finding 12<br>
+- **Location**: `Kerangka Berpikir untuk Prompt yang Efektif` (entire section heading)<br>
+- **Problem**: This entire section is wrapped in a `COMMENT` tag, which means it **won't appear in the rendered Org output**. However: sub-headings like `Logical thinking`, `Analytical thinking`, `Computational thinking`, and `Procedural thinking` are extensive and contain core conceptual material. The Glosarium references "Piramida Berpikir" as if it's explained. A standalone reader sees nothing about the thinking framework except a commented-out heading and the Glosarium entry.<br>
+- **Suggested fix**: Remove the `COMMENT` tag from the section heading so the thinking framework is visible. If this is intentional (workshop reveal), add a visible placeholder like:<br>
+  &gt; *(Kerangka berpikir ini akan kita bahas langsung saat sesi — baca Glosarium untuk gambaran singkat.)*<br>
+<br>
+- **Tone note**: The parenthetical note fits the author's "Catatan:" sidebar pattern.<br>
+<br>
+---<br>
+<br>
+### Finding 13<br>
+- **Location**: `Memberi Instruksi dengan RULES` (paragraph 2)<br>
+- **Problem**: `glob pattern` is used without definition. For a beginner, this is completely opaque. Even the parenthetical "(misal `*.tsx` untuk file React, atau `*.test.ts` untuk file testing)" only comes three paragraphs later in the mode descriptions, and even then, the term "glob pattern" itself is never explained.<br>
+- **Suggested fix**: Add a brief definition at first use:<br>
+  &gt; ...metadata seperti =glob= pattern (pola pencocokan nama file — misalnya =*.tsx= artinya "semua file yang berakhiran .tsx") untuk menentukan file mana saja yang aturannya berlaku...<br>
+<br>
+---<br>
+<br>
+### Finding 14<br>
+- **Location**: `Memberi Instruksi dengan RULES` (paragraph 4)<br>
+- **Problem**: `token` is introduced as a concept without definition: "token habis dipakai untuk konteks." A beginner has no idea what a token is or why tokens are "consumed."<br>
+- **Suggested fix**: Add a brief parenthetical:<br>
+  &gt; ...bisa mengurangi "daya pikir" agent karena token (potongan teks yang diproses LLM — makin panjang rules, makin banyak token yang kepakai) habis dipakai untuk konteks.<br>
+<br>
+---<br>
+<br>
+### Finding 15<br>
+- **Location**: `Rules dasar` (step 2)<br>
+- **Problem**: The UI navigation says "Buka Cursor → klik ikon Settings (⚙️) di sidebar kiri → pilih tab Rules → klik tombol + New Rule." But this assumes the user knows what the "sidebar kiri" is and that Settings is there. Cursor 3 hides the IDE by default — the sidebar might not be visible.<br>
+- **Suggested fix**: Add a clarifying note:<br>
+  &gt; Kalau sidebar nggak keliatan, coba tekan `Cmd+B` (Mac) atau `Ctrl+B` (Windows/Linux) untuk memunculkannya. Atau kamu bisa buka Settings lewat Command Palette (`Cmd+Shift+P` / `Ctrl+Shift+P`) lalu ketik "Rules".<br>
+<br>
+---<br>
+<br>
+### Finding 16<br>
+- **Location**: `Rules dasar` (example rules block)<br>
+- **Problem**: The example uses "Astro + TypeScript", "vanilla css", and later "Vitest" — none of which have been installed or set up. A beginner cloning the repo gets a set of instructions that reference tools not yet available. There's no "Let's set up the project first" step.<br>
+- **Suggested fix**: Add a setup step before the rules example, or explicitly tell the reader the project is already initialized. Before the example rules block, add:<br>
+  &gt; *(Proyek contoh di repo ini sudah di-inisialisasi dengan Astro. Tinggal buka foldernya di Cursor dan ikuti langkah berikut.)*<br>
+<br>
+---<br>
+<br>
+### Finding 17<br>
+- **Location**: `Menambahkan Skill` (first paragraph)<br>
+- **Problem**: `/open standard/` is used without definition. The phrase "bahasa kerennya" hints at it, but doesn't actually explain what an open standard is or why it matters for portability.<br>
+- **Suggested fix**:<br>
+  &gt; ...format berbasis markdown yang terdokumentasi secara publik — atau bahasa kerennya /open standard/, artinya spesifikasinya terbuka dan siapa pun bisa bikin skill yang kompatibel.<br>
+<br>
+---<br>
+<br>
+### Finding 18<br>
+- **Location**: `Menambahkan Skill` (first paragraph)<br>
+- **Problem**: "dependensi tertentu" — "dependensi" (dependencies) is a software concept never introduced. A beginner might not know what a code dependency is.<br>
+- **Suggested fix**: Add a parenthetical:<br>
+  &gt; ...membutuhkan dependensi tertentu (library atau tools tambahan yang harus di-install dulu) atau ditulis untuk framework spesifik...<br>
+<br>
+---<br>
+<br>
+### Finding 19<br>
+- **Location**: `Contoh Skill: Tidy TDD`<br>
+- **Problem**: The skill source block is **entirely in English** — 60+ lines of English instructions embedded in an Indonesian document. A beginner might wonder: am I supposed to write skills in English? Why is this in English? Is it a requirement?<br>
+- **Suggested fix**: Add a brief note before the code block:<br>
+  &gt; *(Skill biasanya ditulis dalam bahasa Inggris karena dipakai oleh developer di seluruh dunia. Tapi kamu bisa juga menulis skill dalam bahasa Indonesia kalau cuma dipakai sendiri atau tim lokal.)*<br>
+<br>
+- **Tone note**: Fits the helpful, reassuring voice.<br>
+<br>
+---<br>
+<br>
+### Finding 20<br>
+- **Location**: `Contoh Skill: Tidy TDD` (intro paragraph)<br>
+- **Problem**: "Kent Beck (salah satu penemu TDD)" — this name-drop assumes the reader knows why Kent Beck matters. For a true beginner, it's noise.<br>
+- **Suggested fix**: This one is minor and the parenthetical definition already does some work. Could optionally trim to just "pendekatan Tidy First dari Kent Beck" — keeping the name but not relying on assumed recognition.<br>
+<br>
+---<br>
+<br>
+### Finding 21<br>
+- **Location**: `Delegasi Tugas dengan Subagent` (first paragraph)<br>
+- **Problem**: "context window sendiri" — the term "context window" (or "jendela konteks" used earlier) has never been defined. It was used earlier in the Rules section ("kapasitas konteks") and now again here as if it's established knowledge.<br>
+- **Suggested fix**: Add a brief definition at first use (in the Rules section, Finding 14 area) and then here just say:<br>
+  &gt; ...punya context window sendiri (jendela konteks terpisah — jadi percakapan subagent nggak memenuhi memori agent utama)...<br>
+<br>
+---<br>
+<br>
+### Finding 22<br>
+- **Location**: `Delegasi Tugas dengan Subagent` (example)<br>
+- **Problem**: `/create-subagent` is mentioned without explaining that this is a slash command typed into the Cursor chat/agent interface. A beginner doesn't know what "slash command" means or where to type it.<br>
+- **Suggested fix**:<br>
+  &gt; ...lewat perintah `/create-subagent` di agent chat (ketik langsung di kotak chat Cursor — perintah dengan garis miring di awal seperti ini disebut "slash command"):<br>
+<br>
+---<br>
+<br>
+### Finding 23<br>
+- **Location**: `Kustomisasi lebih lanjut dengan Hooks` (bash script)<br>
+- **Problem**: The `guard-npm.sh` script assumes `jq` is installed. While the Glosarium defines `jq`, the Prasyarat section **never tells the reader to install it**. Running the hook without `jq` will trigger the fail-safe error message — which is documented — but a beginner should be told upfront.<br>
+- **Suggested fix**: Add to Prasyarat:<br>
+  &gt; - Install **jq** (tool untuk baca/tulis JSON di terminal). Cek dengan `jq --version`. Di Mac: `brew install jq`. Di Linux: `sudo apt install jq`. Di Windows: `winget install jqlang.jq` atau unduh dari https://jqlang.github.io/jq/download/.<br>
+<br>
+---<br>
+<br>
+### Finding 24<br>
+- **Location**: `Kustomisasi lebih lanjut dengan Hooks` (bash script)<br>
+- **Problem**: **Density bomb.** The bash script uses `set -euo pipefail`, `command -v`, heredocs, `jq -r`, `grep -qE`, regex `\b(npm|yarn|pnpm|bun)\s+(install|i|add|dlx)\b`. Zero explanation of what any of this does. A beginner reading this sees a wall of shell scripting magic.<br>
+- **Suggested fix**: Add a brief narrative explanation before the code block:<br>
+  &gt; *(Script ini bekerja dengan cara: membaca perintah shell yang dikirim Cursor, lalu mengecek apakah perintah itu mengandung `npm install` atau sejenisnya. Kalau iya, hook memblokir dan memberi tahu agent kenapa. Kalau bukan, lanjutkan seperti biasa. Kamu nggak harus paham setiap barisnya — yang penting tahu konsepnya.)*<br>
+<br>
+- **Tone note**: The reassuring "nggak harus paham setiap barisnya" matches the author's encouraging style.<br>
+<br>
+---<br>
+<br>
+### Finding 25<br>
+- **Location**: `Kustomisasi lebih lanjut dengan Hooks` (after bash script)<br>
+- **Problem**: "hooks =onFileChange= atau pre-commit hook git" — these are mentioned as alternatives to strengthen the guard without any explanation of what they are or how to set them up.<br>
+- **Suggested fix**: Either remove the mention (if it's an advanced tangent), or add a brief footnote:<br>
+  &gt; *(Ini konsep lanjutan — nggak perlu dipikirin sekarang. Intinya: hook bisa dipasang di banyak titik, bukan cuma sebelum shell command.)*<br>
+<br>
+---<br>
+<br>
+### Finding 26<br>
+- **Location**: `Kustomisasi lebih lanjut dengan Hooks` ("Coba dengan mengeksekusi...")<br>
+- **Problem**: The instruction "Coba dengan mengeksekusi perintah berikut" gives a prompt asking to use `moment.js`, with a warning that moment.js is deprecated. But there's **no guidance on what the reader should actually observe** — should the hook block it? Should they see the warning? What's the expected learning outcome?<br>
+- **Suggested fix**: Add expected outcome:<br>
+  &gt; Coba dengan mengeksekusi perintah berikut. Kalau hook sudah terpasang dengan benar, agent akan mencoba `npm install moment` dan hook akan memblokirnya dengan peringatan seperti di screenshot bawah.<br>
+<br>
+---<br>
+<br>
+### Finding 27<br>
+- **Location**: `Customization Marketplace`<br>
+- **Problem**: The instruction "buka Cursor → klik ikon puzzle (🧩) di sidebar kiri → pilih tab Marketplace" — similar to Finding 15, this assumes a visible sidebar and that the puzzle icon is present. Some users might not see it.<br>
+- **Suggested fix**: Same pattern as Finding 15 — add a note about Command Palette.<br>
+<br>
+---<br>
+<br>
+### Finding 28<br>
+- **Location**: `Glosarium` (overall)<br>
+- **Problem**: **Missing glossary entries.** Several important terms used in the body are absent from the Glosarium:<br>
+<br>
+  | Term used in body | Where first used | Defined? |<br>
+  |---|---|---|<br>
+  | harness | Mode Interaksi Cursor | ❌ |<br>
+  | system prompt | Mode Interaksi Cursor | ❌ |<br>
+  | non deterministic | Mode Interaksi Cursor | ❌ |<br>
+  | agentic loop | Mode Interaksi Cursor caption | ❌ |<br>
+  | context window / jendela konteks | Rules section | ❌ |<br>
+  | token | Rules section | ❌ |<br>
+  | cloud (dalam konteks LLM) | Mode Interaksi Cursor | ❌ |<br>
+  | glob pattern | Rules section | ❌ |<br>
+  | open standard | Skills section | ❌ |<br>
+  | codebase | Penutup | ❌ |<br>
+  | VS Code | Glosarium entry for Cursor | ❌ (Cursor entry says "berbasis VS Code" but VS Code is never defined) |<br>
+  | npm / package.json | Hooks section | ❌ |<br>
+  | backend / frontend | Interpretasi C example | ❌ |<br>
+  | refactor | Rules section | ❌ |<br>
+<br>
+- **Suggested fix**: Add missing entries. Here are draft definitions matching the voice:<br>
+<br>
+  &gt; - *Agentic Loop*: Siklus kerja coding agent: baca konteks → jalankan aksi → lihat hasil → ulangi sampai selesai. Inilah yang membedakan agent dari chatbot biasa.<br>
+  &gt; - *Cloud (dalam konteks LLM)*: Server di internet tempat LLM dijalankan — bukan di laptop kita.<br>
+  &gt; - *Codebase*: Seluruh kode dan file dalam satu proyek.<br>
+  &gt; - *Context Window*: "Jendela" seberapa banyak teks yang bisa "dilihat" LLM dalam satu waktu. Kalau rules + kode + percakapan terlalu panjang, LLM mulai "lupa" bagian awal.<br>
+  &gt; - *Glob Pattern*: Pola pencocokan nama file pakai wildcard — misalnya `*.tsx` cocok untuk semua file berakhiran .tsx.<br>
+  &gt; - *Harness*: Tools yang "mengekang" dan mengarahkan LLM supaya output-nya lebih terprediksi — lawan dari LLM yang "liar."<br>
+  &gt; - *Non Deterministic*: Sifat LLM di mana input yang sama bisa menghasilkan output yang berbeda setiap kali.<br>
+  &gt; - *Open Standard*: Spesifikasi yang terbuka dan bisa dipakai siapa saja tanpa bayar lisensi.<br>
+  &gt; - *Refactor*: Mengubah struktur kode tanpa mengubah perilakunya — bikin kode lebih rapi, lebih mudah dibaca, tanpa ngerusak fitur.<br>
+  &gt; - *System Prompt*: Instruksi default yang dikirim Cursor ke LLM sebelum perintah user — semacam "kepribadian dasar" agent.<br>
+  &gt; - *Token*: Potongan teks (bisa kata, bisa karakter) yang diproses LLM. Setiap LLM punya batas maksimum token.<br>
+  &gt; - *VS Code*: Code editor gratis dari Microsoft, fondasi tempat Cursor dibangun.<br>
+<br>
+---<br>
+<br>
+### Finding 29<br>
+- **Location**: `Penutup` (paragraph 1)<br>
+- **Problem**: `/harness agent/` — the very last substantive paragraph still uses "harness agent" without it ever having been defined. This leaves the beginner with an unresolved term at the very end.<br>
+- **Suggested fix**: Adding the glossary entry (Finding 28) resolves this, but also consider adding a brief echo-definition here:<br>
+  &gt; Cursor adalah /coding agent/ atau /harness agent/ — agent yang bisa "mengekang" LLM — yang bisa dipersonalisasi...<br>
+<br>
+---<br>
+<br>
+### Finding 30<br>
+- **Location**: `Mode Interaksi Cursor` (paragraph 2)<br>
+- **Problem**: The sentence "Satu perintah bisa bisa diinterpretasikan berbeda-beda oleh LLM" has a duplicated word "bisa" — this is noted in the voice profile as "natural spoken repetition" but for a beginner reader (who reads, not listens), it reads as a typo and may cause confusion.<br>
+- **Suggested fix**: Remove the duplicate:<br>
+  &gt; Satu perintah bisa diinterpretasikan berbeda-beda oleh LLM.<br>
+<br>
+- **Tone note**: The voice profile explicitly calls this out as intentional ("feels like natural spoken repetition preserved in text, adding to the conversational feel"). Flagging for awareness — the author may want to keep it. If so, add a `[sic]` or just leave it.<br>
+<br>
+---<br>
+<br>
+### Finding 31<br>
+- **Location**: Entire document<br>
+- **Problem**: The **Glosarium is at the very end**. A beginner encounters 20+ undefined terms before reaching it. By the time they get there, they've likely given up or forgotten which terms they didn't understand. This is a concept ordering issue — definitions come after usage.<br>
+- **Suggested fix**: Add a brief note at the top referencing the Glosarium, or consider placing a "mini-glosarium" sidebar after the Prasyarat section. The author already uses `#+ATTR_HTML: :class sidenote` for the opening catatan — a similar pattern could work. Minimally, add to the Pembuka:<br>
+  &gt; *(Istilah-istilah teknis yang kamu temui sepanjang bacaan ini dirangkum di **Glosarium** di bagian akhir — jangan ragu buat loncat ke sana kalau nemu istilah yang asing.)*<br>
+<br>
+---<br>
+<br>
+### Finding 32<br>
+- **Location**: `Prasyarat`<br>
+- **Problem**: No mention of what operating systems are supported. A Windows user might hit issues with bash scripts, or a Linux user might wonder if Cursor works there.<br>
+- **Suggested fix**: Add:<br>
+  &gt; - Cursor bisa dipakai di **Mac, Windows, dan Linux**. Contoh terminal di materi ini pakai Mac/Linux — kalau kamu di Windows, pakai Git Bash atau WSL.<br>
+<br>
+---<br>
+<br>
+### Summary<br>
+<br>
+| Category | Count |<br>
+|---|---|<br>
+| Jargon/acronyms without definition | 13 (Findings 1–3, 7, 10–14, 17–18, 21) |<br>
+| Missing prerequisites | 3 (Findings 5, 6, 23) |<br>
+| Unclear steps | 4 (Findings 15, 22, 24, 26) |<br>
+| Density bombs | 2 (Findings 3, 24) |<br>
+| Concept ordering | 2 (Findings 12, 31) |<br>
+| Missing glossary entries | 12 terms (Finding 28) |<br>
+| Minor/editorial | 3 (Findings 16, 20, 30) |<br>
+<br>
+**Total: 32 findings**<br>
+      </div>
+    </section>    <section id="skeptic" class="reviewer-section">
+      <h2>skeptic <span class="badge">00 issues</span></h2>
+      <div class="findings">
+Now I have the full content. Here is my exhaustive Skeptic review.<br>
+<br>
+---<br>
+<br>
+# Skeptic Review Report — `README.org`<br>
+<br>
+---<br>
+<br>
+## Finding 1 — Unsupported core thesis (no evidence for the "semakin baik → semakin baik" claim)<br>
+<br>
+- **Location**: Pembuka, paragraph 2 ("Intinya: semakin baik kita mendefinisikan apa yang kita mau, semakin baik pula hasil yang diberikan Cursor.")<br>
+- **Problem**: This is the article's thesis, repeated verbatim in Penutup. It's stated as settled truth with zero evidence. No link to a study, benchmark, or even a controlled A/B comparison. The claim is intuitively plausible but "semakin baik...semakin baik" implies a linear relationship that is unproven. What if there are diminishing returns? What if over-specifying constrains the agent and produces worse results?<br>
+- **Suggested fix**: Add a "Mengapa ini penting:" sentence grounding it in documented Cursor behavior. E.g.: "Mengapa ini penting: Cursor mengirimkan rules sebagai bagian dari system prompt ke LLM — semakin spesifik konteks yang diterima model, semakin sedikit ruang untuk asumsi yang melenceng dari kebutuhan proyek." Cite the Cursor docs on how rules are injected.<br>
+- **Voice note**: The "Intinya:" cadence is a structural voice marker and should stay. The fix is additive (add a "why" sentence), not a rewrite.<br>
+<br>
+---<br>
+<br>
+## Finding 2 — "memastikan konsistensi" is an overstatement about LLM determinism<br>
+<br>
+- **Location**: Pembuka, paragraph 2 ("Prompt yang bagus tetap penting, tapi fondasi yang kuat - rules + skills + workflow - memastikan konsistensi…")<br>
+- **Problem**: "memastikan" (ensures) is too strong. Rules/skills/workflow reduce variance but do not /ensure/ consistency. LLMs remain non-deterministic by design — the same prompt + rules can still produce different outputs across runs. The author acknowledges this elsewhere ("sifat dasarnya 'liar'") so this claim contradicts the article's own framing.<br>
+- **Suggested fix**: Replace "memastikan konsistensi" with "mendorong konsistensi" or "meningkatkan konsistensi" or "mengurangi variabilitas" (the latter is actually used in Penutup).<br>
+- **Voice note**: Minimal impact — still casual Indonesian.<br>
+<br>
+---<br>
+<br>
+## Finding 3 — ".mdc = Markdown for Cursor" is an unsupported backronym<br>
+<br>
+- **Location**: "Memberi Instruksi dengan RULES / AGENTS.MD", paragraph 2 ("format =.mdc= (Markdown for Cursor - format markdown khusus Cursor…")<br>
+- **Problem**: The author confidently expands ".mdc" as "Markdown for Cursor." Is this official Cursor terminology, or the author's own coinage? No citation. Cursor's own documentation calls these "rule files" with a `.mdc` extension but I don't see them expanding the acronym. If this is made up, it's misinformation. If it's from docs, cite it.<br>
+- **Suggested fix**: Either add a citation link or hedge: "format =.mdc= (yang oleh komunitas kadang disebut 'Markdown for Cursor'...)".<br>
+- **Voice note**: No conflict.<br>
+<br>
+---<br>
+<br>
+## Finding 4 — "Setiap rule ditambahkan ke konteks setiap kali agent dipanggil" contradicts the four modes<br>
+<br>
+- **Location**: "Memberi Instruksi dengan RULES / AGENTS.MD", paragraph 4 ("Perhatikan ukuran rules: setiap rule ditambahkan ke konteks setiap kali agent dipanggil.")<br>
+- **Problem**: This blanket statement ("setiap rule" / "setiap kali") directly contradicts the four application modes just described — Apply Intelligently only includes rules the agent deems relevant, Apply to Specific Files only includes rules matching the glob, and Apply Manually requires explicit @-mention. The reader is told one thing and then the opposite three paragraphs later.<br>
+- **Suggested fix**: Qualify the statement: "Rule dengan mode Always Apply ditambahkan ke konteks setiap kali agent dipanggil. Untuk mode lainnya, rule hanya disertakan saat relevan."<br>
+- **Voice note**: No conflict.<br>
+<br>
+---<br>
+<br>
+## Finding 5 — "daya pikir" is a vague anthropomorphic metric<br>
+<br>
+- **Location**: "Memberi Instruksi dengan RULES / AGENTS.MD", paragraph 4 ("Rule yang terlalu besar bisa mengurangi 'daya pikir' agent karena token habis dipakai untuk konteks.")<br>
+- **Problem**: "Daya pikir" (thinking power) is not a measurable concept. What actually happens is token budget competition — rules consume context window tokens that could be used for code context or conversation history, which may degrade output quality through truncation. The mechanism is mechanical (token limits), not cognitive ("daya pikir"). The term is hand-wavy and anthropomorphizes the model.<br>
+- **Suggested fix**: Replace with a concrete explanation: "Setiap rule memakan token dari jendela konteks. Kalau terlalu banyak token terpakai untuk rules, ruang untuk kode dan riwayat percakapan jadi berkurang — akibatnya agent bisa 'lupa' konteks penting atau memberikan jawaban yang kurang akurat." Link to Cursor's context window behavior.<br>
+- **Voice note**: The anthropomorphic style is part of the voice (LLM as "liar", etc.), so a full de-anthropomorphization would clash. But adding the mechanical explanation alongside the metaphor would satisfy the skeptic while preserving the voice.<br>
+<br>
+---<br>
+<br>
+## Finding 6 — "~50 baris" is an arbitrary number with no source<br>
+<br>
+- **Location**: "Memberi Instruksi dengan RULES / AGENTS.MD", paragraph 4 ("Sebagai panduan, usahakan setiap rule tidak lebih dari ~50 baris")<br>
+- **Problem**: Where does 50 come from? Is this from Cursor's documentation? Personal experience? Token math? Without a source or reasoning, this reads as an arbitrary number pulled from the air. The tilde (~) adds to the vagueness.<br>
+- **Suggested fix**: Either cite Cursor docs, or show the math (e.g., "50 baris markdown ≈ X token — ini menyisakan cukup ruang untuk ~Y baris kode dalam jendela konteks"), or acknowledge it's a rule of thumb: "Dari pengalaman, 50 baris adalah titik nyaman…"<br>
+- **Voice note**: No conflict.<br>
+<br>
+---<br>
+<br>
+## Finding 7 — Cursor's automatic rule truncation behavior is claimed without citation<br>
+<br>
+- **Location**: "Memberi Instruksi dengan RULES / AGENTS.MD", paragraph 4 ("Kalau total semua rule melebihi kapasitas konteks, Cursor akan memangkas otomatis - aturan dengan prioritas lebih rendah atau kurang relevan akan dihilangkan lebih dulu.")<br>
+- **Problem**: This describes a specific internal Cursor behavior (priority-based truncation). Is this documented? How is "prioritas" determined? The claim is detailed enough to be testable, but no citation is provided. If this is reverse-engineered behavior, that should be noted.<br>
+- **Suggested fix**: Add a link to the relevant Cursor docs section, or hedge: "Berdasarkan dokumentasi Cursor, kalau total rule melebihi kapasitas konteks…"<br>
+- **Voice note**: No conflict.<br>
+<br>
+---<br>
+<br>
+## Finding 8 — "open standard" for Skills is a strong unverified claim<br>
+<br>
+- **Location**: "Menambahkan Skill", paragraph 1 ("Skill adalah format berbasis markdown yang terdokumentasi secara publik atau bahasa kerennya /open standard/.")<br>
+- **Problem**: Calling something an "open standard" implies a spec maintained by a standards body or at least a well-defined, versioned specification. Is the Cursor Skills format governed by any such process? "Terdokumentasi secara publik" is not the same as "open standard." The GitHub-flavored "SKILL.md" convention is an emergent pattern, not a ratified standard. This risks misleading readers about the maturity and portability guarantees.<br>
+- **Suggested fix**: Replace "open standard" with something more accurate: "format terbuka yang terdokumentasi secara publik" or "konvensi yang mulai diadopsi luas." Keep "open standard" only if there's a formal spec to cite.<br>
+- **Voice note**: Minimal impact — "bahasa kerennya" already signals informality. But the slash-emphasis on `/open standard/` gives it weight that the hedge doesn't fully offset.<br>
+<br>
+---<br>
+<br>
+## Finding 9 — Skill relevance scoring is claimed without explanation or citation<br>
+<br>
+- **Location**: "Menambahkan Skill", paragraph 2 ("Cursor akan mengevaluasi apakah skill tersebut cocok dengan prompt yang kamu kirim. Jika skor relevansinya rendah, skill tidak akan disertakan ke dalam konteks.")<br>
+- **Problem**: "Skor relevansi" implies a quantifiable scoring mechanism. How is this score calculated? Embedding similarity? Keyword matching? Is this documented behavior or the author's inference? Without citation, this is speculation about Cursor internals presented as fact.<br>
+- **Suggested fix**: Add a note: "Mekanisme pastinya tidak didokumentasikan secara publik oleh Cursor, tapi dari pengamatan…" or link to docs if they exist.<br>
+- **Voice note**: No conflict.<br>
+<br>
+---<br>
+<br>
+## Finding 10 — Subagent "context window sendiri" is unsubstantiated<br>
+<br>
+- **Location**: "Delegasi Tugas dengan Subagent", paragraph 1 ("Subagent juga dapat berjalan secara mandiri, punya context window sendiri, dan bisa dijalankan secara berbarengan…")<br>
+- **Problem**: These are three specific technical claims about Cursor subagent architecture. "Context window sendiri" — is this documented? "Bisa dijalankan secara berbarengan" — does Cursor actually run subagents in parallel? Without citations, these read as assumptions.<br>
+- **Suggested fix**: Link to Cursor's subagent documentation or soften: "Dari dokumentasi Cursor, subagent punya…"<br>
+- **Voice note**: No conflict.<br>
+<br>
+---<br>
+<br>
+## Finding 11 — "mendekati produktivitas rekan kerja manusia" is a massive unverified claim<br>
+<br>
+- **Location**: Penutup, paragraph 2 ("…kita bisa mengurangi variabilitas output dan meningkatkan konsistensi dengan standar proyek - mendekati, meskipun tidak sepenuhnya setara dengan, produktivitas rekan kerja manusia yang sudah familier dengan /codebase/.")<br>
+- **Problem**: This is the most ambitious claim in the article. It asserts that rules + skills + hooks bring an LLM agent's productivity close to that of a human developer familiar with the codebase. By what metric? Lines of code? Task completion time? Bug rate? Review acceptance rate? No study, benchmark, or even anecdote supports this. The hedge ("mendekati, meskipun tidak sepenuhnya setara") doesn't rescue an otherwise extraordinary claim.<br>
+- **Suggested fix**: Either provide evidence or dramatically soften: "…kita bisa mengurangi variabilitas output sehingga hasil agent lebih selaras dengan standar proyek. Ini bukan pengganti developer manusia, tapi mengurangi waktu yang kita habiskan untuk mengoreksi dan menyesuaikan ulang kode yang dihasilkan agent."<br>
+- **Voice note**: The original is rhetorically effective for a meetup talk's motivational close. The softened version preserves the "kita" perspective and the encouraging tone but trades a bold (unsupported) claim for an honest one.<br>
+<br>
+---<br>
+<br>
+## Finding 12 — "error-nya cenderung lebih dapat diprediksi" is a vague claim about error predictability<br>
+<br>
+- **Location**: Penutup, paragraph 2 ("Hasilnya tidak akan 100% sempurna, tapi error-nya cenderung lebih dapat diprediksi dan lebih mudah diperbaiki.")<br>
+- **Problem**: What does "error lebih dapat diprediksi" mean? Predictable in type (always the same kind of mistake)? In location (always in the same file)? In frequency? And "lebih mudah diperbaiki" — easier than what baseline? The claim gestures at a real phenomenon (constrained output → more consistent failure modes) but doesn't explain it, leaving the skeptic unconvinced.<br>
+- **Suggested fix**: Add specificity: "…error-nya cenderung lebih konsisten jenisnya (misal: pelanggaran aturan TypeScript yang sama) sehingga kita bisa memperbaikinya dengan pola yang sudah dikenal."<br>
+- **Voice note**: No conflict — still casual, just less hand-wavy.<br>
+<br>
+---<br>
+<br>
+## Finding 13 — Anthropomorphizing "mengubah LLM yang 'liar'...menjadi lebih paham konteks"<br>
+<br>
+- **Location**: Penutup, paragraph 3 ("Kita bisa mengubah LLM yang 'liar' dan sulit diprediksi menjadi lebih paham konteks…")<br>
+- **Problem**: Rules don't make an LLM "paham konteks" (understand context). The model doesn't develop understanding — its output distribution is constrained by additional tokens in the prompt. Framing it as understanding is anthropomorphic and misleading about the mechanism. The "liar" metaphor is a deliberate voice choice, but "paham" crosses from metaphor into false explanation.<br>
+- **Suggested fix**: "Kita bisa mengubah LLM yang 'liar' dan sulit diprediksi menjadi lebih terarah — mengikuti standar kode, dan menghasilkan output yang lebih konsisten dengan kebutuhan proyek."<br>
+- **Voice note**: The "liar" metaphor is a core voice element and should stay. Only "paham konteks" needs adjustment — "lebih terarah" preserves the informal register.<br>
+<br>
+---<br>
+<br>
+## Finding 14 — Three example interpretations are fabricated, not actual LLM outputs<br>
+<br>
+- **Location**: "Mode Interaksi Cursor", the three interpretations (A, B, C) after the prompt example.<br>
+- **Problem**: The three divergent interpretations are presented to demonstrate LLM variability, but there's no indication whether these are actual outputs from an LLM or constructed examples. If fabricated, the reader is being shown a simulation designed to prove a point, not evidence. This undermines the argument.<br>
+- **Suggested fix**: Add a small note: "Ini bukan output aktual dari LLM tertentu, tapi ilustrasi rentang interpretasi yang mungkin terjadi." Or better: run the prompt through an actual LLM and show real outputs.<br>
+- **Voice note**: No conflict.<br>
+<br>
+---<br>
+<br>
+## Finding 15 — "Ini yang belum tentu dipunyai /coding agent/ lain" is an unverified competitive claim<br>
+<br>
+- **Location**: "Memberi Instruksi dengan RULES / AGENTS.MD", the Apply Intelligently mode description ("Ini yang belum tentu dipunyai /coding agent/ lain.")<br>
+- **Problem**: This dismisses competing tools without evidence. Claude Code, GitHub Copilot, and others have similar context-relevance mechanisms. "Belum tentu dipunyai" (may not be available) is both vague and potentially incorrect. If the author hasn't surveyed the competition, this should be softened or removed.<br>
+- **Suggested fix**: Either remove the competitive comparison or make it specific: "Fitur Apply Intelligently ini — di mana Cursor otomatis memutuskan relevansi rule berdasarkan isi prompt — adalah salah satu pembeda dari tools lain yang umumnya hanya mendukung always-apply atau manual invocation."<br>
+- **Voice note**: No conflict.<br>
+<br>
+---<br>
+<br>
+## Finding 16 — "tergantung versi" is a hand-wave about hook failure behavior<br>
+<br>
+- **Location**: "Kustomisasi lebih lanjut dengan Hooks", the hook failure paragraph ("Jika hook script gagal (non-zero exit) atau menghasilkan output JSON yang nggak valid, Cursor akan menganggap hook tersebut gagal dan - tergantung versi - mungkin memblokir aksi atau menampilkan peringatan.")<br>
+- **Problem**: "Tergantung versi" is an evasion. Which versions do what? If the author doesn't know, the reader is left with uncertainty about a safety-critical behavior (hook failure handling). The warning is well-intentioned but uselessly vague.<br>
+- **Suggested fix**: Specify: "Pada Cursor versi 3.x, hook yang gagal akan memblokir aksi. Versi sebelumnya mungkin hanya menampilkan peringatan. Selalu uji perilaku hook di versi Cursor yang kamu pakai." Or remove the version hedge if it can't be made specific.<br>
+- **Voice note**: No conflict.<br>
+<br>
+---<br>
+<br>
+## Finding 17 — "beberapa skill mungkin membutuhkan dependensi tertentu" is too vague to be actionable<br>
+<br>
+- **Location**: "Menambahkan Skill", paragraph 1 ("Perlu diingat: beberapa skill mungkin membutuhkan dependensi tertentu atau ditulis untuk framework spesifik - periksa isi skill sebelum menggunakannya.")<br>
+- **Problem**: This is a generic warning that applies to literally any software artifact. What specific dependencies are common? What should the reader check for? Without specifics, the warning is just noise.<br>
+- **Suggested fix**: Add a concrete example: "Misal: skill TDD mungkin mengasumsikan Vitest sudah terinstall, atau skill frontend mengasumsikan React. Baca isi SKILL.md untuk melihat asumsi dan dependensi sebelum menggunakannya."<br>
+- **Voice note**: No conflict.<br>
+<br>
+---<br>
+<br>
+## Finding 18 — Hook execution order and deny-precedence behavior is claimed without citation<br>
+<br>
+- **Location**: "Kustomisasi lebih lanjut dengan Hooks", paragraph after the hook script ("Jika ada beberapa hook untuk trigger yang sama, hook akan dieksekusi sesuai urutan di array. Jika ada satu hook yang mengembalikan 'deny', maka aksi akan diblokir - meskipun hook lain mengembalikan 'allow'.")<br>
+- **Problem**: This describes a specific execution and precedence model. Is this documented by Cursor? The behavior is plausible but needs a source — it's describing internals that could change between versions.<br>
+- **Suggested fix**: Add citation: "Sesuai dokumentasi Cursor, hook akan dieksekusi…"<br>
+- **Voice note**: No conflict.<br>
+<br>
+---<br>
+<br>
+## Finding 19 — "Kita bisa mengubah LLM yang 'liar'... menghasilkan kode yang konsisten" is the same overstatement as Finding 2<br>
+<br>
+- **Location**: Penutup, final paragraph ("Kita bisa mengubah LLM yang 'liar' dan sulit diprediksi menjadi lebih paham konteks, mengikuti standar kode, dan menghasilkan kode yang konsisten.")<br>
+- **Problem**: Same issue as Finding 2 and Finding 13. "Menghasilkan kode yang konsisten" implies determinism. Rules improve consistency but don't make it consistent in the way a deterministic build pipeline is consistent.<br>
+- **Suggested fix**: "menghasilkan kode yang lebih konsisten dengan standar proyek" (add "lebih" and scope to "standar proyek").<br>
+- **Voice note**: The fix is one word ("lebih") — preserves the cadence.<br>
+<br>
+---<br>
+<br>
+## Finding 20 — No citation for Cursor sending "system prompt, rules, SKILL.md, kode, percakapan sebelumnya" to the cloud<br>
+<br>
+- **Location**: "Mode Interaksi Cursor", the ⚠️ paragraph ("Ketika kita mengirimkan perintah ke /coding agent/, selain perintah kita, /coding agent/ juga turut mengirimkan /system prompt/, /rules atau AGENTS.md/, /SKILL.md/ jika dirasa butuh, kode yang berkaitan dengan perintah, dan percakapan sebelumnya dikirim ke LLM yang ada di /cloud/…")<br>
+- **Problem**: This describes the exact composition of what Cursor sends to the LLM provider. This is a factual claim about Cursor's implementation. Where is this documented? The reader is being told exactly what data leaves their machine. Without a source, this could be incorrect or incomplete.<br>
+- **Suggested fix**: Link to Cursor's privacy/architecture docs. If this is inferred behavior, say so.<br>
+- **Voice note**: No conflict.<br>
+<br>
+---<br>
+<br>
+## Summary<br>
+<br>
+| # | Category | Location |<br>
+|---|----------|----------|<br>
+| 1 | Unsupported core thesis | Pembuka |<br>
+| 2 | Overstatement about determinism | Pembuka |<br>
+| 3 | Unsupported backronym (.mdc) | Rules section |<br>
+| 4 | Internal contradiction (rule injection) | Rules section |<br>
+| 5 | Vague anthropomorphic metric | Rules section |<br>
+| 6 | Arbitrary number (50 baris) | Rules section |<br>
+| 7 | Uncited internal behavior | Rules section |<br>
+| 8 | Unverified "open standard" claim | Skills section |<br>
+| 9 | Uncited relevance scoring | Skills section |<br>
+| 10 | Unsubstantiated subagent claims | Subagent section |<br>
+| 11 | Extraordinary productivity claim | Penutup |<br>
+| 12 | Vague "error predictability" | Penutup |<br>
+| 13 | Anthropomorphic "paham konteks" | Penutup |<br>
+| 14 | Fabricated example interpretations | Mode Interaksi |<br>
+| 15 | Unverified competitive claim | Rules section |<br>
+| 16 | Vague version hedge | Hooks section |<br>
+| 17 | Unactionable generic warning | Skills section |<br>
+| 18 | Uncited execution behavior | Hooks section |<br>
+| 19 | Repeated overstatement (consistency) | Penutup |<br>
+| 20 | Uncited data-sending claim | Mode Interaksi |<br>
+<br>
+**Bottom line**: The article has a strong narrative arc and consistent voice, but as a technical resource, it relies heavily on unsubstantiated claims about Cursor internals, presents metaphors as explanations, and makes at least one extraordinary claim (Finding 11) without any evidence. The most impactful fix would be adding citations to Cursor's official documentation for every claim about agent behavior — especially rule injection, skill relevance, hook execution, and subagent architecture.<br>
+      </div>
+    </section>    <section id="expert" class="reviewer-section">
+      <h2>expert <span class="badge">00 issues</span></h2>
+      <div class="findings">
+I now have the full file. Here is my expert practitioner review.<br>
+<br>
+---<br>
+<br>
+## Expert Practitioner Review: README.org<br>
+<br>
+---<br>
+<br>
+### Finding 1 — Stray brackets in subagent model field (typo / template artifact)<br>
+<br>
+- **Location**: Bagian "Delegasi Tugas dengan Subagent" → blok YAML subagent<br>
+- **Problem**: `model: grok-4.5[]` — tanda kurung siku `[]` adalah artifact dari template yang belum diisi. Ini bukan nama model yang valid. Cursor akan gagal mem-parse metadata subagent ini.<br>
+- **Suggested fix**:<br>
+<br>
+  ```<br>
+  - model: grok-4.5[]<br>
+  + model: grok-4.5<br>
+  ```<br>
+<br>
+  Atau ganti dengan model yang benar-benar didukung Cursor (misal `gpt-4o`, `claude-sonnet-4`, atau biarkan kosong untuk mengikuti default agent).<br>
+- **Voice impact**: None — ini perbaikan teknis murni.<br>
+<br>
+---<br>
+<br>
+### Finding 2 — Inconsistency: `beforeShellCommand` vs `beforeShellExecution`<br>
+<br>
+- **Location**: Glosarium → entri "Trigger Point" (baris ~472)<br>
+- **Problem**: Di Glosarium, entri *Hooks* menulis `=beforeShellExecution=` (benar), tapi entri *Trigger Point* menulis `=beforeShellCommand=` (salah). Nama event Cursor yang sebenarnya adalah `beforeShellExecution` — sesuai dengan yang dipakai di `hooks.json` contoh. Pemakaian dua nama berbeda akan membingungkan pembaca.<br>
+- **Suggested fix**:<br>
+<br>
+  ```<br>
+  - *Trigger Point*: Momen spesifik saat Cursor mengeksekusi hook (misal =beforeSubmitPrompt=, =beforeShellCommand=).<br>
+  + *Trigger Point*: Momen spesifik saat Cursor mengeksekusi hook (misal =beforeSubmitPrompt=, =beforeShellExecution=).<br>
+  ```<br>
+- **Voice impact**: None.<br>
+<br>
+---<br>
+<br>
+### Finding 3 — `git checkout` is legacy; `git switch` / `git restore` are the modern equivalents<br>
+<br>
+- **Location**: Prasyarat (baris ~31)<br>
+- **Problem**: `git checkout` listed as a prerequisite command. Since Git 2.23 (August 2019), `git switch` (for branch switching) and `git restore` (for file restoration) are the recommended commands. `git checkout` still works, but teaching newcomers the old combined command when a cleaner split exists is promoting a deprecated pattern. For a 2025 meetup audience, `git switch` should at least be mentioned.<br>
+- **Suggested fix**:<br>
+<br>
+  ```<br>
+  - Familiar dengan basic terminal (=cd=, =mkdir=, =ls=) dan git (=git init=, =git add=, =git commit=, =git reset=, =git checkout=, dll)<br>
+  + Familiar dengan basic terminal (=cd=, =mkdir=, =ls=) dan git (=git init=, =git add=, =git commit=, =git reset=, =git switch=, =git checkout=, dll)<br>
+  ```<br>
+- **Voice impact**: Minimal — hanya menambahkan satu istilah teknis yang sudah umum.<br>
+<br>
+---<br>
+<br>
+### Finding 4 — Missing `chmod +x` instruction for hook script<br>
+<br>
+- **Location**: Bagian "Kustomisasi lebih lanjut dengan Hooks" → `=./cursor/hooks/guard-npm.sh=`<br>
+- **Problem**: Contoh script hook tidak disertai instruksi untuk membuat file tersebut executable. Di macOS/Linux, script tanpa permission `+x` tidak akan bisa dieksekusi Cursor. Ini adalah footgun umum untuk pemula.<br>
+- **Suggested fix**: Tambahkan setelah blok kode `guard-npm.sh`:<br>
+<br>
+  ```<br>
+  #+BEGIN_SRC bash<br>
+  # ... (isi guard-npm.sh) ...<br>
+  #+END_SRC<br>
+<br>
+  Jangan lupa bikin script-nya executable:<br>
+  #+BEGIN_SRC bash<br>
+  chmod +x .cursor/hooks/guard-npm.sh<br>
+  #+END_SRC<br>
+  ```<br>
+- **Voice impact**: None — instruksi teknis singkat.<br>
+<br>
+---<br>
+<br>
+### Finding 5 — Moment.js prompt example contradicts the deprecation warning<br>
+<br>
+- **Location**: Bagian Hooks → contoh prompt "Add support for displaying time…"<br>
+- **Problem**: Dokumen memberi ⚠️ warning bahwa Moment.js sudah deprecated dan merekomendasikan `date-fns` atau `Intl.DateTimeFormat`. Tapi contoh prompt di atasnya secara eksplisit menyuruh agent menggunakan Moment.js. Ini sinyal campur: "jangan pakai ini, tapi coba deh pakai ini." Untuk materi edukasi, ini bisa membingungkan — apakah Moment.js sengaja dipilih untuk memicu hook, atau memang contoh nyata yang harus dihindari?<br>
+- **Suggested fix**: Tambahkan klarifikasi bahwa prompt ini sengaja "salah" untuk mendemonstrasikan hook memblokirnya:<br>
+<br>
+  ```<br>
+  #+BEGIN_SRC text<br>
+  Add support for displaying time in a few popular cities (New York, London, Tokyo, Sydney) as comparison to the Indonesian timezones.<br>
+<br>
+  Use moment.js with timezone support for easy handling of different timezones.<br>
+  #+END_SRC<br>
+<br>
+  ⚠️ Sengaja kita pakai =moment.js= di prompt diatas untuk memicu hook =guard-npm.sh= — di dunia nyata, gunakan =date-fns= atau =Intl.DateTimeFormat= bawaan JavaScript.<br>
+  ```<br>
+- **Voice impact**: Menambahkan "di dunia nyata" sedikit memperkuat informalitas — cocok dengan register.<br>
+<br>
+---<br>
+<br>
+### Finding 6 — Hook bypass acknowledged without concrete mitigation<br>
+<br>
+- **Location**: Bagian Hooks → paragraf "Peringatan" setelah kode `guard-npm.sh`<br>
+- **Problem**: Dokumen mengakui bahwa pattern matching `guard-npm.sh` bisa dilewati (agent edit `package.json` dulu, lalu `npm install` tanpa argumen). Solusi yang ditawarkan terlalu abstrak: "kombinasikan hook ini dengan hooks `onFileChange` atau pre-commit hook git." Tidak ada contoh konkret, dan `onFileChange` sendiri perlu dicek apakah benar ada sebagai trigger point Cursor (saat ini trigger point Cursor yang terdokumentasi adalah `beforeSubmitPrompt`, `afterFileEdit`, `beforeShellExecution`, dll — bukan `onFileChange` generik).<br>
+- **Suggested fix**: Ganti referensi trigger point dengan nama yang akurat dan berikan contoh minimal:<br>
+<br>
+  ```<br>
+  Peringatan: Pattern matching sederhana seperti ini bisa dilewati — agent bisa mengedit =package.json= lalu menjalankan =npm install= (tanpa argumen) untuk menginstal dependensi baru. Untuk proteksi yang lebih ketat, kombinasikan hook ini dengan hook =afterFileEdit= (untuk mendeteksi perubahan =package.json=) atau pre-commit hook git (untuk memblokir commit yang menambahkan dependensi tanpa izin). Lihat [[https://cursor.com/docs/hooks][dokumentasi hooks Cursor]] untuk daftar lengkap trigger point yang tersedia.<br>
+  ```<br>
+- **Voice impact**: None — tetap informal.<br>
+<br>
+---<br>
+<br>
+### Finding 7 — TDD skill example is token-heavy and contradicts earlier advice about rule size<br>
+<br>
+- **Location**: Bagian "Menambahkan Skill" → blok kode TDD skill (sekitar 60+ baris markdown)<br>
+- **Problem**: Di bagian Rules, dokumen menekankan: "Rule yang terlalu besar bisa mengurangi 'daya pikir' agent karena token habis dipakai untuk konteks." Lalu di bagian Skill, contoh TDD skill sangat panjang — ~60 baris dense markdown — tanpa peringatan serupa. Padahal skills juga masuk ke context window. Pembaca bisa menyimpulkan bahwa skills boleh sepanjang apa pun, yang tidak benar secara praktis.<br>
+- **Suggested fix**: Tambahkan catatan setelah blok kode TDD skill:<br>
+<br>
+  ```<br>
+  #+END_SRC<br>
+<br>
+  Sama seperti rules, skill juga masuk ke context window agent. Kalau skill-nya terlalu panjang, sebagian konteks untuk kode dan percakapan akan terpangkas. Untuk skill yang kompleks, pertimbangkan untuk memecahnya jadi beberapa skill yang lebih fokus.<br>
+  ```<br>
+- **Voice impact**: None — mengikuti pola peringatan yang sudah ada di bagian rules.<br>
+<br>
+---<br>
+<br>
+### Finding 8 — `alwaysApply` fallback advice conflates rules and skills<br>
+<br>
+- **Location**: Bagian "Menambahkan Skill" → paragraf ketiga<br>
+- **Problem**: "Atau setel rule dengan `=alwaysApply=` sebagai fallback." Kalimat ini membingungkan karena rules dan skills adalah konsep berbeda. Rules punya `alwaysApply`; skills tidak punya mekanisme `alwaysApply`. Yang dimaksud penulis mungkin: buat rule terpisah yang menyebutkan skill tersebut secara eksplisit dengan `alwaysApply: true`. Tapi pembaca awam tidak akan bisa menyimpulkan ini.<br>
+- **Suggested fix**:<br>
+<br>
+  ```<br>
+  Kalau kamu merasa skill seharusnya aktif tapi nggak dipakai, kamu bisa menyebutkan nama skill secara eksplisit di prompt (misal "Gunakan skill TDD untuk task ini"). Atau, sebagai fallback, buat rule dengan =alwaysApply: true= yang menyebutkan skill tersebut di dalam isinya — tapi ingat, ini akan memakai token setiap saat.<br>
+  ```<br>
+- **Voice impact**: None — penjelasan tetap informal.<br>
+<br>
+---<br>
+<br>
+### Finding 9 — No mention of Cursor Privacy Mode when discussing data sent to cloud<br>
+<br>
+- **Location**: Bagian "Mode Interaksi Cursor" → paragraf ⚠️ tentang data dikirim ke cloud<br>
+- **Problem**: Paragraf ⚠️ menyebutkan "dikirim ke LLM yang ada di /cloud/" yang bisa membuat pembaca yang sadar privasi khawatir. Cursor punya **Privacy Mode** (Settings → Privacy) yang mencegah kode disimpan di server Cursor. Tidak disebutkan sama sekali, padahal ini fitur penting untuk audiens Indonesia yang mungkin bekerja dengan kode proprietary.<br>
+- **Suggested fix**: Tambahkan satu kalimat setelah paragraf ⚠️:<br>
+<br>
+  ```<br>
+  Kalau kamu bekerja dengan kode yang sensitif atau proprietary, aktifkan *Privacy Mode* di Settings → Privacy — dengan ini, kode kamu nggak akan disimpan di server Cursor. Tapi ingat: prompt dan kode tetap dikirim ke penyedia LLM (OpenAI, Anthropic, dll) untuk diproses.<br>
+  ```<br>
+- **Voice impact**: None — penjelasan praktis dengan nada "ngasih tahu teman."<br>
+<br>
+---<br>
+<br>
+### Finding 10 — `jq` listed as "wajib" (mandatory) in Glosarium but hooks are optional<br>
+<br>
+- **Location**: Glosarium → entri `=jq=`<br>
+- **Problem**: Glosarium mendefinisikan `jq` sebagai "wajib untuk hooks." Tapi hooks sendiri adalah fitur opsional. Pembaca yang tidak menggunakan hooks mungkin bingung kenapa ada tools yang "wajib." Selain itu, script `guard-npm.sh` sudah punya fallback jika `jq` tidak terinstall — jadi arahnya kontradiktif.<br>
+- **Suggested fix**:<br>
+<br>
+  ```<br>
+  - =jq=: Command-line tool untuk membaca dan mengolah JSON (diperlukan jika kamu menggunakan hooks yang memproses JSON).<br>
+  ```<br>
+- **Voice impact**: None.<br>
+<br>
+---<br>
+<br>
+### Finding 11 — `dlx` in guard regex may produce false positives<br>
+<br>
+- **Location**: `guard-npm.sh` → regex grep<br>
+- **Problem**: Pattern `\b(npm|yarn|pnpm|bun)\s+(install|i|add|dlx)\b` memasukkan `dlx` sebagai command yang diblokir. `pnpm dlx` dan `bun dlx` adalah perintah untuk menjalankan package tanpa menginstalnya secara permanen — berbeda dari `install`/`add`. Memblokir `dlx` bisa terlalu agresif dan menghalangi workflow yang sah (misal: `npx create-astro` yang memang disarankan untuk inisialisasi proyek Astro).<br>
+- **Suggested fix**: Pisahkan `dlx` ke blok logika berbeda, atau tambahkan komentar bahwa ini sengaja agresif:<br>
+<br>
+  ```<br>
+  if echo "$command" | grep -qE "\b(npm|yarn|pnpm|bun)\s+(install|i|add)\b"; then<br>
+  ```<br>
+  Hilangkan `|dlx` dari pattern. Atau pertahankan tapi tambahkan komentar bahwa ini sengaja membatasi.<br>
+- **Voice impact**: None.<br>
+<br>
+---<br>
+<br>
+### Finding 12 — `read -r input` in guard script: no protection against hanging<br>
+<br>
+- **Location**: `guard-npm.sh`<br>
+- **Problem**: `read -r input` tanpa timeout. Jika Cursor hook system tidak mengirim input (misal karena bug atau perubahan API), script akan hang indefinitely. Di production, hook script sebaiknya punya timeout protection.<br>
+- **Suggested fix**: Tambahkan `-t` flag dengan timeout:<br>
+<br>
+  ```bash<br>
+  # read -r input<br>
+  read -r -t 5 input || {<br>
+    cat &lt;&lt;EOF<br>
+  {<br>
+    "continue": true,<br>
+    "permission": "allow",<br>
+    "agentMessage": "Hook input timeout — allowing command as fail-safe."<br>
+  }<br>
+  EOF<br>
+    exit 0<br>
+  }<br>
+  ```<br>
+- **Voice impact**: Minimal — perubahan di dalam code block yang memang berbahasa Inggris.<br>
+<br>
+---<br>
+<br>
+### Finding 13 — Version ambiguity: "Cursor versi 3" is imprecise<br>
+<br>
+- **Location**: Prasyarat dan Mode Interaksi Cursor<br>
+- **Problem**: "Cursor versi ketiga" / "Cursor versi 3" bisa merujuk ke banyak rilis berbeda. Cursor menggunakan semantic versioning — misalnya 3.0, 3.1, 3.2, dst — dengan perbedaan perilaku signifikan antar minor version. Misalnya: `.mdc` support, hook API, dan marketplace mungkin berubah antara 3.0 dan 3.x. Tanpa versi minimum yang spesifik, pembaca bisa frustrasi jika fitur tidak tersedia di versi mereka.<br>
+- **Suggested fix**:<br>
+<br>
+  ```<br>
+  - Sudah install Cursor versi 3.2 atau yang lebih baru, dapat diunduh di https://cursor.com/download.<br>
+  ```<br>
+  (Atau versi minimum berapa pun yang benar saat meetup berlangsung.)<br>
+- **Voice impact**: None.<br>
+<br>
+---<br>
+<br>
+### Finding 14 — `.md` rules "diabaikan" claim may be outdated<br>
+<br>
+- **Location**: Bagian Rules → diagram struktur folder `.cursor/rules/`<br>
+- **Problem**: Komentar di diagram mengatakan file `.md` "DIABAIKAN" dan "hanya .mdc yang diproses." Di versi Cursor terbaru, beberapa laporan komunitas menunjukkan bahwa Cursor mulai membaca file `.md` juga di folder `.cursor/rules/`. Jika ini benar, peringatan "DIABAIKAN" dengan huruf kapital bisa menyesatkan. Perlu diverifikasi terhadap versi yang dipakai meetup.<br>
+- **Suggested fix**: Verifikasi terhadap versi Cursor yang digunakan, lalu perbarui:<br>
+<br>
+  ```<br>
+  api-guidelines.md        # ⚠️ MUNGKIN DIABAIKAN — Cursor versi lama hanya membaca .mdc.<br>
+                           # Versi 3.x+ mungkin sudah mendukung .md. Cek dokumentasi terbaru.<br>
+  ```<br>
+- **Voice impact**: None — ⚠️ pattern sudah established di dokumen.<br>
+<br>
+---<br>
+<br>
+### Summary Table<br>
+<br>
+| # | Severity | Category | Issue |<br>
+|---|----------|----------|-------|<br>
+| 1 | 🔴 High | Bug | `grok-4.5[]` — stray brackets, invalid model name |<br>
+| 2 | 🟡 Medium | Inconsistency | `beforeShellCommand` vs `beforeShellExecution` |<br>
+| 5 | 🟡 Medium | Contradiction | Moment.js prompt example vs deprecation warning |<br>
+| 8 | 🟡 Medium | Confusion | `alwaysApply` advice conflates rules and skills |<br>
+| 6 | 🟡 Medium | Security | Hook bypass acknowledged but unresolved |<br>
+| 11 | 🟡 Medium | Footgun | `dlx` blocked unnecessarily in guard script |<br>
+| 12 | 🟡 Medium | Robustness | `read` without timeout in hook script |<br>
+| 13 | 🟡 Medium | Versioning | "Versi 3" too vague |<br>
+| 3 | 🟢 Low | Deprecation | `git checkout` vs `git switch` |<br>
+| 4 | 🟢 Low | Missing step | No `chmod +x` instruction for hook script |<br>
+| 7 | 🟢 Low | Contradiction | TDD skill length contradicts rule-size advice |<br>
+| 9 | 🟢 Low | Privacy | No mention of Cursor Privacy Mode |<br>
+| 10 | 🟢 Low | Overstatement | `jq` listed as "wajib" |<br>
+| 14 | 🟢 Low | Accuracy | `.md` rules claim may be outdated |<br>
+<br>
+**Commit message**: `review(expert): fix stray brackets in YAML model field, hook event name inconsistency, moment.js contradiction, and 11 other issues`<br>
+      </div>
+    </section>    <section id="edge-case-hunter" class="reviewer-section">
+      <h2>edge-case-hunter <span class="badge">00 issues</span></h2>
+      <div class="findings">
+I've read the entire file. Now let me compile the comprehensive edge-case review.<br>
+<br>
+---<br>
+<br>
+# Edge Case Review: README.org<br>
+<br>
+## Finding 1 — Missing image fallback notes (silent assumption)<br>
+<br>
+**Location:** `cursor-3.png`, `agentic-loop.png`, `setting.png`, `hooks.png`, `continual-learning.png` references<br>
+<br>
+**Problem:** Only `thinking-framework.png` has a parenthetical note telling users what to do if the image is missing ("pastikan sudah `git pull` dengan benar atau buka langsung di Cursor"). All other image references silently break — if the clone didn't pull LFS files, the image was deleted, or the user renamed the directory, they get a broken link with zero guidance. In a workshop setting where people clone repos hastily, this is a very likely failure mode.<br>
+<br>
+**Suggested fix:** Add a short parenthetical note to every image reference, or add a single blanket note early in the document. E.g., after each `[[./image.png][...]]` add: "(Jika gambar tidak muncul, pastikan sudah `git pull` dengan benar atau buka README langsung di Cursor.)"<br>
+<br>
+**Tone note:** The existing note on `thinking-framework.png` uses the voice perfectly — replicate that phrasing.<br>
+<br>
+---<br>
+<br>
+## Finding 2 — Windows platform completely unaddressed (platform gap)<br>
+<br>
+**Location:** Entire document, especially **Prasyarat** and **Hooks** sections<br>
+<br>
+**Problem:** Cursor officially supports macOS, Linux, and Windows. This document contains:<br>
+- `mkdir -p` (does not work in Windows `cmd`, works in PowerShell but with different semantics)<br>
+- `#!/bin/bash` hook scripts (won't execute natively on Windows without WSL or Git Bash)<br>
+- No `chmod +x` instruction (scripts won't be executable on macOS/Linux)<br>
+- File paths use `/` (fine for Cursor internally, but terminal instructions assume Unix)<br>
+<br>
+A Windows attendee following the instructions verbatim will hit failures on day one. This is a significant accessibility gap for an Indonesian meetup audience where Windows usage is common.<br>
+<br>
+**Suggested fix:** Add a short platform note in **Prasyarat**:<br>
+<br>
+```<br>
+#+ATTR_HTML: :class sidenote<br>
+*Catatan platform:* Instruksi terminal di materi ini menggunakan Unix shell (macOS/Linux).<br>
+Kalau kamu di Windows, gunakan WSL (Windows Subsystem for Linux) atau Git Bash.<br>
+Untuk hook scripts, pastikan bisa dijalankan (=chmod +x= di macOS/Linux).<br>
+```<br>
+<br>
+And add `chmod +x .cursor/hooks/guard-npm.sh` after the hook script code block.<br>
+<br>
+**Tone note:** The "Kalau kamu di Windows…" pattern fits the direct-address voice perfectly.<br>
+<br>
+---<br>
+<br>
+## Finding 3 — `jq` is a hard dependency but not listed in Prasyarat (silent assumption)<br>
+<br>
+**Location:** **Hooks** section (guard-npm.sh) vs **Prasyarat**<br>
+<br>
+**Problem:** The `guard-npm.sh` hook script depends on `jq` to parse JSON input from Cursor. The script has a fail-safe that blocks commands when `jq` is missing — but a workshop attendee hitting "⚠️ Hook misconfigured: jq not installed" has no idea how to fix it. `jq` is only mentioned as "wajib untuk hooks" in the **Glosarium** at the very bottom, which most people will read last (if at all). On macOS, `jq` is not pre-installed. On Windows, it requires a separate download.<br>
+<br>
+**Suggested fix:** Add to **Prasyarat**:<br>
+```<br>
+- Install =jq= (command-line JSON processor). <br>
+  macOS: `brew install jq`. Linux: `apt install jq` atau `dnf install jq`.<br>
+  Windows: download dari https://jqlang.github.io/jq/download/<br>
+```<br>
+<br>
+**Tone note:** The code-switched "install" + English tool names fits the voice. The platform-specific install one-liners are pragmatic and don't break the conversational tone.<br>
+<br>
+---<br>
+<br>
+## Finding 4 — "Cursor versi ketiga" is ambiguous (version conflict)<br>
+<br>
+**Location:** **Prasyarat**, bullet 1<br>
+<br>
+**Problem:** "Cursor versi ketiga" could mean v3.0 specifically, or any v3.x. What about v4 when it comes out? What about the insider/beta channel? The `.mdc` format, the Settings UI, the `/create-subagent` command, even the "agent-centric" UI described here — all of these could change between minor versions. A user on v3.0 vs v3.9 could have very different experiences. The document mentions "atau yang lebih baru" in **Mode Interaksi Cursor** but the Prasyarat only says "versi ketiga."<br>
+<br>
+**Suggested fix:** In **Prasyarat**, change:<br>
+```<br>
+Sudah install Cursor versi ketiga<br>
+```<br>
+to:<br>
+```<br>
+Sudah install Cursor versi 3 atau yang lebih baru (versi 4+ juga ok — <br>
+tapi tampilan mungkin sedikit berbeda)<br>
+```<br>
+<br>
+**Tone note:** "juga ok" is casual and fits; "tampilan mungkin sedikit berbeda" is a gentle expectation-setter that matches the voice.<br>
+<br>
+---<br>
+<br>
+## Finding 5 — `git clone` failure modes not handled (missing failure mode)<br>
+<br>
+**Location:** **Prasyarat**, bullet 4<br>
+<br>
+**Problem:** "Clone repo ini dengan menjalankan `git clone https://github.com/hacktiv8/cursor-from-scratch`" — this assumes:<br>
+- Network is up and GitHub is reachable<br>
+- The repo is public and hasn't been renamed/made private<br>
+- The directory doesn't already exist (git will refuse to clone into an existing directory)<br>
+- SSH isn't required (the HTTPS URL works for read-only but some corporate networks block HTTPS git)<br>
+<br>
+An attendee who tries to clone into a directory they already created will get `fatal: destination path 'cursor-from-scratch' already exists`.<br>
+<br>
+**Suggested fix:** Add after the clone command:<br>
+```<br>
+#+ATTR_HTML: :class sidenote<br>
+*Catatan:* Kalau dapat error =fatal: destination path already exists=, <br>
+hapus dulu foldernya atau clone ke nama lain: <br>
+=git clone https://github.com/hacktiv8/cursor-from-scratch workshop-cursor=.<br>
+Kalau jaringan bermasalah, minta file ZIP-nya ke pemateri.<br>
+```<br>
+<br>
+**Tone note:** "minta file ZIP-nya ke pemateri" is very on-brand for a meetup guide — practical and warm.<br>
+<br>
+---<br>
+<br>
+## Finding 6 — `refactor` command on empty/missing project (empty case)<br>
+<br>
+**Location:** **Rules untuk testing**, the `refactor` exercise<br>
+<br>
+**Problem:** The document says "Lakukan perintah `refactor` lagi untuk melihat perbedaan hasilnya dari sebelumnya." This assumes:<br>
+- The user has already built a project with source files from earlier steps<br>
+- There are files to refactor<br>
+- The rules have actually been saved<br>
+<br>
+If someone skips ahead, or if the `refactor` command runs before any code exists, the agent has nothing to refactor — and the resulting behavior (hallucination? error? no-op?) is undefined. Workshop flow disruptions happen exactly at these loose-coupling points.<br>
+<br>
+**Suggested fix:** Add a small guard sentence before the `refactor` exercise:<br>
+```<br>
+Pastikan sudah ada file kode dari latihan sebelumnya. <br>
+Kalau belum, minta agent untuk bikin aplikasi dulu dengan prompt:<br>
+"Buat aplikasi web dengan Astro + TypeScript yang menampilkan tanggal dan jam realtime."<br>
+```<br>
+<br>
+---<br>
+<br>
+## Finding 7 — `.cursor/settings.json` validation path missing (missing failure mode)<br>
+<br>
+**Location:** End of **Rules** section ("Oh iya, selain rules…")<br>
+<br>
+**Problem:** "Pastikan JSON-nya valid, nggak boleh ada trailing comma. Kalau setting nggak berefek, coba restart Cursor." Good start, but:<br>
+- No suggestion for how to validate the JSON (e.g., `cat .cursor/settings.json | python -m json.tool` or paste into a validator)<br>
+- "Kalau setting nggak berefek, coba restart Cursor" — what if restart doesn't fix it? The next debugging step is undefined.<br>
+- What does a broken settings.json look like from Cursor's perspective? Silent ignore? Error toast? The user has no mental model.<br>
+<br>
+**Suggested fix:** Expand to:<br>
+```<br>
+Pastikan JSON-nya valid — nggak boleh ada trailing comma. <br>
+Bisa cek dengan =cat .cursor/settings.json | python -m json.tool=.<br>
+Kalau setting nggak berefek, coba restart Cursor. <br>
+Kalau masih nggak berubah juga, cek apakah ada error di =Console= <br>
+(Cmd+Shift+I di macOS / Ctrl+Shift+I di Windows/Linux).<br>
+```<br>
+<br>
+**Tone note:** "Bisa cek dengan…" fits the helpful "kita" voice. The keyboard shortcut note follows the conversational pattern.<br>
+<br>
+---<br>
+<br>
+## Finding 8 — Skill dependency checking has no guidance (silent assumption)<br>
+<br>
+**Location:** **Menambahkan Skill**, paragraph 1<br>
+<br>
+**Problem:** "beberapa skill mungkin membutuhkan dependensi tertentu atau ditulis untuk framework spesifik - periksa isi skill sebelum menggunakannya." This is good advice but purely aspirational — it tells the user *what* to do but gives zero guidance on *how*. What does "periksa isi skill" mean? Open the SKILL.md and read it? Check for a `dependencies:` section? What happens if a skill needs a tool that isn't installed? The TDD skill example that follows requires Vitest — but never states that Vitest must be installed first.<br>
+<br>
+**Suggested fix:** After "periksa isi skill sebelum menggunakannya", add:<br>
+```<br>
+Buka file =SKILL.md= dari skill tersebut dan lihat apakah ada <br>
+syarat dependensi (misal: butuh Vitest, ESLint, atau framework tertentu). <br>
+Kalau dependensinya belum terinstall, install dulu sebelum pakai skill-nya.<br>
+```<br>
+<br>
+---<br>
+<br>
+## Finding 9 — Skill relevance scoring is a black box (silent assumption)<br>
+<br>
+**Location:** **Menambahkan Skill**, paragraph 2<br>
+<br>
+**Problem:** "Cursor akan mengevaluasi apakah skill tersebut cocok dengan prompt yang kamu kirim. Jika skor relevansinya rendah, skill tidak akan disertakan ke dalam konteks." This describes an opaque, non-deterministic system behavior as if it's predictable. The user has no idea what the threshold is, what factors influence the score, or how to confirm whether a skill was actually loaded. The fallback ("sebutkan nama skill secara eksplisit") helps but the mechanism itself is a black box that can silently fail.<br>
+<br>
+**Suggested fix:** Add a practical check:<br>
+```<br>
+Kalau kamu ragu apakah skill sudah aktif atau belum, kamu bisa<br>
+tanya langsung ke agent: "Skill apa yang kamu muat untuk prompt sebelumnya?"<br>
+atau sebutkan nama skill secara eksplisit di prompt kamu.<br>
+```<br>
+<br>
+**Tone note:** "kamu ragu" / "tanya langsung ke agent" — conversational, fits.<br>
+<br>
+---<br>
+<br>
+## Finding 10 — Skill marketplace URLs may rot (version conflict / statefulness)<br>
+<br>
+**Location:** **Contoh Skill Lainnya**<br>
+<br>
+**Problem:** Two external links are provided:<br>
+- `https://impeccable.style`<br>
+- `https://github.com/mattpocock/skills/`<br>
+<br>
+These are presented as canonical skill sources. External URLs can break, repos can be renamed, domains can expire. If the Matt Pocock skills repo moves or is archived, the link is dead and the user has no fallback. This is especially risky for a document meant to outlast the meetup.<br>
+<br>
+**Suggested fix:** Add context so dead links are still informative:<br>
+```<br>
+- [[https://impeccable.style][impeccable.style]] — skill untuk frontend design<br>
+- [[https://github.com/mattpocock/skills/][mattpocock/skills]] — koleksi skill oleh Matt Pocock<br>
+<br>
+Cari juga skill lain di GitHub dengan keyword =cursor-skill= atau =cursor-skills=.<br>
+```<br>
+<br>
+---<br>
+<br>
+## Finding 11 — `/create-subagent` may not exist in all versions (version conflict)<br>
+<br>
+**Location:** **Delegasi Tugas dengan Subagent**, "Contoh Subagent Sederhana"<br>
+<br>
+**Problem:** The `/create-subagent` command is presented as a given. But this is a relatively new feature and may not exist in all Cursor v3.x versions. A user typing `/create-subagent` and getting no response has no troubleshooting path. Also, the output of this command (a YAML metadata block) has `grok-4.5[]` — the `[]` bracket suffix is unusual and unexplained. Is this a typo? A version-specific model selector syntax? This could confuse users.<br>
+<br>
+**Suggested fix:** Add a version caveat:<br>
+```<br>
+#+ATTR_HTML: :class sidenote<br>
+*Catatan:* =/create-subagent= tersedia di Cursor versi 3.x terbaru.<br>
+Kalau perintah ini nggak muncul, kamu bisa buat subagent manual:<br>
+buat file =.cursor/subagents/&lt;nama&gt;-subagent.md= <br>
+dengan YAML frontmatter.<br>
+```<br>
+<br>
+And fix or explain the `grok-4.5[]` syntax — if `[]` is intentional, add a note. If it's a typo, remove the brackets.<br>
+<br>
+**Tone note:** "nggak muncul" is perfectly in voice.<br>
+<br>
+---<br>
+<br>
+## Finding 12 — Hook circumvention note is technically inaccurate (missing failure mode)<br>
+<br>
+**Location:** **Menulis Hooks**, paragraph after guard-npm.sh<br>
+<br>
+**Problem:** "Peringatan: Pattern matching sederhana seperti ini bisa dilewati - agent bisa mengedit =package.json= lalu menjalankan =npm install= (tanpa argumen) untuk menginstal dependensi baru."<br>
+<br>
+The regex `\b(npm|yarn|pnpm|bun)\s+(install|i|add|dlx)\b` *does* match `npm install` without arguments — the `\b` word boundary after `(install|i|add|dlx)` only requires that the word ends there, not that another word follows. So `npm install` (no args) is caught. The actual circumvention would be a completely different approach: directly editing `node_modules/`, using `npx`, or editing `package.json` and running `npm ci` (which IS caught by the regex since `ci` isn't in the alternation — wait, `npm ci` isn't caught! Actually that's a legitimate circumvention: agent edits package.json, runs `npm ci` which installs from lockfile but would fail if package.json is out of sync with lockfile… hmm, or `npm install --from-lock-file` … these are edge cases).<br>
+<br>
+The real circumventions are:<br>
+- Agent directly writes to `node_modules/`<br>
+- Agent uses `npx` to run packages<br>
+- Different package manager commands not in the regex<br>
+<br>
+**Suggested fix:** Correct the circumvention note:<br>
+```<br>
+Peringatan: Pattern matching sederhana seperti ini masih bisa dilewati — <br>
+misalnya agent bisa edit file langsung di =node_modules/=, <br>
+atau pakai =npx= untuk menjalankan package tanpa install. <br>
+Untuk proteksi yang lebih ketat, kombinasikan hook ini dengan <br>
+hooks =onFileChange= atau pre-commit hook git.<br>
+```<br>
+<br>
+---<br>
+<br>
+## Finding 13 — Hook script testing guidance is incomplete (missing failure mode)<br>
+<br>
+**Location:** **Menulis Hooks**, "Selalu uji hook script secara terpisah sebelum dipasang."<br>
+<br>
+**Problem:** Telling users to test the hook is good, but they don't know the input format Cursor sends. The hook reads `stdin` via `read -r input` then parses `.command` with `jq` — but what JSON structure does Cursor actually send? Does it only have `.command`? Are there other fields? Without a sample input, the user can't meaningfully test.<br>
+<br>
+**Suggested fix:** Add a test command:<br>
+```<br>
+Untuk menguji hook sebelum dipasang, jalankan:<br>
+#+BEGIN_SRC bash<br>
+echo '{"command": "npm install moment"}' | bash .cursor/hooks/guard-npm.sh<br>
+#+END_SRC<br>
+Pastikan hook mengembalikan JSON yang valid dengan ="continue": false=.<br>
+```<br>
+<br>
+---<br>
+<br>
+## Finding 14 — `chmod +x` never mentioned for hook scripts (platform gap)<br>
+<br>
+**Location:** **Menulis Hooks**, the `guard-npm.sh` code block<br>
+<br>
+**Problem:** On macOS and Linux, a newly created `.sh` file does not have execute permissions. If the user creates `guard-npm.sh` by pasting the content into an editor, saves, and Cursor tries to execute it, they'll get a permission error. The resulting failure mode ("hook script gagal") is mentioned generically but not linked to the most common cause.<br>
+<br>
+**Suggested fix:** After the `guard-npm.sh` code block, add:<br>
+```<br>
+Jangan lupa kasih izin eksekusi:<br>
+#+BEGIN_SRC bash<br>
+chmod +x .cursor/hooks/guard-npm.sh<br>
+#+END_SRC<br>
+```<br>
+<br>
+**Tone note:** "Jangan lupa kasih izin eksekusi" — informal, fits perfectly.<br>
+<br>
+---<br>
+<br>
+## Finding 15 — Multiple hooks execution order described but edge case missing (boundary condition)<br>
+<br>
+**Location:** **Menulis Hooks**, "Kalau ada beberapa hook untuk trigger yang sama…"<br>
+<br>
+**Problem:** "Jika ada satu hook yang mengembalikan 'deny', maka aksi akan diblokir - meskipun hook lain mengembalikan 'allow'." This describes the deny-wins behavior but doesn't address: what happens if a hook earlier in the array returns a deny — do later hooks still execute? Short-circuit or run-all? This matters if hooks have side effects (e.g., logging). The behavior is implementation-defined and differs across hook systems.<br>
+<br>
+**Suggested fix:** Add:<br>
+```<br>
+#+ATTR_HTML: :class sidenote<br>
+*Catatan:* Belum jelas apakah Cursor menghentikan eksekusi hook setelah <br>
+yang pertama mengembalikan "deny" atau tetap menjalankan sisanya. <br>
+Kalau hook-mu punya side effect (misal: logging), sebaiknya taruh <br>
+hook logging di urutan pertama.<br>
+```<br>
+<br>
+---<br>
+<br>
+## Finding 16 — `moment.js` deprecation warning is present but no alternative shown in the prompt (consistency)<br>
+<br>
+**Location:** End of **Hooks** section<br>
+<br>
+**Problem:** The example prompt says "Use moment.js with timezone support…" and is immediately followed by "⚠️ =moment.js= sudah dalam mode maintenance-only dan tidak direkomendasikan untuk proyek baru. Alternatif modern: =date-fns= atau =Intl.DateTimeFormat= bawaan JavaScript." This is great documentation but creates a weird teaching moment — the prompt intentionally asks for a deprecated library just to show the hook blocking it. But a workshop attendee might copy-paste the prompt without reading the warning below it. The prompt and warning are too close together visually and the intent (demonstrating hook rejection) could be missed.<br>
+<br>
+**Suggested fix:** Add a sentence right after the prompt to explicitly connect it to the hook demo:<br>
+```<br>
+#+ATTR_HTML: :class sidenote<br>
+*Demo:* Prompt ini sengaja pakai =moment.js= untuk memicu hook =guard-npm.sh=<br>
+yang akan memblokir instalasi dependensi baru. Coba jalankan dan lihat reaksinya!<br>
+```<br>
+<br>
+**Tone note:** "sengaja pakai… untuk memicu" — playful, fits the teaching voice.<br>
+<br>
+---<br>
+<br>
+## Finding 17 — Existing `.cursorrules` migration path is vague (statefulness)<br>
+<br>
+**Location:** **Memberi Instruksi dengan RULES**, paragraph 3<br>
+<br>
+**Problem:** "Kalau kamu punya =.cursorrules= yang sudah ada, Cursor masih membacanya untuk backward compatibility, tapi direkomendasikan untuk migrasi ke format baru." This acknowledges statefulness (existing config) but gives no migration guidance. What does migration look like? Do you just rename the file? Do you need to split it into multiple `.mdc` files? What about the metadata (glob, alwaysApply) that `.cursorrules` doesn't have? This is a very common real-world scenario that gets hand-waved.<br>
+<br>
+**Suggested fix:** Add minimal migration steps:<br>
+```<br>
+Kalau kamu punya =.cursorrules= yang sudah ada, buat folder =.cursor/rules/= <br>
+lalu pindahkan isinya ke file =.cursor/rules/project.mdc=. <br>
+Tambahkan metadata YAML di awal file kalau perlu atur =glob= atau =alwaysApply=.<br>
+Setelah itu, hapus atau rename =.cursorrules= (misal jadi =.cursorrules.bak=) <br>
+supaya nggak konflik.<br>
+```<br>
+<br>
+---<br>
+<br>
+## Finding 18 — `git pull` referenced but no guarantee user is in a git repo (statefulness)<br>
+<br>
+**Location:** Image note on `thinking-framework.png`<br>
+<br>
+**Problem:** "(Gambar membutuhkan file di direktori yang sama. Jika tidak muncul, pastikan sudah =git pull= dengan benar atau buka langsung di Cursor.)" — This assumes the user cloned the repo and is inside it. If they're browsing the README on GitHub.com, downloaded a ZIP, or opened the file standalone, `git pull` is meaningless. "Buka langsung di Cursor" is the better fallback but assumes they've opened the folder in Cursor.<br>
+<br>
+**Suggested fix:** <br>
+```<br>
+(Jika gambar tidak muncul, pastikan kamu sudah clone repo ini dengan =git clone= <br>
+dan sudah =cd cursor-from-scratch=, lalu =git pull=. <br>
+Atau buka folder proyek langsung di Cursor.)<br>
+```<br>
+<br>
+---<br>
+<br>
+## Finding 19 — No guidance on what happens when all rules exceed context window (scale extreme)<br>
+<br>
+**Location:** **Memberi Instruksi dengan RULES**, "Perhatikan ukuran rules" paragraph<br>
+<br>
+**Problem:** "Kalau total semua rule melebihi kapasitas konteks, Cursor akan memangkas otomatis - aturan dengan prioritas lebih rendah atau kurang relevan akan dihilangkan lebih dulu." This describes a silent, destructive, non-deterministic behavior. The user has no way to know *which* rules got dropped, *when* they were dropped, or what "prioritas lebih rendah" means concretely. In the worst case, a critical security rule gets silently dropped and the user has no idea.<br>
+<br>
+**Suggested fix:** Add a diagnostic suggestion:<br>
+```<br>
+Untuk cek apakah rules kamu masih muat di konteks, tanyakan ke agent:<br>
+"Tampilkan semua rules yang kamu muat untuk prompt ini."<br>
+Kalau ada rules yang hilang dari daftar, itu tanda rules kamu <br>
+sudah melebihi kapasitas — saatnya pangkas atau pakai =glob= pattern <br>
+untuk membatasi aturan hanya ke file yang relevan.<br>
+```<br>
+<br>
+**Tone note:** "saatnya pangkas" is delightfully casual and fits.<br>
+<br>
+---<br>
+<br>
+## Finding 20 — Settings `model default` and `mode YOLO` mentioned but never explained (silent assumption)<br>
+<br>
+**Location:** End of **Rules** section, ".cursor/settings.json"<br>
+<br>
+**Problem:** "misal: pilih model default, aktifkan mode YOLO, atur perilaku agent" — These are mentioned as examples of what settings.json can do, but neither "model default" (which models?) nor "mode YOLO" (what does YOLO mode do? what's the risk?) are explained anywhere in the document. "YOLO" mode is a loaded term — it implies the agent auto-executes without confirmation, which is a significant safety consideration that shouldn't be mentioned without context.<br>
+<br>
+**Suggested fix:** Either expand into a brief explanation or remove the YOLO mention:<br>
+```<br>
+misal: pilih model default (GPT-4, Claude, Grok, dll), atur perilaku agent.<br>
+Untuk daftar lengkap setting yang tersedia, cek dokumentasi Cursor.<br>
+```<br>
+<br>
+Or if keeping YOLO: add a brief safety note. But given the workshop nature, dropping it is probably safer to avoid attendees accidentally enabling dangerous auto-execution.<br>
+<br>
+**Tone note:** N/A — removal or brief expansion both work with the voice.<br>
+<br>
+---<br>
+<br>
+## Finding 21 — Glosarium defines `jq` as "wajib untuk hooks" but it's under-documented (consistency)<br>
+<br>
+**Location:** **Glosarium**, `=jq=` entry<br>
+<br>
+**Problem:** The glossarium entry says "wajib untuk hooks" but this is the ONLY place `jq` is called "wajib." The Prasyarat doesn't list it. The Hooks section shows it in code but the fail-safe is presented as "good engineering" rather than "this is a hard requirement." The user discovers `jq` is mandatory only when the hook fails and blocks their command — bad workshop experience.<br>
+<br>
+**Suggested fix:** Add `jq` to Prasyarat (see Finding 3) and change the Glosarium entry to:<br>
+```<br>
+- =jq=: Command-line tool untuk baca dan olah JSON. <br>
+  Wajib di-install kalau kamu mau pakai hooks (cek bagian Prasyarat).<br>
+```<br>
+<br>
+---<br>
+<br>
+## Finding 22 — Astro + TypeScript + Vitest installation never covered (statefulness / silent assumption)<br>
+<br>
+**Location:** Throughout **Rules** and **Skills** sections<br>
+<br>
+**Problem:** The document instructs users to create rules specifying "Astro + TypeScript", "Vitest + Astro", and then run `refactor` commands. But the workshop never walks through setting up an Astro project. It assumes either:<br>
+- The cloned repo already has an Astro project initialized, OR<br>
+- The user will figure out how to set up Astro themselves<br>
+<br>
+If the cloned repo is just documentation, the `refactor` command has nothing to act on. This is the biggest workshop-flow assumption in the document — there's an implicit "the repo already contains a starter project" that's never stated.<br>
+<br>
+**Suggested fix:** Add to **Prasyarat** or the top of **Rules** section:<br>
+```<br>
+Repo ini sudah berisi project starter Astro + TypeScript. <br>
+Kalau kamu ingin setup dari nol, jalankan:<br>
+#+BEGIN_SRC bash<br>
+npm create astro@latest<br>
+#+END_SRC<br>
+```<br>
+Or if the repo doesn't contain a starter: state that explicitly and add the setup step.<br>
+<br>
+---<br>
+<br>
+## Finding 23 — COMMENT-ed sections could leak into rendered output (statefulness)<br>
+<br>
+**Location:** Multiple `COMMENT` headlines throughout<br>
+<br>
+**Problem:** Org-mode `COMMENT` headlines are excluded from export by default, but behavior depends on the org-mode version and export backend. If someone opens this in a plain text viewer or an org-mode renderer that doesn't respect COMMENT, these draft/incomplete sections (e.g., "Latihan: Tambahkan beberapa batasan lainnya") appear as broken, incomplete content. They also contain instructions like "Lakukan perintah `refactor` lagi" that are orphaned without the surrounding exercise flow.<br>
+<br>
+This is more of a publishing edge case — likely fine for the primary use case (reading in Cursor/GitHub) but worth noting.<br>
+<br>
+**Suggested fix:** Ensure COMMENT sections are complete enough to not confuse if accidentally rendered. Or add a note at the top: "Bagian bertanda COMMENT adalah catatan persiapan — abaikan."<br>
+<br>
+**Tone note:** Minor. The COMMENT sections already read as draft notes. This is low priority.<br>
+<br>
+---<br>
+<br>
+## Finding 24 — No explicit "What to do if stuck" / troubleshooting section (missing failure mode)<br>
+<br>
+**Location:** Entire document (missing section)<br>
+<br>
+**Problem:** The document is a workshop guide but has no centralized troubleshooting section. Failure modes are scattered across individual sections (some with notes, most without). A workshop attendee who hits a wall — agent behaves unexpectedly, hook doesn't fire, skill isn't detected — has to scan the entire document for a specific note that may or may not exist. A single "Kalau ada masalah…" section would dramatically improve the experience.<br>
+<br>
+**Suggested fix:** Add a short section before **Penutup**:<br>
+```<br>
+*** Kalau Ada Masalah<br>
+- *Rules nggak dipakai agent*: Cek apakah file berekstensi =.mdc= (bukan =.md=). Pastikan ada di folder =.cursor/rules/=.<br>
+- *Skill nggak aktif*: Sebutkan nama skill secara eksplisit di prompt.<br>
+- *Hook nggak jalan*: Cek =chmod +x= (macOS/Linux). Cek apakah =jq= sudah terinstall. Uji manual dengan =echo '{"command":"test"}' | bash .cursor/hooks/guard-npm.sh=.<br>
+- *Gambar nggak muncul*: Buka folder proyek langsung di Cursor, atau pastikan sudah =git pull=.<br>
+- *Masih bingung?* Tanya pemateri atau cek channel diskusi meetup.<br>
+```<br>
+<br>
+**Tone note:** Bullet-point troubleshooting fits the scannable org-mode format. The voice stays warm with "Masih bingung? Tanya pemateri."<br>
+<br>
+---<br>
+<br>
+## Summary<br>
+<br>
+| # | Category | Severity |<br>
+|---|----------|----------|<br>
+| 1 | Missing image fallback notes | Medium |<br>
+| 2 | Windows platform completely unaddressed | **High** |<br>
+| 3 | `jq` dependency not in Prasyarat | **High** |<br>
+| 4 | "Cursor versi ketiga" version ambiguity | Medium |<br>
+| 5 | `git clone` failure modes | Medium |<br>
+| 6 | `refactor` on empty project | Medium |<br>
+| 7 | settings.json validation path | Low |<br>
+| 8 | Skill dependency checking guidance | Medium |<br>
+| 9 | Skill relevance scoring is a black box | Low |<br>
+| 10 | External skill URLs may rot | Low |<br>
+| 11 | `/create-subagent` version gating | Medium |<br>
+| 12 | Hook circumvention note inaccurate | Medium |<br>
+| 13 | Hook testing guidance incomplete | Medium |<br>
+| 14 | `chmod +x` never mentioned | **High** |<br>
+| 15 | Multi-hook execution order undefined | Low |<br>
+| 16 | moment.js demo intent unclear | Low |<br>
+| 17 | `.cursorrules` migration path vague | Medium |<br>
+| 18 | `git pull` assumes repo context | Low |<br>
+| 19 | Silent rule truncation at context limit | Medium |<br>
+| 20 | YOLO mode mentioned without explanation | Medium |<br>
+| 21 | `jq` "wajib" buried in Glosarium | Low |<br>
+| 22 | Astro project setup never covered | **High** |<br>
+| 23 | COMMENT sections could leak | Low |<br>
+| 24 | No troubleshooting section | **High** |<br>
+<br>
+**Top 5 by impact:** #2 (Windows), #22 (project setup), #14 (chmod), #3 (jq), #24 (no troubleshooting section). These five are the most likely to cause an attendee to get stuck during the workshop with no clear path forward.<br>
+      </div>
+    </section>    <section id="editor" class="reviewer-section">
+      <h2>editor <span class="badge">00 issues</span></h2>
+      <div class="findings">
+I've read the full file. Here's my structural editor review:<br>
+<br>
+---<br>
+<br>
+## Editor Review: README.org<br>
+<br>
+### Finding 1 — Glosarium buried under wrong parent section<br>
+**Location**: `*** Glosarium` (nested under `** Customization Marketplace`)  <br>
+**Problem**: Glosarium is a full glossary covering terms from across the entire piece (Rules, Skills, Subagent, Hooks, Piramida Berpikir, TDD, dll). Nesting it as H3 under "Customization Marketplace" makes no semantic sense — someone skimming the TOC would never find it there. It's the worst kind of orphan: a section that belongs at the top level but is hidden deep.  <br>
+**Suggested fix**: Promote Glosarium to its own H2 section, placed between Customization Marketplace and Penutup.  <br>
+&gt; Move `*** Glosarium` → `** Glosarium` and place before `** Penutup`.<br>
+<br>
+---<br>
+<br>
+### Finding 2 — Referensi misplaced under Customization Marketplace<br>
+**Location**: `*** Referensi` (nested under `** Customization Marketplace`)  <br>
+**Problem**: The single link points to the general Cursor customization docs, not specifically to Marketplace docs. It reads like a section-level "Further Reading" that got accidentally attached to the Marketplace heading.  <br>
+**Suggested fix**: Either (a) move it to the end of Penutup as "Referensi" or "Bacaan Lebih Lanjut", or (b) if Marketplace-specific, replace the link with the actual Marketplace docs URL.<br>
+<br>
+---<br>
+<br>
+### Finding 3 — Uneven depth: Subagent section is dramatically thinner than peers<br>
+**Location**: `** Delegasi Tugas dengan Subagent`  <br>
+**Problem**: Rules gets 3 H3 subsections + 2 commented exercises + multiple code blocks. Skills gets 2 H4 subsections + a massive TDD skill example. Hooks gets detailed JSON + bash examples with inline commentary. Subagent gets… one H3 subsection with a `/create-subagent` prompt and a YAML metadata block. No exercises, no commentary, no comparison of approaches. The depth drop-off is jarring — it signals "this is less important" when it's one of the five core concepts listed in "Yang Akan Kita Pelajari."  <br>
+**Suggested fix**: Add a practical exercise (even a commented one like the Rules section uses), or at minimum add commentary about when to use subagents vs. when not to, how they relate to skills, and what the context-window independence actually means in practice.<br>
+<br>
+---<br>
+<br>
+### Finding 4 — 5W1H framework mentioned but never delivered<br>
+**Location**: `** COMMENT Kerangka Berpikir untuk Prompt yang Efektif`  <br>
+**Problem**: The opening of this section says "Dua kerangka yang akan kita gunakan di materi ini adalah *piramida berpikir*… dan *5W1H*…" The piramida berpikir gets a full four-layer breakdown with headings and examples. 5W1H is never mentioned again. This is a broken promise to the reader. The COMMENT tag suggests this section is a draft, but as published meetup material, the gap is visible.  <br>
+**Suggested fix**: Either (a) remove the 5W1H mention and commit to piramida berpikir as the sole framework, or (b) add the 5W1H mapping alongside the four layers (What → Logical, Why → Analytical, How → Computational/Procedural, etc.).<br>
+<br>
+---<br>
+<br>
+### Finding 5 — Visible TODO in published material<br>
+**Location**: End of `*** Mode Interaksi Cursor`  <br>
+**Problem**: `TODO: quote tentang ga nge-prompt lagi` is raw drafting artifact. In a workshop handout, this looks unfinished. The voice is authentic (draft-in-progress feel), but it erodes credibility for a meetup that promises a polished guide.  <br>
+**Suggested fix**: Either remove the TODO line or replace with the actual quote. If the quote can't be sourced yet, wrap it in a COMMENT block so it doesn't render.<br>
+<br>
+---<br>
+<br>
+### Finding 6 — Wall of text: the ⚠️ paragraph in Mode Interaksi Cursor<br>
+**Location**: `*** Mode Interaksi Cursor`, paragraph starting "⚠️ Ketika kita mengirimkan perintah…"  <br>
+**Problem**: This paragraph is 4+ lines of dense, comma-spliced explanation: what gets sent, when, and where. It lists 6+ items inline (system prompt, rules/AGENTS.md, SKILL.md, related code, conversation history, cloud LLM) without visual breaks. The reader's eyes glaze over. The information is crucial — it explains the entire mental model of how Cursor works — but it's buried in a single breathless sentence.  <br>
+**Suggested fix**: Break into a bullet list or numbered flow:<br>
+```<br>
+⚠️ Ketika kita mengirimkan perintah ke /coding agent/, yang dikirim ke LLM bukan cuma perintah kita. Cursor juga menyertakan:<br>
+- /system prompt/<br>
+- /rules/ atau AGENTS.md<br>
+- /SKILL.md/ (kalau relevan)<br>
+- Kode yang berkaitan dengan perintah<br>
+- Riwayat percakapan sebelumnya<br>
+<br>
+Semua ini diproses di /cloud/ oleh LLM untuk menghasilkan jawaban atau kode.<br>
+```<br>
+This preserves voice (colloquial, list rhythm) while making the information scannable.<br>
+<br>
+---<br>
+<br>
+### Finding 7 — "Oh iya" paragraph orphaned after commented exercises<br>
+**Location**: End of `** Memberi Instruksi dengan RULES / AGENTS.MD`, paragraph starting "Oh iya, selain rules…"  <br>
+**Problem**: This paragraph about `.cursor/settings.json` sits alone after two COMMENT-ed out exercise sections, with no heading or transition. It's a useful aside but feels like a postscript that fell off the bottom of the section. Readers who skip the COMMENT blocks won't even see it.  <br>
+**Suggested fix**: Move it before the COMMENT exercises, or give it its own short H3 subsection (e.g., `*** Konfigurasi Tambahan: .cursor/settings.json`). The "Oh iya," opener is voice-correct — it just needs structural support.<br>
+<br>
+---<br>
+<br>
+### Finding 8 — "Contoh Skill Lainnya" is too thin for its heading level<br>
+**Location**: `**** Contoh Skill Lainnya` (H4 under `** Menambahkan Skill`)  <br>
+**Problem**: This H4 section is two bare links. That's it. No description of what each skill does, no recommendation about when to use them, no connection back to the TDD example. A heading this deep signaling "just some links" is structural overhead without payoff.  <br>
+**Suggested fix**: Either add 1–2 sentences per link explaining why they're relevant to the audience, or merge them into a sentence at the end of the TDD section: "Contoh skill lain yang bisa kamu coba: impeccable.style (frontend design) dan mattpocock/skills (TypeScript patterns)."<br>
+<br>
+---<br>
+<br>
+### Finding 9 — Extended voice absence in the TDD skill code block<br>
+**Location**: `*** Contoh Skill: Tidy TDD`, the `#+BEGIN_SRC markdown` block  <br>
+**Problem**: The quoted TDD skill is ~80 lines of formal English technical prose — `# CORE DEVELOPMENT PRINCIPLES`, `# TDD METHODOLOGY GUIDANCE`, etc. The author's warm Indonesian voice disappears entirely for a very long stretch. While quoted content is understood to be in a different register, the sheer length creates an "80-line cold plunge" for the reader. By the time "Pengembangan fitur" resumes, the reader has forgotten the author's voice.  <br>
+**Suggested fix**: Trim the quoted skill to the essential sections (Principles + TDD Cycle + the example workflow at the end), and add a brief Indonesian bridge sentence before and after the block: "Berikut isi skill-nya (dalam bahasa Inggris, karena ini format standar skill):" and after: "Dengan skill ini terpasang, mari kita praktikkan…" The bridge sentences already exist implicitly but could be more explicit about the language shift.<br>
+<br>
+---<br>
+<br>
+### Finding 10 — Em dash vs. hyphen inconsistency in Hooks section<br>
+**Location**: `** Kustomisasi lebih lanjut dengan Hooks`, paragraphs about hook failure and ordering  <br>
+**Problem**: The author's voice profile uses em dash (—) as a deliberate pause/elaboration marker throughout: "sifat dasarnya 'liar' — instruksi yang sama bisa menghasilkan…". But in the hooks section, hyphens appear instead: "Cursor akan menganggap hook tersebut gagal dan - tergantung versi - mungkin memblokir" and "maka aksi akan diblokir - meskipun hook lain mengembalikan…". These should be em dashes to match the established pattern.  <br>
+**Suggested fix**: Replace ` - tergantung versi - ` with ` — tergantung versi — ` and ` - meskipun hook lain` with ` — meskipun hook lain`. This is a subtle voice-consistency fix, not a grammar fix.<br>
+<br>
+---<br>
+<br>
+### Finding 11 — Glosarium heading level creates a fragmented TOC<br>
+**Location**: `*** Glosarium` (H3) under `** Customization Marketplace` (H2)  <br>
+**Problem**: Related to Finding 1, but specifically about the TOC. The `#+TOC: headlines 2 local` in Agenda only shows H2 headlines. Glosarium at H3 under Marketplace means it's invisible in the TOC, yet it's one of the most reference-able sections in the document.  <br>
+**Suggested fix**: After promoting Glosarium to H2 (per Finding 1), it appears naturally in the TOC. If kept at H3 for some reason, consider changing the TOC depth to 3.<br>
+<br>
+---<br>
+<br>
+### Finding 12 — Missing CTA / "Next Steps" section<br>
+**Location**: End of `** Penutup`  <br>
+**Problem**: The article ends with "Selamat ngoprek! 🚀" — warm, voice-appropriate, but no direction. This is workshop material; readers finishing it are primed to act. A short "Langkah Selanjutnya" or "Mau Ngoprek Lebih Jauh?" section with 2–3 concrete next actions (browse the Marketplace, try writing your first rule, join the Cursor.id community) would convert enthusiasm into action.  <br>
+**Suggested fix**: Add a short bullet list after the closing paragraphs and before "Selamat ngoprek! 🚀":<br>
+```<br>
+** Langkah Selanjutnya<br>
+<br>
+- Coba pasang rule pertama kamu di proyek yang sedang dikerjakan<br>
+- Eksplor Customization Marketplace untuk skill yang sesuai tech stack kamu<br>
+- Gabung di komunitas Cursor.id untuk diskusi dan tips lanjutan<br>
+<br>
+Selamat ngoprek! 🚀<br>
+```<br>
+Voice stays warm and inviting — no shift to corporate CTA language.<br>
+<br>
+---<br>
+<br>
+### Finding 13 — "AGENTS.MD" capitalization in heading inconsistent with body<br>
+**Location**: `** Memberi Instruksi dengan RULES / AGENTS.MD`  <br>
+**Problem**: Throughout the body, the file is referenced as `=AGENTS.md=` or "AGENTS.md" (lowercase extension). The heading uses all-caps "AGENTS.MD". In org-mode this is cosmetic but reads as a typo or inconsistent reference style.  <br>
+**Suggested fix**: `** Memberi Instruksi dengan RULES / AGENTS.md` (lowercase .md to match body convention).<br>
+<br>
+---<br>
+<br>
+### Finding 14 — "Peringatan" wall of text in Hooks section<br>
+**Location**: After the `guard-npm.sh` code block, paragraph starting "Peringatan: Pattern matching sederhana…"  <br>
+**Problem**: This paragraph covers three distinct ideas: (1) the grep pattern can be bypassed via package.json edits, (2) combine with onFileChange or git hooks for stronger protection, (3) see docs for more trigger points. Three ideas in one dense paragraph. The ⚠️ about moment.js that follows is separate but visually adjacent, creating a block of cautionary text without breathing room.  <br>
+**Suggested fix**: Split into short paragraphs or bullets:<br>
+```<br>
+⚠️ Pattern matching sederhana seperti ini bisa dilewati — agent bisa mengedit =package.json= lalu menjalankan =npm install= (tanpa argumen) untuk menginstal dependensi baru.<br>
+<br>
+Untuk proteksi lebih ketat, kombinasikan hook ini dengan:<br>
+- hooks =onFileChange=<br>
+- pre-commit hook git<br>
+<br>
+Lihat [[https://cursor.com/docs/hooks][dokumentasi hooks Cursor]] untuk opsi trigger point lainnya.<br>
+```<br>
+This also fixes the em-dash issue from Finding 10.<br>
+<br>
+---<br>
+<br>
+### Finding 15 — No visual breathing room between dense code blocks and prose<br>
+**Location**: Throughout, but especially in `** Kustomisasi lebih lanjut dengan Hooks`  <br>
+**Problem**: The hooks section has: prose → JSON code block → prose → bash code block → prose. The transitions are single-sentence bridges. For a section that introduces a new concept (hooks), the density of code without sufficient explanatory prose between blocks makes it read like a reference page rather than a teaching section.  <br>
+**Suggested fix**: Add 1–2 sentences after each code block explaining what the reader just saw. Example after the `hooks.json` block: "File ini bilang ke Cursor: setiap kali agent mau menjalankan perintah shell, jalankan dulu skrip `guard-npm.sh` buat ngecek." This maintains the explanatory rhythm from earlier sections (Rules, Skills) where code blocks are always framed with "ini contohnya" and "dengan ini, sekarang coba…"<br>
+<br>
+---<br>
+<br>
+## Summary by Priority<br>
+<br>
+| Priority | Count | Key Issues |<br>
+|----------|-------|------------|<br>
+| **Must fix** | 3 | Glosarium placement (#1), 5W1H broken promise (#4), visible TODO (#5) |<br>
+| **Should fix** | 6 | Uneven Subagent depth (#3), ⚠️ wall of text (#6), "Oh iya" orphan (#7), thin "Contoh Skill Lainnya" (#8), missing CTA (#12), hooks code-block density (#15) |<br>
+| **Nice to fix** | 4 | TDD skill length (#9), em-dash consistency (#10), Referensi placement (#2), heading caps (#13) |<br>
+| **Voice risk** | 2 | #6 (listifying the ⚠️ paragraph must preserve the `/word/` patterns and colloquial register), #12 (CTA must stay warm/inviting, not corporate) |<br>
+      </div>
+    </section>    <section id="copy-editor" class="reviewer-section">
+      <h2>copy-editor <span class="badge">00 issues</span></h2>
+      <div class="findings">
+Now I have the full file with line numbers. Let me compile the complete structured review.<br>
+<br>
+---<br>
+<br>
+# Copy-Editor Review Report: `README.org`<br>
+<br>
+## Finding 1 — Bare URL in Catatan sidebar<br>
+<br>
+- **Location**: Line 7 (`*Catatan:*` sidenote)<br>
+- **Problem**: The URL `https://rizafahmi.com/ai/` is a bare URL — no descriptive link text, not wrapped in org-mode link syntax.<br>
+- **Suggested fix**:<br>
+  ```<br>
+  Informasi lebih lanjut bisa cek https://rizafahmi.com/ai/<br>
+  ```<br>
+  →<br>
+  ```<br>
+  Informasi lebih lanjut bisa cek [[https://rizafahmi.com/ai/][rizafahmi.com/ai/]]<br>
+  ```<br>
+- **Voice impact**: None. Adding org link markup is purely structural.<br>
+<br>
+---<br>
+<br>
+## Finding 2 — "diatas" → "di atas" (line 47)<br>
+<br>
+- **Location**: Line 47<br>
+- **Problem**: "Prompt diatas sederhana banget" — "diatas" is a common Indonesian spelling error; the preposition "di" should be separated from "atas".<br>
+- **Suggested fix**: `Prompt diatas` → `Prompt di atas`<br>
+- **Voice impact**: None. This is a standard Indonesian spelling correction; the colloquial word "banget" remains untouched.<br>
+<br>
+---<br>
+<br>
+## Finding 3 — "diatas" → "di atas" (line 96)<br>
+<br>
+- **Location**: Line 96<br>
+- **Problem**: Same error: "Keempat lapisan diatas adalah kerangka…"<br>
+- **Suggested fix**: `diatas` → `di atas`<br>
+- **Voice impact**: None, same as #2.<br>
+<br>
+---<br>
+<br>
+## Finding 4 — "diatas" → "di atas" (line 156 in full file — the "di refactor" case)<br>
+<br>
+- **Location**: ~line 161 (after code block around the `refactor` sections)<br>
+- **Problem**: "Perintah /refactor/ diatas bisa dibilang tidak jelas…" — same "diatas" error.<br>
+- **Suggested fix**: `diatas` → `di atas`<br>
+- **Voice impact**: None.<br>
+<br>
+---<br>
+<br>
+## Finding 5 — Missing closing period in Prasyarat list, last item<br>
+<br>
+- **Location**: Line 31<br>
+- **Problem**: The Prasyarat list items end with periods (lines 27, 29) or none (line 28, 30, 31). The pattern is inconsistent — some items end with `.`, some don't.<br>
+- **Suggested fix**: Add a period to line 31 (`…dll`) → `…dll.` for consistency with line 27 and 29 which have periods. (Or remove periods from all — but adding to the last is the minimal fix.)<br>
+- **Voice impact**: Minimal. The conversational register is unaffected; this is list-punctuation hygiene.<br>
+<br>
+---<br>
+<br>
+## Finding 6 — "bisa bisa" — intentional spoken double-word<br>
+<br>
+- **Location**: Line 41<br>
+- **Problem**: "Satu perintah bisa bisa diinterpretasikan berbeda-beda oleh LLM." This is a doubled word. The voice profile explicitly calls this out as intentional: *"Double-word typo left in…feels like natural spoken repetition preserved in text."*<br>
+- **Suggested fix**: **No change.** Flagged for awareness only. The voice profile confirms this is deliberate.<br>
+- **Voice impact**: N/A — this *is* the voice.<br>
+<br>
+---<br>
+<br>
+## Finding 7 — "realtime" vs "real-time" inconsistency<br>
+<br>
+- **Location**: Lines 44, 48, 84, 144<br>
+- **Problem**: "realtime" is used throughout (lines 44, 84, 144) but line 48 uses "real-time" in "real-time update". Both forms appear. Standard English is "real-time" (hyphenated). The file should pick one.<br>
+- **Suggested fix**: Normalize all instances to `real-time`:<br>
+  - Line 44: `secara realtime` → `secara real-time`<br>
+  - Line 84: `jam realtime` → `jam real-time`<br>
+  - Line 144: `date and time realtime` → `date and time real-time`<br>
+- **Voice impact**: None. This is an English spelling consistency fix in a tech term. "real-time" is the standard form.<br>
+<br>
+---<br>
+<br>
+## Finding 8 — "vanilla css" → "vanilla CSS"<br>
+<br>
+- **Location**: Line 148<br>
+- **Problem**: "vanilla css" — CSS is an acronym and should be capitalized.<br>
+- **Suggested fix**: `vanilla css` → `vanilla CSS`<br>
+- **Voice impact**: None. This is a proper noun capitalization fix.<br>
+<br>
+---<br>
+<br>
+## Finding 9 — "Python, Rust atau PHP" missing serial comma<br>
+<br>
+- **Location**: Line 50<br>
+- **Problem**: "aplikasi backend dengan bahasa pemrograman Python, Rust atau PHP" — missing comma before "atau" in a three-item list. While Indonesian doesn't have the Oxford comma as a strict rule, the `, X atau Y` pattern is inconsistent with the author's own usage elsewhere (line 60: "keluaran, jawaban atau baris kode" — also missing comma).<br>
+- **Suggested fix**: `Python, Rust atau PHP` → `Python, Rust, atau PHP`<br>
+- **Voice impact**: Minimal. The colloquial flow is preserved; this improves scanability.<br>
+<br>
+---<br>
+<br>
+## Finding 10 — `#+NAME:` spacing inconsistency<br>
+<br>
+- **Location**: Lines 38, 57, 75, 128, 138, 370<br>
+- **Problem**: Some `#+NAME:` lines have a single space before the value, others have three spaces:<br>
+  - Line 38: `#+NAME: cursor-3.png` (1 space)<br>
+  - Line 57: `#+NAME: agentic-loop.png` (1 space)<br>
+  - Line 75: `#+NAME:   fig:ThinkingFramework` (3 spaces)<br>
+  - Line 138: `#+NAME:   fig:Setting` (3 spaces)<br>
+  - Line 370: `#+NAME:   fig:Hooks` (3 spaces)<br>
+  - Line ~388: `#+NAME:   fig:continual-learning` (3 spaces)<br>
+- **Suggested fix**: Normalize to single space for all `#+NAME:` lines. The extra spaces parse the same in org-mode but are a formatting inconsistency.<br>
+- **Voice impact**: None, purely structural org-mode formatting.<br>
+<br>
+---<br>
+<br>
+## Finding 11 — `#+NAME:` naming convention inconsistency<br>
+<br>
+- **Location**: Lines 38, 57 compared to 75, 138, 370<br>
+- **Problem**: Some image names use bare filenames (`cursor-3.png`, `agentic-loop.png`) while others use the `fig:` prefix convention (`fig:ThinkingFramework`, `fig:Setting`, `fig:Hooks`, `fig:continual-learning`).<br>
+- **Suggested fix**: Normalize to the `fig:` prefix pattern:<br>
+  - `#+NAME: cursor-3.png` → `#+NAME: fig:cursor-3`<br>
+  - `#+NAME: agentic-loop.png` → `#+NAME: fig:agentic-loop`<br>
+- **Voice impact**: None, org-mode internal reference hygiene.<br>
+<br>
+---<br>
+<br>
+## Finding 12 — Missing link description on reference URL<br>
+<br>
+- **Location**: Line 68<br>
+- **Problem**: `[[https://cursor.com/docs/customize-cursor]]` — the org-mode link has no description text. Org links with no description render the URL as the visible text, which is a bare URL in practice.<br>
+- **Suggested fix**: `[[https://cursor.com/docs/customize-cursor][Dokumentasi Kustomisasi Cursor]]`<br>
+- **Voice impact**: None. Adding a descriptive label is purely structural.<br>
+<br>
+---<br>
+<br>
+## Finding 13 — Heading "AGENTS.MD" capitalization<br>
+<br>
+- **Location**: Line 102<br>
+- **Problem**: The heading reads `** Memberi Instruksi dengan RULES / AGENTS.MD` but the actual file is `AGENTS.md` (lowercase 'md'). In the body text (line 60, 105), it's correctly written as `AGENTS.md`. The heading's all-caps `AGENTS.MD` is inconsistent.<br>
+- **Suggested fix**: `AGENTS.MD` → `AGENTS.md` in the heading. (Keep `RULES` uppercase as it's a section concept, or lowercase too — but `AGENTS.md` is a filename and should reflect the actual filename.)<br>
+- **Voice impact**: None. Proper noun/filename accuracy.<br>
+<br>
+---<br>
+<br>
+## Finding 14 — Third rules-list item uses `/word/` slashes while others don't<br>
+<br>
+- **Location**: Lines 110–112<br>
+- **Problem**: The list of things that should be in rules:<br>
+  ```<br>
+  - penjelasan singkat tentang proyek<br>
+  - bagaimana cara kerja dan cara menjalankan proyek<br>
+  - /coding standard/ atau arsitektur<br>
+  ```<br>
+  The third item wraps "coding standard" in `/word/` slashes while the other items use plain Indonesian text. This is inconsistent formatting — either all technical terms get slashes or none do.<br>
+- **Suggested fix**: `- /coding standard/ atau arsitektur` → `- coding standard atau arsitektur` (remove slashes for list consistency). Or add slashes to other items if they contain English loanwords — but "proyek" is Indonesian. Removing the slashes on this line is cleaner.<br>
+- **Voice impact**: **⚠️ TONE WARNING**: The `/word/` slash-emphasis pattern is the author's primary visual signature. Removing slashes here would weaken that signature. Consider instead whether the slashes are truly needed on this item — the other items don't contain English tech terms, so this may be a deliberate marker. If the fix is applied, it should be done knowing it sacrifices one instance of the signature pattern for internal list consistency.<br>
+<br>
+---<br>
+<br>
+## Finding 15 — Orphaned list item in testing rules code block<br>
+<br>
+- **Location**: Lines 164–171<br>
+- **Problem**: The second rules code block starts with a bare list item with no section header:<br>
+  ```markdown<br>
+  - Testing: Vitest + Astro<br>
+<br>
+  ## Engineering Constraints<br>
+  - Keep behavior deterministic and testable<br>
+  - Add test for core business logic<br>
+  ```<br>
+  The `- Testing: Vitest + Astro` line floats without a parent heading, unlike the first code block which has `## Tech Stack` and `## Product Constraints`. This looks like a structural error.<br>
+- **Suggested fix**: Add a section header:<br>
+  ```markdown<br>
+  ## Testing<br>
+  - Testing: Vitest + Astro<br>
+<br>
+  ## Engineering Constraints<br>
+  - Keep behavior deterministic and testable<br>
+  - Add test for core business logic<br>
+  ```<br>
+- **Voice impact**: None. This is code-block content structure.<br>
+<br>
+---<br>
+<br>
+## Finding 16 — Missing period at end of sentence<br>
+<br>
+- **Location**: Line ~356<br>
+- **Problem**: "Coba dengan mengeksekusi perintah berikut" — missing closing period.<br>
+- **Suggested fix**: Append `.` → `Coba dengan mengeksekusi perintah berikut.`<br>
+- **Voice impact**: None.<br>
+<br>
+---<br>
+<br>
+## Finding 17 — "kursor" → "Cursor"<br>
+<br>
+- **Location**: Line ~302<br>
+- **Problem**: "Cara berikutnya untuk kustomisasi dan mengembangkan kursor lebih lanjut." — "kursor" is Indonesianized lowercase. The proper noun "Cursor" should be capitalized as it is everywhere else in the document (~50+ occurrences).<br>
+- **Suggested fix**: `kursor` → `Cursor`<br>
+- **Voice impact**: None. This is a proper-noun capitalization fix; the rest of the document consistently uses "Cursor".<br>
+<br>
+---<br>
+<br>
+## Finding 18 — Glossary `.mdc` entry: missing opening bold marker<br>
+<br>
+- **Location**: Line ~402<br>
+- **Problem**: The glossary entry reads:<br>
+  ```<br>
+  - =.mdc= (Markdown for Cursor)*: Format markdown khusus Cursor…<br>
+  ```<br>
+  There is a closing `*` after the parenthesis but no opening `*`. Compare with every other glossary entry: `- *Astro*:`, `- *Coding Agent*:`, `- *PRD (Product Requirements Document)*:`. The pattern is `- *&lt;term&gt;*:`. The `.mdc` entry is missing the opening `*` and inconsistently uses `=…=` (code/verbatim markers) inside what should be a bold span.<br>
+- **Suggested fix**: `- =.mdc= (Markdown for Cursor)*:` → `- *=.mdc= (Markdown for Cursor)*:`<br>
+- **Voice impact**: None. Fixing broken org-mode bold syntax.<br>
+<br>
+---<br>
+<br>
+## Finding 19 — Glossary `=jq=` entry uses code markers instead of bold<br>
+<br>
+- **Location**: Line ~398<br>
+- **Problem**: The `jq` glossary entry uses `=jq=` (code/verbatim) while every other glossary entry uses `*term*` (bold):<br>
+  ```<br>
+  - =jq=: Command-line tool untuk membaca dan mengolah JSON (wajib untuk hooks).<br>
+  ```<br>
+  vs.<br>
+  ```<br>
+  - *Vitest*: Tools untuk menjalankan test di JavaScript/TypeScript (mirip Jest).<br>
+  ```<br>
+- **Suggested fix**: `- =jq=:` → `- *jq*:` for consistency with the other 19 glossary entries. (Keep as `=jq=` only if the author intentionally wants command names in code font — but then `.mdc`, `Vitest`, and `Astro` should also be `=…=` since they're also technical names.)<br>
+- **Voice impact**: **⚠️ TONE WARNING**: Using `=jq=` is arguably more semantically correct for a CLI tool name, and the author uses `=jq=` in the hooks bash script (line ~339). If the author intends a deliberate distinction (CLI commands get `=…=`, concepts get `*…*`), then the fix should instead apply to entries like `Vitest` (which is also a CLI tool). Flagging for author decision.<br>
+<br>
+---<br>
+<br>
+## Finding 20 — Prasyarat: Inconsistent terminal punctuation on list items<br>
+<br>
+- **Location**: Lines 27–31<br>
+- **Problem**: The Prasyarat bullet list has mixed terminal punctuation:<br>
+  - Line 27: ends with period (`.`)<br>
+  - Line 28: no period<br>
+  - Line 29: ends with period (`.`)  <br>
+  - Line 30: no period<br>
+  - Line 31: no period<br>
+- **Suggested fix**: Either add periods to all items, or remove from all. Removing from lines 27 and 29 is the smaller diff.<br>
+- **Voice impact**: None. List-punctuation consistency.<br>
+<br>
+---<br>
+<br>
+## Finding 21 — Blank-line inconsistency after level-3 headings under COMMENT section<br>
+<br>
+- **Location**: Lines 83–93<br>
+- **Problem**: The four thinking-layer subheadings have inconsistent blank-line spacing:<br>
+  - Line 83: `*** Logical thinking: /apa/ yang mau kita buat` → Line 84: text immediately follows (no blank line)<br>
+  - Line 86: `*** Analytical thinking: /apa yang dibutuhkan/ untuk membuatnya` → Line 87: text immediately follows (no blank line)<br>
+  - Line 89: `*** Computational thinking: penjelasan /mendetil/ dari apa yang mau kita buat` → Line 90: **blank line**, then text on line 91<br>
+- **Suggested fix**: Remove the blank line after line 89 to match the pattern of the other three subheadings.<br>
+- **Voice impact**: None.<br>
+<br>
+---<br>
+<br>
+## Finding 22 — Subagent list: inconsistent capitalization after colons<br>
+<br>
+- **Location**: Lines 275–277<br>
+- **Problem**: The three subagent descriptions have inconsistent capitalization after the colon:<br>
+  ```<br>
+  - Explore: untuk pencarian…        (lowercase)<br>
+  - Bash: Menjalankan perintah…       (uppercase)<br>
+  - Browser: Membuka dan menjalankan… (uppercase)<br>
+  ```<br>
+- **Suggested fix**: Normalize to lowercase after colon for all three (follow the Indonesian prose pattern):<br>
+  ```<br>
+  - Bash: menjalankan perintah shell yang dibutuhkan<br>
+  - Browser: membuka dan menjalankan otomasi untuk aplikasi web<br>
+  ```<br>
+- **Voice impact**: None.<br>
+<br>
+---<br>
+<br>
+## Finding 23 — Hook list items: English in Indonesian prose, no period<br>
+<br>
+- **Location**: Lines ~306–311<br>
+- **Problem**: The hooks examples list is entirely in English while surrounded by Indonesian prose. The voice profile allows heavy code-switching, but this is a full-English list in an Indonesian paragraph. More practically, none of the items have closing punctuation.<br>
+- **Suggested fix**: This may be intentional (hooks are configured in English). If keeping English, add periods for consistency. If localizing, translate. The minimal fix is to add periods to each list item.<br>
+- **Voice impact**: **⚠️ TONE WARNING**: The code-switched English hooks list reflects the actual hook configuration language (English) and may be intentional. The voice profile says English tech terms are absorbed into Indonesian prose — full English phrases in a list are a grey area. Flag for author review.<br>
+<br>
+---<br>
+<br>
+## Finding 24 — `grok-4.5[]` trailing brackets<br>
+<br>
+- **Location**: Line ~289 (YAML code block)<br>
+- **Problem**: `model: grok-4.5[]` — the `[]` after the model name looks like an unfinished placeholder or copy-paste artifact.<br>
+- **Suggested fix**: `model: grok-4.5[]` → `model: grok-4.5` (remove trailing brackets)<br>
+- **Voice impact**: None. This is inside a code block.<br>
+<br>
+---<br>
+<br>
+## Finding 25 — "jawaban atau baris kode" — missing comma<br>
+<br>
+- **Location**: Line 60<br>
+- **Problem**: "hingga menghasilkan keluaran, jawaban atau baris kode" — missing comma in a three-item list.<br>
+- **Suggested fix**: `keluaran, jawaban atau baris kode` → `keluaran, jawaban, atau baris kode`<br>
+- **Voice impact**: None. This same issue appears as finding #9.<br>
+<br>
+---<br>
+<br>
+## Summary<br>
+<br>
+| # | Severity | Category | Voice Risk |<br>
+|---|----------|----------|------------|<br>
+| 1 | Medium | Bare URL | None |<br>
+| 2 | Low | Spelling ("diatas") | None |<br>
+| 3 | Low | Spelling ("diatas") | None |<br>
+| 4 | Low | Spelling ("diatas") | None |<br>
+| 5 | Low | Punctuation consistency | None |<br>
+| 6 | — | **Intentional (voice profile)** | N/A |<br>
+| 7 | Medium | Terminology ("realtime"/"real-time") | None |<br>
+| 8 | Low | Capitalization ("css"→"CSS") | None |<br>
+| 9 | Low | Serial comma | None |<br>
+| 10 | Low | org-mode formatting | None |<br>
+| 11 | Low | org-mode naming convention | None |<br>
+| 12 | Medium | Bare URL (org link) | None |<br>
+| 13 | Low | Capitalization ("AGENTS.MD") | None |<br>
+| 14 | Low | Formatting consistency | ⚠️ See note |<br>
+| 15 | Medium | Structural (orphaned list item) | None |<br>
+| 16 | Low | Missing period | None |<br>
+| 17 | Medium | Capitalization ("kursor") | None |<br>
+| 18 | High | Broken org-mode bold syntax | None |<br>
+| 19 | Low | Glossary format consistency | ⚠️ See note |<br>
+| 20 | Low | List punctuation | None |<br>
+| 21 | Low | Blank-line consistency | None |<br>
+| 22 | Low | Capitalization consistency | None |<br>
+| 23 | Low | Language consistency | ⚠️ See note |<br>
+| 24 | Medium | Code artifact (`[]`) | None |<br>
+| 25 | Low | Serial comma | None |<br>
+<br>
+**High-priority fixes**: #18 (broken org-mode syntax — renders incorrectly), #12 (bare org link), #1 (bare URL), #15 (orphaned list item in code block)<br>
+<br>
+**Voice-sensitive items needing author decision**: #14, #19, #23<br>
+      </div>
+    </section>
+
+<div class="appendix">
+  <details>
+    <summary>Original File: README.org</summary>
+    <div class="file-content">
+* Personalisasi Agen Cursor<br>
+#+OPTIONS: toc:nil<br>
+<br>
+Materi untuk Cursor.id Meetup Agustus: personalisasi &amp; workflow Cursor agent.<br>
+<br>
+#+ATTR_HTML: :class sidenote<br>
+*Catatan:* Materi ini ditulis oleh manusia, dengan bantuan LLM. Informasi lebih lanjut bisa cek https://rizafahmi.com/ai/<br>
+<br>
+** Pembuka<br>
+<br>
+Pernah menulis perintah untuk coding agent seperti Cursor dan hasilnya jauh dari ekspektasi? Sepertinya kamu nggak sendirian. Coding agent menggunakan LLM, yang sifat dasarnya "liar" - instruksi yang sama bisa menghasilkan kode yang jauh berbeda.<br>
+<br>
+Intinya: semakin baik kita mendefinisikan apa yang kita mau, semakin baik pula hasil yang diberikan Cursor. Prompt yang bagus tetap penting, tapi fondasi yang kuat - rules + skills + workflow - memastikan konsistensi tanpa perlu menulis ulang instruksi setiap kali.<br>
+<br>
+*** Yang Akan Kita Pelajari<br>
+<br>
+Di akhir sesi ini, kita akan bisa:<br>
+- Rules (=.cursor/rules=) → Memberikan konsistensi dan alignment proyek<br>
+- Skills → Mengajarkan LLM cara kerja yang lebih baik dan portable<br>
+- Subagent → Memberikan spesialisasi tugas<br>
+- Hooks → Memberikan kontrol dan guardrail otomatis<br>
+- Customization Marketplace → Memanfaatkan pengetahuan komunitas<br>
+<br>
+*** Prasyarat<br>
+<br>
+Kalau ingin mengikuti materi ini, pastikan kita sudah siapin hal-hal berikut:<br>
+- Sudah install Cursor versi ketiga, dapat diunduh di https://cursor.com/download.<br>
+- Sudah punya akun dan login (bisa pakai Google atau GitHub)<br>
+- Sudah install git dan punya akun GitHub<br>
+- Clone repo ini dengan menjalankan `git clone https://github.com/hacktiv8/cursor-from-scratch`<br>
+- Familiar dengan basic terminal (=cd=, =mkdir=, =ls=) dan git (=git init=, =git add=, =git commit=, =git reset=, =git checkout=, dll)<br>
+<br>
+*** Mode Interaksi Cursor<br>
+<br>
+Sepanjang sesi ini kita akan menggunakan coding agent Cursor versi 3 atau yang lebih baru. Cursor versi baru ini menyembunyikan IDE atau editor kode dan menampilkan agent sebagai fokus utama. Meskipun kita tetap bisa membuka IDE jika dibutuhkan.<br>
+<br>
+#+CAPTION: Tampilan Cursor 3<br>
+#+NAME: cursor-3.png<br>
+[[./cursor-3.png][Tampilan Cursor 3 yang menjadikan agent sebagai fokus utama]]<br>
+<br>
+Cursor sebagai /harness/ atau /coding agent/ menggunakan Large Language Model - model AI yang bisa memahami dan menghasilkan kode atau teks, sifatnya sulit diprediksi, /non deterministic/ atau dengan kata lain: "liar". Tanpa /system prompt/ yang jelas, LLM cenderung memberikan hasil yang bervariasi untuk perintah yang sama. Satu perintah bisa bisa diinterpretasikan berbeda-beda oleh LLM. Mari kita lihat contoh prompt yang bisa beragam artinya.<br>
+<br>
+#+BEGIN_SRC text<br>
+Buat aplikasi web yang menampilkan tanggal dan jam saat ini secara realtime<br>
+#+END_SRC<br>
+<br>
+Prompt diatas sederhana banget, tapi bisa diinterpretasikan dengan cara yang sangat berbeda. Coba lihat:<br>
+- Interpretasi A: Full-stack web app dengan WebSocket untuk real-time update<br>
+- Interpretasi B: Static page dengan JavaScript =setInterval= sederhana<br>
+- Interpretasi C: Aplikasi backend dengan bahasa pemrograman Python, Rust atau PHP<br>
+<br>
+Hasilnya bisa beda jauh kan? Padahal perintahnya sama persis. Inilah kenapa kita perlu struktur.<br>
+<br>
+Intinya, kita harus *memikirkan apa yang mau kita buat, bagaimana cara membuatnya, dan cara mengomunikasikannya ke LLM*. LLM tidak bisa membaca pikiran - jika instruksi kita tidak eksplisit, hasilnya akan bergantung sepenuhnya pada bias training data-nya. Jadi kalau kita sendiri nggak jelas mau bikin apa, jangan kaget kalau hasilnya juga ngaco.<br>
+<br>
+#+CAPTION: Cara kerja coding agent: dari prompt user → agent membaca konteks proyek → menjalankan aksi (edit file, jalankan terminal, dsb) → mengembalikan hasil, lalu berulang dalam /agentic loop/<br>
+#+NAME: agentic-loop.png<br>
+[[./agentic-loop.png][Diagram agentic loop: prompt user → agent membaca konteks → menjalankan aksi (edit/terminal) → hasil → ulangi]]<br>
+<br>
+⚠️ Ketika kita mengirimkan perintah ke /coding agent/, selain perintah kita, /coding agent/ juga turut mengirimkan /system prompt/, /rules atau AGENTS.md/, /SKILL.md/ jika dirasa butuh, kode yang berkaitan dengan perintah, dan percakapan sebelumnya dikirim ke LLM yang ada di /cloud/ untuk kemudian diproses hingga menghasilkan keluaran, jawaban atau baris kode.<br>
+<br>
+TODO: quote tentang ga nge-prompt lagi<br>
+<br>
+*** Agenda<br>
+<br>
+#+TOC: headlines 2 local<br>
+<br>
+Referensi: [[https://cursor.com/docs/customize-cursor]]<br>
+<br>
+** COMMENT Kerangka Berpikir untuk Prompt yang Efektif<br>
+<br>
+Alat bantunya banyak wujudnya. Dua kerangka yang akan kita gunakan di materi ini adalah *piramida berpikir* (kerangka untuk memecah masalah dari abstrak ke konkret, makin ke bawah makin detail), dan *5W1H* (metode menjawab =What=/=Why=/=Who=/=Where=/=When=/=How= untuk menjelaskan sesuatu secara lengkap).<br>
+<br>
+#+CAPTION: Contoh thinking framework: piramida berpikir memecah masalah dari abstrak (atas) ke konkret (bawah). Logical → Analytical → Computational → Procedural.<br>
+#+NAME:   fig:ThinkingFramework<br>
+[[./thinking-framework.png][Diagram piramida berpikir: empat lapisan dari atas ke bawah - Logical, Analytical, Computational, Procedural]]<br>
+(Gambar membutuhkan file di direktori yang sama. Jika tidak muncul, pastikan sudah =git pull= dengan benar atau buka langsung di Cursor.)<br>
+<br>
+Mengapa ini penting untuk LLM? Karena LLM melihat seluruh instruksi dalam jendela konteks sekaligus - semakin abstrak instruksi, semakin banyak asumsi yang harus dibuat model untuk mengisi kekosongan detail. Dengan memecah dari abstrak ke konkret, kita mengurangi ruang interpretasi di setiap langkah. Bayangkan seperti kita ngasih petunjuk ke orang: kalau kita cuma bilang "bikin aplikasi", hasilnya bisa macem-macem. Tapi kalau kita jelasin dari konsep besar sampai detail teknis, hasilnya jauh lebih terarah.<br>
+<br>
+Berikut contoh pemetaannya, dari yang paling abstrak ke yang paling konkret:<br>
+<br>
+*** Logical thinking: /apa/ yang mau kita buat<br>
+Ini level paling atas - kita mendefinisikan ide besarnya. Untuk contoh kali ini, kita representasikan dalam format /product brief/ atau /product description/. Contoh: "Aplikasi web yang menampilkan tanggal dan jam realtime untuk berbagai zona waktu di Indonesia."<br>
+<br>
+*** Analytical thinking: /apa yang dibutuhkan/ untuk membuatnya<br>
+Di level ini kita tentukan alat dan bahannya. Untuk contoh kali ini, kita representasikan sebagai /tech stack/ yang digunakan. Contoh: "Frontend pakai Astro + TypeScript, styling pakai vanilla CSS, nggak perlu backend."<br>
+<br>
+*** Computational thinking: penjelasan /mendetil/ dari apa yang mau kita buat<br>
+<br>
+Di sini kita pecah ide besar jadi bagian-bagian kecil yang bisa dikerjakan. Bisa direpresentasikan sebagai fitur-fitur utama, lalu dipisah menjadi *slices* (potongan fitur kecil yang bisa dikerjakan dan di-review dalam satu waktu), *milestone* (tonggak pencapaian dalam pengembangan), *user stories* (deskripsi fitur dari sudut pandang pengguna), tiket, dll.<br>
+<br>
+*** Procedural thinking: /bagaimana/ membuatnya agar terwujud<br>
+Level paling konkret - kita kasih instruksi sedetil mungkin. Contoh: batasan proyek, fitur apa yang dipilih untuk dikembangkan, mana yang belum perlu dikembangkan, dan fitur mana yang "dibuang". Juga termasuk /coding standard/, aturan testing, dan workflow yang kita mau.<br>
+<br>
+Keempat lapisan diatas adalah kerangka yang kita adaptasi dari berbagai framework pemecahan masalah (seperti Bloom's taxonomy dan computational thinking) - khusus disederhanakan untuk memudahkan kita ngasih instruksi ke coding agent.<br>
+<br>
+Jika keempat lapisan ini didokumentasikan secara lengkap, hasilnya setara dengan *PRD* (Product Requirements Document - dokumen yang menjelaskan fitur apa yang harus dibuat) atau *SPEC* (spesifikasi teknis - dokumen yang menjelaskan bagaimana cara membuatnya), tergantung seberapa teknis detail yang kita tulis.<br>
+<br>
+Mari kita coba wujudkan dari /prompt/ yang kurang jelas menjadi lebih lengkap dan terstruktur dengan fitur-fitur yang ada di Cursor - dimulai dari rules di bagian berikutnya.<br>
+<br>
+** Memberi Instruksi dengan RULES / AGENTS.MD<br>
+Untuk mendapatkan hasil yang lebih konsisten dan sesuai ekspektasi pada tugas yang kompleks, sebaiknya tambahkan instruksi yang jelas: mau buat apa, buatnya pakai apa, fiturnya apa saja dan bagaimana langkah-langkahnya. Untuk tugas sederhana (satu baris, satu file), instruksi minimal mungkin sudah cukup.<br>
+<br>
+Untuk mencapai konsistensi ini, Cursor menyediakan [[https://cursor.com/docs/rules][Rules]] atau bisa juga menggunakan [[https://agents.md][AGENTS.md]] yang lebih umum digunakan oleh /coding agent/ lain. Rules disimpan di folder =.cursor/rules= dengan format =.mdc= (Markdown for Cursor - format markdown khusus Cursor yang bisa punya metadata seperti =glob= pattern untuk menentukan file mana saja yang aturannya berlaku, dan =alwaysApply= untuk menentukan kapan aturan dipakai).<br>
+<br>
+Catatan: Versi lama Cursor menggunakan file =.cursorrules= di root proyek. Format ini sudah digantikan oleh folder =.cursor/rules/=. Kalau kamu punya =.cursorrules= yang sudah ada, Cursor masih membacanya untuk backward compatibility, tapi direkomendasikan untuk migrasi ke format baru.<br>
+<br>
+Beberapa hal yang sebaiknya ada di rules:<br>
+- penjelasan singkat tentang proyek<br>
+- bagaimana cara kerja dan cara menjalankan proyek<br>
+- /coding standard/ atau arsitektur<br>
+<br>
+Contoh struktur file dan folder untuk rules:<br>
+<br>
+#+BEGIN_SRC text<br>
+.cursor/rules/<br>
+  react-patterns.mdc       # Recognized as a project rule<br>
+  api-guidelines.md        # ⚠️ DIABAIKAN - ekstensi harus .mdc, bukan .md<br>
+                           # (Jika ada file .md dan .mdc dengan nama sama, hanya .mdc yang diproses; .md diabaikan tanpa peringatan)<br>
+  frontend/                # Organize rules in folders<br>
+    components.mdc<br>
+#+END_SRC<br>
+<br>
+Perhatikan ukuran rules: setiap rule ditambahkan ke konteks setiap kali agent dipanggil. Rule yang terlalu besar bisa mengurangi "daya pikir" agent karena token habis dipakai untuk konteks. Sebagai panduan, usahakan setiap rule tidak lebih dari ~50 baris - tapi ini bukan batas keras dari Cursor, jadi kalau aturannya kompleks, pertimbangkan pakai =glob= pattern untuk membatasi relevansi. Kalau total semua rule melebihi kapasitas konteks, Cursor akan memangkas otomatis - aturan dengan prioritas lebih rendah atau kurang relevan akan dihilangkan lebih dulu.<br>
+<br>
+*** Rules dasar<br>
+Mari kita coba praktikkan penggunaan rules. Untuk membuat rules, ada dua cara:<br>
+<br>
+1. *Lewat terminal*: Buka terminal, =cd= ke folder proyek kamu, lalu jalankan:<br>
+   #+BEGIN_SRC bash<br>
+   mkdir -p .cursor/rules<br>
+   #+END_SRC<br>
+   Kemudian buat file baru dengan ekstensi =.mdc= di dalam folder tersebut, misalnya =project-rules.mdc=.<br>
+2. *Lewat UI Cursor*: Buka Cursor → klik ikon Settings (⚙️) di sidebar kiri → pilih tab *Rules* → klik tombol =+ New Rule=. Sebuah form akan muncul seperti gambar di bawah.<br>
+<br>
+#+CAPTION: Tampilan form untuk membuat rule baru di Cursor. Isi nama rule dan deskripsikan aturannya sesuai kebutuhan proyek.<br>
+#+NAME:   fig:Setting<br>
+[[./setting.png][Screenshot form Create New Rule di Cursor: input nama rule dan deskripsi aturan]]<br>
+<br>
+Isi nama dan deskripsikan aturannya. Contohnya, untuk proyek kita ini bisa menggunakan aturan sebagai berikut:<br>
+<br>
+#+BEGIN_SRC markdown<br>
+# Project: Show date and time realtime<br>
+<br>
+## Tech Stack (non-negotiable)<br>
+- Frontend: Astro + TypeScript<br>
+- Styling: vanilla css<br>
+- No backend<br>
+<br>
+## Product Constraints<br>
+- Theme: lime green<br>
+- Accessibility: big text, big buttons, readable type, clear color combination<br>
+#+END_SRC<br>
+<br>
+Menariknya di Cursor kita bisa memberi kondisi kapan saja rules ini berlaku. Ada empat mode yang bisa dipilih:<br>
+- *Always Apply*: Aturan dipakai di /setiap/ prompt, nggak peduli konteksnya apa.<br>
+- *Apply Intelligently*: Cursor yang memutuskan sendiri kapan aturan ini relevan berdasarkan isi prompt. Ini yang belum tentu dipunyai /coding agent/ lain.<br>
+- *Apply to Specific Files*: Aturan cuma berlaku untuk file yang cocok dengan =glob= pattern (misal =*.tsx= untuk file React, atau =*.test.ts= untuk file testing).<br>
+- *Apply Manually*: Kamu yang panggil sendiri lewat =@Rules= saat lagi butuh.<br>
+<br>
+Sekarang, dengan aturan yang baru ditetapkan, mari kita coba dengan /prompt/ generik.<br>
+<br>
+#+BEGIN_SRC text<br>
+refactor<br>
+#+END_SRC<br>
+<br>
+Perintah /refactor/ diatas bisa dibilang tidak jelas dan bisa banyak interpretasi. Apa yang perlu di refactor? Apakah teknologinya, kodenya, testing, dsb.<br>
+<br>
+Namun karena kita sudah memasang aturan, rules tersebut akan disertakan sebagai bagian dari system prompt setiap kali kamu mengirim perintah ke LLM. Dengan adanya instruksi "refactor code to match project conventions" di rules, LLM akan memprioritaskan perubahan yang menyelaraskan kode dengan aturan yang sudah ditetapkan.<br>
+<br>
+*** Rules untuk /testing/<br>
+Sekarang mari tambahkan aturan untuk selalu membuat /testing/.<br>
+<br>
+Yang kita tambahkan ke rules:<br>
+<br>
+#+BEGIN_SRC markdown<br>
+<br>
+- Testing: Vitest + Astro<br>
+<br>
+## Engineering Constraints<br>
+- Keep behavior deterministic and testable<br>
+- Add test for core business logic<br>
+<br>
+#+END_SRC<br>
+<br>
+Lakukan perintah =refactor= lagi untuk melihat perbedaan hasilnya dari sebelumnya.<br>
+<br>
+*** COMMENT Latihan: Tambahkan beberapa batasan lainnya<br>
+<br>
+Yang kita tambahkan ke rules:<br>
+<br>
+- Keep 3rd party libraries to bare minimum<br>
+- Pin library version in package.json<br>
+- Prefer small components, clear naming, minimal abstraction<br>
+<br>
+Lakukan perintah =refactor= lagi untuk melihat perbedaan hasilnya dari sebelumnya.<br>
+<br>
+*** COMMENT Latihan: Menambahkan gaya pemrograman<br>
+<br>
+Yang kita tambahkan ke rules:<br>
+<br>
+## TypeScript-specific<br>
+Prefer functional programming style over imperative style in TypeScript<br>
+<br>
+Lakukan perintah =refactor= lagi untuk melihat perbedaan hasilnya dari sebelumnya.<br>
+<br>
+Oh iya, selain rules, Cursor juga mendukung konfigurasi lewat =.cursor/settings.json= (misal: pilih model default, aktifkan mode YOLO, atur perilaku agent). Pastikan JSON-nya valid, nggak boleh ada trailing comma. Kalau setting nggak berefek, coba restart Cursor.<br>
+<br>
+** Menambahkan Skill<br>
+[[https://cursor.com/docs/skills][Skill]] adalah format berbasis markdown yang terdokumentasi secara publik atau bahasa kerennya /open standard/. Format ini cukup terbuka untuk diadopsi dan bisa kamu download dari repo GitHub orang lain. Perlu diingat: beberapa skill mungkin membutuhkan dependensi tertentu atau ditulis untuk framework spesifik - periksa isi skill sebelum menggunakannya.<br>
+<br>
+Skill ini sifatnya lebih portable - formatnya distandarisasi sehingga bisa dipakai di berbagai proyek tanpa perlu menyalin ulang. Berbeda dengan rules yang lebih terikat ke proyek dan kondisi penggunaannya bisa diatur (Always Apply, Apply Intelligently, Apply to Specific Files, atau Apply Manually). Skill hanya digunakan saat relevan: Cursor akan mengevaluasi apakah skill tersebut cocok dengan prompt yang kamu kirim. Jika skor relevansinya rendah, skill tidak akan disertakan ke dalam konteks. Kalau kamu merasa skill seharusnya aktif tapi nggak dipakai, kamu bisa menyebutkan nama skill secara eksplisit di prompt (misal "Gunakan skill TDD untuk task ini"). Atau setel rule dengan =alwaysApply= sebagai fallback.<br>
+<br>
+*** Contoh Skill: Tidy TDD<br>
+<br>
+Skill ini menerapkan *TDD (Test-Driven Development)* - cara menulis kode dengan membuat /test dulu/, baru menulis kode agar test-nya lulus. Siklusnya: *Red* (test gagal) → *Green* (test lulus) → *Refactor* (perbaiki struktur kode tanpa mengubah perilaku). Ditambah pendekatan *Tidy First* dari Kent Beck (salah satu penemu TDD) yang memisahkan perubahan struktur kode (=rename=, =extract method=) dari perubahan logika - jangan pernah campur keduanya dalam satu commit.<br>
+<br>
+#+BEGIN_SRC markdown<br>
+For each next task, please do implement the test, then implement only enough code to make that test pass.<br>
+<br>
+# CORE DEVELOPMENT PRINCIPLES<br>
+- Always follow the TDD cycle: Red → Green → Refactor<br>
+- Write the simplest failing test first<br>
+- Implement the minimum code needed to make tests pass<br>
+- Refactor only after tests are passing<br>
+- Follow Beck's "Tidy First" approach by separating structural changes from behavioral changes<br>
+- Maintain high code quality throughout development<br>
+<br>
+# TDD METHODOLOGY GUIDANCE<br>
+- Start by writing a failing test that defines a small increment of functionality<br>
+- Use meaningful test names that describe behavior (e.g., "shouldSumTwoPositiveNumbers")<br>
+- Make test failures clear and informative<br>
+- Write just enough code to make the test pass - no more<br>
+- Once tests pass, consider if refactoring is needed<br>
+- Repeat the cycle for new functionality<br>
+<br>
+# TIDY FIRST APPROACH<br>
+- Separate all changes into two distinct types:<br>
+  1. STRUCTURAL CHANGES: Rearranging code without changing behavior (renaming, extracting methods, moving code)<br>
+  2. BEHAVIORAL CHANGES: Adding or modifying actual functionality<br>
+- Never mix structural and behavioral changes in the same commit<br>
+- Always make structural changes first when both are needed<br>
+- Validate structural changes do not alter behavior by running tests before and after<br>
+<br>
+# COMMIT DISCIPLINE<br>
+- Only commit when:<br>
+  1. ALL tests are passing<br>
+  2. ALL compiler/linter warnings have been resolved<br>
+  3. The change represents a single logical unit of work<br>
+  4. Commit messages clearly state whether the commit contains structural or behavioral changes<br>
+- Use small, frequent commits rather than large, infrequent ones<br>
+<br>
+# CODE QUALITY STANDARDS<br>
+- Eliminate duplication ruthlessly<br>
+- Express intent clearly through naming and structure<br>
+- Make dependencies explicit<br>
+- Keep methods small and focused on a single responsibility<br>
+- Minimize state and side effects<br>
+- Use the simplest solution that could possibly work<br>
+<br>
+# REFACTORING GUIDELINES<br>
+- Refactor only when tests are passing (in the "Green" phase)<br>
+- Use established refactoring patterns with their proper names<br>
+- Make one refactoring change at a time<br>
+- Run tests after each refactoring step<br>
+- Prioritize refactorings that remove duplication or improve clarity<br>
+<br>
+# EXAMPLE WORKFLOW<br>
+<br>
+When approaching a new feature:<br>
+1. Write a simple failing test for a small part of the feature<br>
+2. Implement the bare minimum to make it pass<br>
+3. Run tests to confirm they pass (Green)<br>
+4. Make any necessary structural changes (Tidy First), running tests after each change<br>
+5. Commit structural changes separately<br>
+6. Add another test for the next small increment of functionality<br>
+7. Repeat until the feature is complete, committing behavioral changes separately from structural ones<br>
+<br>
+Follow this process precisely, always prioritizing clean, well-tested code over quick implementation.<br>
+Always write one test at a time, make it run, then improve structure. Always run all the tests (except long-running tests) each time.<br>
+#+END_SRC<br>
+<br>
+**** Pengembangan fitur<br>
+<br>
+Latihan: gunakan prompt berikut bersama skill TDD diatas untuk mengembangkan fitur aplikasi date-time kita secara bertahap. Aplikasi yang sudah kita buat dengan aturan Astro + TypeScript dari bagian Rules sebelumnya akan kita kembangkan dengan tiga fitur baru.<br>
+<br>
+Menampilkan tiga bagian waktu Indonesia.<br>
+<br>
+#+BEGIN_SRC text<br>
+Untuk waktu di Indonesia ada tiga bagian: Waktu Indonesia Barat (WIB), Waktu Indonesia Tengah (WITA) dan Waktu Indonesia Timur. Tambahkan ke aplikasi supaya ketiganya dapat dilihat sebagai perbandingan tanggal dan waktu<br>
+#+END_SRC<br>
+<br>
+***** COMMENT Mendeteksi lokasi pengguna.<br>
+<br>
+#+BEGIN_SRC text<br>
+Deteksi lokasi user berada di zona waktu yang mana.<br>
+Highlight dan buat zona waktu nya menjadi lebih besar<br>
+dibandingkan zona waktu lain.<br>
+#+END_SRC<br>
+<br>
+***** Menampilkan waktu dari kota/negara populer lainnya<br>
+<br>
+#+BEGIN_SRC text<br>
+Saya ingin juga menampilkan zona waktu beberapa kota/negara<br>
+populer sebagai perbandingan.<br>
+#+END_SRC<br>
+<br>
+**** Contoh Skill Lainnya<br>
+- [[https://impeccable.style][impeccable.style]]<br>
+- [[https://github.com/mattpocock/skills/][mattpocock/skills]]<br>
+<br>
+Kita juga bisa menambahkan hooks untuk guardrail dan otomatisasi - kita akan bahas lebih mendalam di bagian **Kustomisasi lebih lanjut dengan Hooks**.<br>
+<br>
+** Delegasi Tugas dengan Subagent<br>
+Agent yang kita gunakan sejauh ini sifatnya generalis. Terkadang ada tugas yang membutuhkan spesialis. Cursor agent bisa mendelegasikan tugas tersebut ke subagent - kamu bisa memanggil subagent secara eksplisit dari prompt (misalnya: "minta subagent Explore untuk mencari semua file yang mengimpor modul X"), atau Cursor akan otomatis memanggil subagent yang tepat untuk tugas spesifik seperti menjalankan perintah Bash. Subagent juga dapat berjalan secara mandiri, punya context window sendiri, dan bisa dijalankan secara berbarengan sehingga tidak mengganggu agen utama.<br>
+<br>
+Beberapa subagent yang sudah disediakan oleh Cursor:<br>
+- Explore: untuk pencarian dan analisa codebase<br>
+- Bash: Menjalankan perintah shell yang dibutuhkan<br>
+- Browser: Membuka dan menjalankan otomasi untuk aplikasi web<br>
+<br>
+*** Contoh Subagent Sederhana<br>
+Kita pun bisa meminta bantuan Cursor untuk membuat subagent lewat perintah =/create-subagent= di agent chat:<br>
+<br>
+#+BEGIN_SRC text<br>
+/create-subagent Help me create this subagent for Cursor: <br>
+Monetization officer that inspects and evaluates the current project then plans for monetization opportunities. Ask questions for clarity, one question at a time until everything clear.<br>
+#+END_SRC<br>
+<br>
+Ubah metadata subagent agar lebih lengkap.<br>
+<br>
+#+BEGIN_SRC yaml<br>
+---<br>
+name: monetization-officer<br>
+model: grok-4.5[]<br>
+description: Monetization officer that inspects and evaluates the current project, then plans monetization opportunities. Use only when explicitly asked to assess, plan, or recommend monetization. ALWAYS USE FOR PLAN MODE.<br>
+---<br>
+#+END_SRC<br>
+<br>
+Lalu jalankan perintah dengan bahasa natural saja.<br>
+<br>
+#+BEGIN_SRC text<br>
+Let's find monetization opportunities for this project.<br>
+#+END_SRC<br>
+  <br>
+** Kustomisasi lebih lanjut dengan Hooks<br>
+Cara berikutnya untuk kustomisasi dan mengembangkan kursor lebih lanjut. Hooks memungkinkan kita menambahkan otomatisasi dan /guardrail/ ke dalam workflow - misalnya memblokir perintah berbahaya sebelum dieksekusi, atau menjalankan formatter secara otomatis setelah agent selesai mengedit file. Intinya, hooks adalah skrip yang dieksekusi di saat yang diinginkan (/trigger point/). Misalnya sebelum mengirim perintah ke LLM, sebelum menjalankan perintah shell, sebelum =npm install=, dsb.<br>
+<br>
+Berikut beberapa contoh penggunaan hooks:<br>
+- Run formatters after edits<br>
+- Add analytics for events<br>
+- Check for security or secrets<br>
+- Gate risky operations (e.g., SQL writes)<br>
+- Write collaboration logs<br>
+<br>
+*** Menulis Hooks<br>
+<br>
+Kita bisa menambahkan hooks untuk secara aktif mengecek dan memblokir perintah yang berpotensi merusak. Misalnya melakukan =npm install= sebuah pustaka yang menambahkan banyak dependensi baru dan melanggar aturan "Keep 3rd party libraries to bare minimum" yang sudah ditetapkan di rules.<br>
+<br>
+**** =./cursor/hooks.json=<br>
+<br>
+#+BEGIN_SRC json<br>
+{<br>
+  "version": 1,<br>
+  "hooks": {<br>
+    "beforeShellExecution": [<br>
+      {<br>
+        "command": ".cursor/hooks/guard-npm.sh"<br>
+      }<br>
+    ]<br>
+  }<br>
+}<br>
+#+END_SRC<br>
+<br>
+**** =./cursor/hooks/guard-npm.sh=<br>
+<br>
+#+BEGIN_SRC bash<br>
+#!/bin/bash<br>
+set -euo pipefail<br>
+<br>
+# Fail-safe: jika jq tidak tersedia, tolak perintah<br>
+if ! command -v jq &amp;&gt;/dev/null; then<br>
+  cat &lt;&lt;EOF<br>
+{<br>
+  "continue": false,<br>
+  "permission": "deny",<br>
+  "userMessage": "⚠️ Hook misconfigured: jq not installed. Command blocked.",<br>
+  "agentMessage": "Cannot verify command because jq is missing."<br>
+}<br>
+EOF<br>
+  exit 0<br>
+fi<br>
+<br>
+read -r input<br>
+command=$(echo "$input" | jq -r '.command')<br>
+<br>
+if echo "$command" | grep -qE "\b(npm|yarn|pnpm|bun)\s+(install|i|add|dlx)\b"; then<br>
+  cat &lt;&lt;EOF<br>
+{<br>
+  "continue": false,<br>
+  "permission": "deny",<br>
+  "userMessage": "⚠️ New dependencies not allowed per Project Rules. Use existing ones only.",<br>
+  "agentMessage": "Respect 'Keep 3rd party libraries to bare minimum' constraint."<br>
+}<br>
+EOF<br>
+  exit 0<br>
+fi<br>
+<br>
+# Allow everything else<br>
+cat &lt;&lt;EOF<br>
+{<br>
+  "continue": true,<br>
+  "permission": "allow"<br>
+}<br>
+EOF<br>
+#+END_SRC<br>
+<br>
+Peringatan: Pattern matching sederhana seperti ini bisa dilewati - agent bisa mengedit =package.json= lalu menjalankan =npm install= (tanpa argumen) untuk menginstal dependensi baru. Untuk proteksi yang lebih ketat, kombinasikan hook ini dengan hooks =onFileChange= atau pre-commit hook git. Lihat [[https://cursor.com/docs/hooks][dokumentasi hooks Cursor]] untuk opsi trigger point lainnya.<br>
+<br>
+Jika hook script gagal (non-zero exit) atau menghasilkan output JSON yang nggak valid, Cursor akan menganggap hook tersebut gagal dan - tergantung versi - mungkin memblokir aksi atau menampilkan peringatan. Selalu uji hook script secara terpisah sebelum dipasang.<br>
+<br>
+Kalau ada beberapa hook untuk trigger yang sama, hook akan dieksekusi sesuai urutan di array. Jika ada satu hook yang mengembalikan "deny", maka aksi akan diblokir - meskipun hook lain mengembalikan "allow".<br>
+<br>
+Coba dengan mengeksekusi perintah berikut<br>
+<br>
+#+BEGIN_SRC text<br>
+Add support for displaying time in a few popular cities (New York, London, Tokyo, Sydney) as comparison to the Indonesian timezones.<br>
+<br>
+Use moment.js with timezone support for easy handling of different timezones.<br>
+#+END_SRC<br>
+<br>
+⚠️ =moment.js= sudah dalam mode maintenance-only dan tidak direkomendasikan untuk proyek baru.<br>
+Alternatif modern: =date-fns= atau =Intl.DateTimeFormat= bawaan JavaScript.<br>
+ <br>
+#+CAPTION: Contoh eksekusi hooks: saat agent mencoba =npm install=, hook guard-npm.sh memblokir dan memberi peringatan sesuai rules yang sudah ditetapkan<br>
+#+NAME:   fig:Hooks<br>
+[[./hooks.png][Screenshot hasil eksekusi hooks: agent mencoba npm install, hook memblokir dan menampilkan peringatan]]<br>
+** Customization Marketplace<br>
+Cursor juga menyediakan marketplace untuk kustomisasi - isinya macam-macam: ada yang berupa rules, ada yang berupa skills, subagents, atau hooks - bahkan ada yang mengombinasikan beberapa jenis sekaligus. Kita bisa menggunakan hasil kustomisasi buatan teman-teman komunitas. Cara mengaksesnya: buka Cursor → klik ikon puzzle (🧩) di sidebar kiri → pilih tab *Marketplace*. <br>
+<br>
+Beberapa contoh yang bisa kamu eksplorasi:<br>
+- *Continual Learning*: skill yang mengajarkan agent untuk mencatat keputusan dan learnings dari sesi ke sesi - jadi agent kamu makin lama makin paham proyek.<br>
+- *Superpower*: koleksi shortcut dan optimasi workflow untuk produktivitas maksimal.<br>
+- *Compound Engineering*: pendekatan untuk mendokumentasikan solusi dari masalah yang sudah terpecahkan - supaya kita nggak ulangi kesalahan yang sama.<br>
+<br>
+#+CAPTION: Contoh Customization Marketplace - kita bisa browse dan install kustomisasi buatan komunitas seperti Continual Learning, Superpower, atau Compound Engineering<br>
+#+NAME:   fig:continual-learning<br>
+[[./continual-learning.png][Screenshot Cursor Customization Marketplace: browse dan install kustomisasi komunitas]]<br>
+*** Referensi<br>
+- [[https://cursor.com/docs/customize-cursor][Dokumentasi Resmi Kustomisasi Cursor]]<br>
+<br>
+*** Glosarium<br>
+<br>
+- *Astro*: Framework web untuk bikin website statis dan interaktif.<br>
+- *Coding Agent*: AI yang bisa melihat file proyek, mengedit kode, menjalankan perintah terminal, dan membaca hasilnya - bukan cuma chat.<br>
+- *Cursor*: Code editor berbasis VS Code yang punya AI/LLM bawaan untuk bantu menulis kode.<br>
+- *Hooks*: Skrip yang dieksekusi otomatis di trigger point tertentu (misal =beforeSubmitPrompt=, =beforeShellExecution=).<br>
+- =jq=: Command-line tool untuk membaca dan mengolah JSON (wajib untuk hooks).<br>
+- *LLM (Large Language Model)*: Model AI yang bisa memahami dan menghasilkan teks. Contoh: GPT-4, Claude, Gemini.<br>
+- =.mdc= (Markdown for Cursor)*: Format markdown khusus Cursor dengan dukungan metadata seperti =glob= dan =alwaysApply=.<br>
+- *Milestone*: Tonggak pencapaian dalam pengembangan - dipakai di lapisan Computational thinking.<br>
+- *Piramida Berpikir*: Kerangka empat lapisan (Logical → Analytical → Computational → Procedural) untuk memecah masalah dari abstrak ke konkret saat ngasih instruksi ke coding agent.<br>
+- *PRD (Product Requirements Document)*: Dokumen yang menjelaskan fitur apa yang harus dibuat - setara dengan dokumentasi lengkap keempat lapisan piramida berpikir.<br>
+- *Rules*: Instruksi yang selalu disertakan dalam setiap prompt untuk memberikan konteks proyek ke LLM.<br>
+- *Skills*: Modul portable yang mengajari LLM cara mengerjakan tugas spesifik (contoh: TDD, frontend design).<br>
+- *Slices*: Potongan fitur kecil yang bisa dikerjakan dan di-review dalam satu waktu.<br>
+- *SPEC (Spesifikasi Teknis)*: Dokumen yang menjelaskan bagaimana cara membuat fitur - setara dengan dokumentasi lengkap keempat lapisan piramida berpikir.<br>
+- *Subagent*: Agen spesialis yang bisa didelegasikan tugas tertentu oleh agen utama.<br>
+- *TDD (Test-Driven Development)*: Metodologi menulis kode dengan membuat test dulu, baru implementasi. Siklus: Red → Green → Refactor.<br>
+- *Tidy First*: Pendekatan dari Kent Beck yang memisahkan perubahan struktur kode dari perubahan logika.<br>
+- *Trigger Point*: Momen spesifik saat Cursor mengeksekusi hook (misal =beforeSubmitPrompt=, =beforeShellCommand=).<br>
+- *User Stories*: Deskripsi fitur dari sudut pandang pengguna.<br>
+- *Vitest*: Tools untuk menjalankan test di JavaScript/TypeScript (mirip Jest).<br>
+<br>
+** Penutup<br>
+<br>
+Cursor adalah /coding agent/ atau /harness agent/ yang bisa dipersonalisasi untuk mengikuti cara kita bekerja sebagai developer.<br>
+<br>
+Dengan rules, skills, dan hooks yang tepat, kita bisa mengurangi variabilitas output dan meningkatkan konsistensi dengan standar proyek - mendekati, meskipun tidak sepenuhnya setara dengan, produktivitas rekan kerja manusia yang sudah familier dengan /codebase/. Hasilnya tidak akan 100% sempurna, tapi error-nya cenderung lebih dapat diprediksi dan lebih mudah diperbaiki.<br>
+<br>
+Intinya: semakin baik kita mendefinisikan apa yang kita mau, semakin baik pula hasil yang diberikan Cursor. Prompt yang bagus tetap penting, tapi fondasi yang kuat (rules + skills + workflow) memastikan konsistensi tanpa perlu menulis ulang instruksi setiap kali.<br>
+<br>
+Kita bisa mengubah LLM yang "liar" dan sulit diprediksi menjadi lebih paham konteks, mengikuti standar kode, dan menghasilkan kode yang konsisten.<br>
+<br>
+Selamat ngoprek! 🚀<br>
+    </div>
+  </details>
+</div>
+
+<footer>
+  Generated by review-loop.sh on 2026-07-22 20:54:55 WIB
+</footer>
+
+</body>
+</html>
