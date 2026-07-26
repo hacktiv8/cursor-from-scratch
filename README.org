@@ -410,7 +410,7 @@ gunakan moment.js untuk zona waktu untuk menghitung perbedaan antar zona waktu.
  
 #+CAPTION: Contoh eksekusi hooks: saat agent mencoba =npm install=, hook guard-npm.sh memblokir dan memberi peringatan sesuai rules yang sudah ditetapkan
 #+NAME: fig:Hooks
-[[./assets/hooks.png]]
+[[./assets/demo-6.png]]
 
 
 ** Bonus: Delegasi Tugas dengan Subagent
