@@ -127,3 +127,65 @@ export function getIndonesianClocks(
     };
   });
 }
+
+function offsetLabel(now: Date, timeZone: string): string {
+  const formatted = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    timeZoneName: "longOffset",
+  }).formatToParts(now);
+  const part =
+    formatted.find((p) => p.type === "timeZoneName")?.value ?? "UTC";
+  return part.replace(/^GMT/, "UTC");
+}
+
+export const WORLD_ZONES = [
+  {
+    id: "NYC",
+    name: "New York",
+    timeZone: "America/New_York",
+  },
+  {
+    id: "LON",
+    name: "London",
+    timeZone: "Europe/London",
+  },
+  {
+    id: "TYO",
+    name: "Tokyo",
+    timeZone: "Asia/Tokyo",
+  },
+  {
+    id: "SYD",
+    name: "Sydney",
+    timeZone: "Australia/Sydney",
+  },
+] as const;
+
+export type WorldClockSnapshot = {
+  id: (typeof WORLD_ZONES)[number]["id"];
+  name: string;
+  hours: string;
+  minutes: string;
+  seconds: string;
+  datetime: string;
+  date: string;
+  offset: string;
+};
+
+export function getWorldClocks(
+  now: Date = new Date(),
+): WorldClockSnapshot[] {
+  return WORLD_ZONES.map((zone) => {
+    const p = partsInZone(now, zone.timeZone);
+    return {
+      id: zone.id,
+      name: zone.name,
+      hours: p.hours,
+      minutes: p.minutes,
+      seconds: p.seconds,
+      datetime: `${p.year}-${p.month}-${p.day}T${p.hours}:${p.minutes}:${p.seconds}`,
+      date: formatDateInZone(now, zone.timeZone),
+      offset: offsetLabel(now, zone.timeZone),
+    };
+  });
+}
