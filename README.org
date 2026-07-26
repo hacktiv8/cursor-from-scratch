@@ -339,11 +339,11 @@ Contoh skill lain yang bisa kamu coba:
 Cara berikutnya untuk kustomisasi dan mengembangkan Cursor lebih lanjut. Hooks memungkinkan kita menambahkan otomatisasi dan /guardrail/ ke dalam workflow - misalnya memblokir perintah berbahaya sebelum dieksekusi, atau menjalankan formatter secara otomatis setelah agent selesai mengedit file. Intinya, hooks adalah skrip yang dieksekusi di saat yang diinginkan (/trigger point/). Misalnya sebelum mengirim perintah ke LLM, sebelum menjalankan perintah shell, sebelum =npm install=, dsb.
 
 Berikut beberapa contoh penggunaan hooks:
-- Run formatters after edits
-- Add analytics for events
-- Check for security or secrets
-- Gate risky operations (e.g., SQL writes)
-- Write collaboration logs
+- Menjalankan tugas bebersih seperti formatter setelah file diubah
+- Menambahkan analitik untuk event tertentu
+- Cek keamanan aplikasi
+- Menghindari operasi berebahaya seperti menulis ke database
+- Menulis logs
 
 *** Menulis Hooks
 
@@ -368,43 +368,23 @@ Kita bisa menambahkan hooks untuk secara aktif mengecek dan memblokir perintah y
 
 #+BEGIN_SRC bash
 #!/bin/bash
-set -euo pipefail
 
-# Fail-safe: jika jq tidak tersedia, tolak perintah
-if ! command -v jq &>/dev/null; then
-  cat <<EOF
-{
-  "continue": false,
-  "permission": "deny",
-  "userMessage": "⚠️ Hook misconfigured: jq not installed. Command blocked.",
-  "agentMessage": "Cannot verify command because jq is missing."
-}
-EOF
-  exit 0
-fi
+# Guard hook: block npm/yarn/pnpm/bun install commands
+# Reads command from stdin JSON, responds with permission JSON on stdout
 
-read -r input
-command=$(echo "$input" | jq -r '.command')
+# Read all of stdin (Cursor sends JSON payload)
+input=$(cat)
 
-if echo "$command" | grep -qE "\b(npm|yarn|pnpm|bun)\s+(install|i|add|dlx)\b"; then
-  cat <<EOF
-{
-  "continue": false,
-  "permission": "deny",
-  "userMessage": "⚠️ New dependencies not allowed per Project Rules. Use existing ones only.",
-  "agentMessage": "Respect 'Keep 3rd party libraries to bare minimum' constraint."
-}
-EOF
+# Extract the command using grep
+command=$(echo "$input" | grep -o '"command":"[^"]*"' | head -1 | sed 's/"command":"//;s/"$//')
+
+if echo "$command" | grep -qE '\b(npm|yarn|pnpm|bun)\s+(install|i|add|dlx)\b'; then
+  echo '{"permission":"deny","agentMessage":"Blocked: adding new dependencies is not allowed. Use existing packages or built-in APIs like Intl.DateTimeFormat."}'
   exit 0
 fi
 
 # Allow everything else
-cat <<EOF
-{
-  "continue": true,
-  "permission": "allow"
-}
-EOF
+echo '{"permission":"allow"}'
 #+END_SRC
 
 Jangan lupa bikin script-nya executable agar /coding agent/ dapat menjalankannya:
@@ -413,16 +393,17 @@ Jangan lupa bikin script-nya executable agar /coding agent/ dapat menjalankannya
 chmod +x .cursor/hooks/guard-npm.sh
 #+END_SRC
 
-Jika hook script gagal (non-zero exit) atau menghasilkan output JSON yang nggak valid, Cursor akan menganggap hook tersebut gagal dan - tergantung versi - mungkin memblokir aksi atau menampilkan peringatan. Selalu uji hook script secara terpisah sebelum dipasang.
+Jika hook script gagal (non-zero exit) atau menghasilkan output JSON yang nggak valid, Cursor akan menganggap hook tersebut gagal dan mungkin memblokir aksi atau menampilkan peringatan. Selalu uji hook script secara terpisah sebelum dipasang.
 
 Kalau ada beberapa hook untuk trigger yang sama, hook akan dieksekusi sesuai urutan di array. Jika ada satu hook yang mengembalikan "deny", maka aksi akan diblokir - meskipun hook lain mengembalikan "allow".
 
 Coba dengan mengeksekusi perintah berikut. Kalau hook sudah terpasang dengan benar, agent akan mencoba =npm install moment= dan hook akan memblokirnya dengan peringatan seperti di screenshot bawah.
 
 #+BEGIN_SRC text
-Add support for displaying time in a few popular cities (New York, London, Tokyo, Sydney) as comparison to the Indonesian timezones.
+tambahkan dukungan untuk menampilkan waktu untuk beberapa kota populer
+(new york, london, tokyo, sydney) sebagai perbandingan dengan zona waktu Indonesia.
 
-Use moment.js with timezone support for easy handling of different timezones.
+gunakan moment.js untuk zona waktu untuk menghitung perbedaan antar zona waktu.
 #+END_SRC
 
  ⚠️ Sengaja kita pakai =moment.js= di prompt di atas untuk memicu hook =guard-npm.sh=. Sebaiknya gunakan =date-fns= atau =Intl.DateTimeFormat= bawaan JavaScript jika ingin berinteraksi dengan tanggal dan jam.
@@ -583,7 +564,6 @@ Beri masukan agar saya bisa lebih baik di kesempatan berikutnya. Apa yang menari
 - *Glob Pattern*: Pola pencocokan nama file pakai wildcard - misalnya =*.tsx= cocok untuk semua file berakhiran .tsx.
 - *Harness*: Tools yang "mengekang" dan mengarahkan LLM supaya output-nya lebih terprediksi.
 - *Hooks*: Skrip yang dieksekusi otomatis di trigger point tertentu (misal =beforeSubmitPrompt=, =beforeShellExecution=).
-- =jq=: Command-line tool untuk membaca dan mengolah JSON (wajib untuk hooks).
 - *LLM (Large Language Model)*: Model AI yang bisa memahami dan menghasilkan teks. Contoh: GPT-4, Claude, Gemini.
 - =.mdc= (Markdown for Cursor): Format markdown khusus Cursor dengan dukungan metadata seperti =glob= dan =alwaysApply=.
 - *Milestone*: Tonggak pencapaian dalam pengembangan - dipakai di lapisan Computational thinking.
