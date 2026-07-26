@@ -28,10 +28,13 @@ export function bindClock(root: ParentNode = document): () => void {
     zone: requireEl(root, "#zone"),
   };
 
+  let prevSeconds: string | null = null;
+
   const tick = () => {
     const snap = getClockSnapshot();
-    const prevSeconds = els.seconds.textContent;
+    if (prevSeconds === snap.seconds) return;
 
+    prevSeconds = snap.seconds;
     els.hours.textContent = snap.hours;
     els.minutes.textContent = snap.minutes;
     els.seconds.textContent = snap.seconds;
@@ -39,11 +42,9 @@ export function bindClock(root: ParentNode = document): () => void {
     els.date.textContent = snap.date;
     els.zone.textContent = snap.zone;
 
-    if (prevSeconds !== snap.seconds) {
-      els.seconds.classList.remove("tick");
-      void els.seconds.offsetWidth;
-      els.seconds.classList.add("tick");
-    }
+    els.seconds.classList.remove("tick");
+    void els.seconds.offsetWidth;
+    els.seconds.classList.add("tick");
   };
 
   tick();
@@ -51,4 +52,9 @@ export function bindClock(root: ParentNode = document): () => void {
   return () => window.clearInterval(id);
 }
 
-bindClock();
+let dispose = bindClock();
+
+if (import.meta.hot) {
+  import.meta.hot.dispose(() => dispose());
+  import.meta.hot.accept();
+}
