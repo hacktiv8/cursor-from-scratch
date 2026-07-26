@@ -184,10 +184,88 @@ body {
   }
 }
 
+.world-clocks {
+  margin-top: 2.75rem;
+  width: min(100%, 68rem);
+  opacity: 0;
+  animation: rise 0.9s ease forwards 0.56s;
+}
+
+.section-title {
+  margin: 0 0 1.5rem;
+  font-size: clamp(1.15rem, 2.6vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--moss);
+}
+
+.world-clocks-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.75rem;
+}
+
+.world-clocks-grid .zone-clock {
+  opacity: 0;
+  animation: rise 0.9s ease forwards;
+}
+
+.world-clocks-grid .zone-clock:nth-child(1) {
+  animation-delay: 0.68s;
+}
+
+.world-clocks-grid .zone-clock:nth-child(2) {
+  animation-delay: 0.8s;
+}
+
+.world-clocks-grid .zone-clock:nth-child(3) {
+  animation-delay: 0.92s;
+}
+
+.world-clocks-grid .zone-clock:nth-child(4) {
+  animation-delay: 1.04s;
+}
+
+@media (min-width: 640px) {
+  .world-clocks-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .world-clocks-grid .zone-clock:nth-child(odd) {
+    border-right: 1px solid rgba(36, 56, 22, 0.18);
+    padding-right: 1.25rem;
+  }
+}
+
+@media (min-width: 1100px) {
+  .world-clocks-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+  }
+
+  .world-clocks-grid .zone-clock {
+    border-right: 1px solid rgba(36, 56, 22, 0.18);
+    padding-right: 1.25rem;
+  }
+
+  .world-clocks-grid .zone-clock:nth-child(odd) {
+    border-right: 1px solid rgba(36, 56, 22, 0.18);
+    padding-right: 1.25rem;
+  }
+
+  .world-clocks-grid .zone-clock:last-child {
+    border-right: none;
+    padding-right: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .atmosphere,
   .brand,
   .lede,
+  .world-clocks,
   .zone-clock,
   .clock .sep,
   .tick {
@@ -196,6 +274,7 @@ body {
 
   .brand,
   .lede,
+  .world-clocks,
   .zone-clock {
     opacity: 1;
   }

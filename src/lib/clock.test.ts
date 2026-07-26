@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { getClockSnapshot, getIndonesianClocks, pad } from "./clock";
+import {
+  getClockSnapshot,
+  getIndonesianClocks,
+  getWorldClocks,
+  pad,
+} from "./clock";
 
 describe("pad", () => {
   it("pads single-digit numbers", () => {
@@ -102,5 +107,72 @@ describe("getIndonesianClocks", () => {
       datetime: "2026-07-27T01:30:00",
     });
     expect(clocks[2].date).toContain("27");
+  });
+});
+
+describe("getWorldClocks", () => {
+  it("returns popular city snapshots for the same instant", () => {
+    const now = new Date("2026-07-26T05:05:03.000Z");
+    const clocks = getWorldClocks(now);
+
+    expect(clocks).toHaveLength(4);
+    expect(clocks.map((c) => c.id)).toEqual(["NYC", "LON", "TYO", "SYD"]);
+    expect(clocks.map((c) => c.name)).toEqual([
+      "New York",
+      "London",
+      "Tokyo",
+      "Sydney",
+    ]);
+
+    expect(clocks[0]).toMatchObject({
+      hours: "01",
+      minutes: "05",
+      seconds: "03",
+      offset: "UTC-04:00",
+    });
+    expect(clocks[1]).toMatchObject({
+      hours: "06",
+      minutes: "05",
+      seconds: "03",
+      offset: "UTC+01:00",
+    });
+    expect(clocks[2]).toMatchObject({
+      hours: "14",
+      minutes: "05",
+      seconds: "03",
+      offset: "UTC+09:00",
+    });
+    expect(clocks[3]).toMatchObject({
+      hours: "15",
+      minutes: "05",
+      seconds: "03",
+      offset: "UTC+10:00",
+    });
+  });
+
+  it("keeps dates aligned to each zone when crossing midnight", () => {
+    const now = new Date("2026-07-26T16:30:00.000Z");
+    const clocks = getWorldClocks(now);
+
+    expect(clocks[0]).toMatchObject({
+      hours: "12",
+      minutes: "30",
+      datetime: "2026-07-26T12:30:00",
+    });
+    expect(clocks[0].date).toContain("26");
+
+    expect(clocks[2]).toMatchObject({
+      hours: "01",
+      minutes: "30",
+      datetime: "2026-07-27T01:30:00",
+    });
+    expect(clocks[2].date).toContain("27");
+
+    expect(clocks[3]).toMatchObject({
+      hours: "02",
+      minutes: "30",
+      datetime: "2026-07-27T02:30:00",
+    });
+    expect(clocks[3].date).toContain("27");
   });
 });

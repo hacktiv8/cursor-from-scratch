@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import { INDONESIAN_ZONES, WORLD_ZONES } from "../lib/clock";
 ---
 
 <html lang="id">
@@ -10,9 +11,9 @@ import "../styles/global.css";
     <meta name="generator" content={Astro.generator} />
     <meta
       name="description"
-      content="Kala — perbandingan tanggal dan jam WIB, WITA, dan WIT secara real-time."
+      content="Kala — perbandingan tanggal dan jam WIB, WITA, WIT, dan kota populer di dunia secara real-time."
     />
-    <title>Kala — WIB · WITA · WIT</title>
+    <title>Kala — WIB · WITA · WIT · Dunia</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -25,7 +26,7 @@ import "../styles/global.css";
 
     <main class="stage">
       <p class="brand">Kala</p>
-      <p class="lede">Perbandingan waktu di Indonesia</p>
+      <p class="lede">Perbandingan waktu di Indonesia dan kota populer di dunia</p>
 
       <section
         id="indo-clocks"
@@ -33,23 +34,7 @@ import "../styles/global.css";
         aria-label="Waktu Indonesia Barat, Tengah, dan Timur"
       >
         {
-          [
-            {
-              id: "WIB",
-              name: "Waktu Indonesia Barat",
-              offset: "UTC+07:00",
-            },
-            {
-              id: "WITA",
-              name: "Waktu Indonesia Tengah",
-              offset: "UTC+08:00",
-            },
-            {
-              id: "WIT",
-              name: "Waktu Indonesia Timur",
-              offset: "UTC+09:00",
-            },
-          ].map((zone) => (
+          INDONESIAN_ZONES.map((zone) => (
             <article class="zone-clock" data-zone={zone.id}>
               <h2 class="zone-id">{zone.id}</h2>
               <p class="zone-name">{zone.name}</p>
@@ -69,6 +54,37 @@ import "../styles/global.css";
             </article>
           ))
         }
+      </section>
+
+      <section
+        id="world-clocks"
+        class="world-clocks"
+        aria-label="Waktu di kota populer di dunia"
+      >
+        <h2 class="section-title">Kota populer</h2>
+        <div class="world-clocks-grid">
+          {
+            WORLD_ZONES.map((zone) => (
+              <article class="zone-clock" data-zone={zone.id}>
+                <h2 class="zone-id">{zone.id}</h2>
+                <p class="zone-name">{zone.name}</p>
+                <time class="clock" datetime="">
+                  <span data-part="hours">00</span>
+                  <span class="sep" aria-hidden="true">
+                    :
+                  </span>
+                  <span data-part="minutes">00</span>
+                  <span class="sep" aria-hidden="true">
+                    :
+                  </span>
+                  <span data-part="seconds">00</span>
+                </time>
+                <p class="date" data-part="date"></p>
+                <p class="zone-offset" data-part="offset"></p>
+              </article>
+            ))
+          }
+        </div>
       </section>
     </main>
 
