@@ -183,6 +183,8 @@ Yang kita tambahkan ke rules:
 
 Lakukan perintah =refactor= lagi untuk melihat perbedaan hasilnya dari sebelumnya.
 
+[[./assets/demo-3.png]]
+
 *** COMMENT Latihan bonus: Tambahkan beberapa batasan lainnya
 
 Yang kita tambahkan ke rules:
