@@ -28,19 +28,9 @@ Bonus:
 
 Kalau ingin mengikuti materi ini, pastikan kita sudah siapin hal-hal berikut:
 - Sudah install Cursor versi 3.2 atau yang lebih baru, dapat diunduh di https://cursor.com/download
-- Sudah punya akun dan login (bisa pakai Google atau GitHub)
+- Sudah punya akun dan login (bisa pakai Google atau GitHub) ke Cursor
 - Sudah install git dan punya akun GitHub
 - Clone repo ini dengan menjalankan `git clone https://github.com/hacktiv8/cursor-from-scratch`
-- Jalankan `npm install` atau perintah serupa di folder proyek. Butuh nodejs, deno atau bun tentunya
-  #+BEGIN_SRC shell
-git clone https://github.com/hacktiv8/cursor-from-scratch
-cd cursor-from-scratch
-npm install # or
-pnpm install # or
-bun install # or
-deno install
-  #+END_SRC
-  
 - Familiar dengan basic terminal (=cd=, =mkdir=, =ls=) dan git (=git init=, =git add=, =git commit=, =git reset=, =git checkout=, dll).
 
 *** Mode Interaksi Cursor
@@ -62,7 +52,7 @@ Prompt di atas sederhana banget, tapi bisa diinterpretasikan dengan cara yang sa
 - Interpretasi B: Static page dengan JavaScript =setInterval= sederhana
 - Interpretasi C: Aplikasi backend dengan bahasa pemrograman Python, Rust, atau PHP
 
-Hasilnya bisa beda jauh kan? Padahal perintahnya sama persis. Inilah kenapa kita perlu struktur.
+Interpretasinya bisa beda jauh kan? Padahal perintahnya sama persis. Inilah kenapa kita perlu struktur.
 
 Intinya, kita harus *memikirkan apa yang mau kita buat, bagaimana cara membuatnya, dan cara mengomunikasikannya ke LLM*. LLM tidak bisa membaca pikiran - jika instruksi kita tidak eksplisit, hasilnya akan bergantung sepenuhnya pada data yang pernah dipelajari sebelumnya. Jadi kalau kita sendiri nggak jelas mau bikin apa, jangan kaget kalau hasilnya juga ngaco.
 
@@ -70,6 +60,10 @@ Intinya, kita harus *memikirkan apa yang mau kita buat, bagaimana cara membuatny
 #+NAME: agentic-loop.png
 [[./assets/agentic-loop.png]]
 
+
+Berikut kira-kira hasilnya, versi saya. Yang saya jalankan sekitar minggu lalu ketika membuat materi ini.
+
+[[./assets/demo-1.png]]
 
 *** Agenda
 
@@ -100,12 +94,11 @@ Silakan interupsi kapan saja jika ada kendala, topik diskusi atau bertanya. Sesi
 #+ATTR_HTML: :class sidenote
 *Estimasi waktu:* ~20 menit.
 
-Untuk mendapatkan hasil yang lebih konsisten dan sesuai ekspektasi pada tugas yang kompleks, sebaiknya tambahkan instruksi yang jelas: mau buat apa, buatnya pakai apa, fiturnya apa saja dan bagaimana langkah-langkahnya. Untuk tugas sederhana (satu baris, satu file), instruksi minimal mungkin sudah cukup.
+Untuk mendapatkan hasil yang lebih konsisten dan sesuai ekspektasi pada tugas yang kompleks, sebaiknya tambahkan instruksi yang jelas: mau buat apa, buatnya pakai apa, fiturnya apa saja dan bagaimana langkah-langkahnya. Untuk tugas sederhana, instruksi minimal mungkin sudah cukup.
 
-Cursor menyediakan [[https://cursor.com/docs/rules][Rules]] atau bisa juga menggunakan [[https://agents.md][AGENTS.md]] yang lebih umum digunakan oleh /coding agent/ lain. Rules disimpan di folder =.cursor/rules= dengan format =.mdc= (Markdown for Cursor - format markdown khusus Cursor yang bisa punya metadata seperti =glob= pattern (pola pencocokan nama file - misalnya =*.tsx= artinya "semua file yang berakhiran .tsx") untuk menentukan file mana saja yang aturannya berlaku, dan =alwaysApply= untuk menentukan kapan aturan dipakai).
+Cursor menyediakan [[https://cursor.com/docs/rules][Rules]] atau bisa juga menggunakan [[https://agents.md][AGENTS.md]] yang lebih umum digunakan oleh /coding agent/ lain. Rules disimpan di folder =.cursor/rules= dengan format =.mdc= (Markdown for Cursor - format markdown khusus Cursor yang bisa menyimpan metadata pelengkap) untuk memberi aturan sehingga instruksi menjadi lebih jelas.
 
-Catatan: Kalau sudah punya =.cursorrules= dari versi Cursor sebelumnya, bisa buat folder =.cursor/rules/= lalu pindahkan isinya ke file =.cursor/rules/project.mdc=. Tambahkan metadata YAML di awal file kalau perlu atur =glob= atau =alwaysApply=. Setelah itu, hapus atau rename =.cursorrules= (misal jadi =.cursorrules.bak=)
-supaya nggak konflik.
+Catatan: Kalau sudah punya =.cursorrules= dari versi Cursor sebelumnya, bisa buat folder =.cursor/rules/= lalu pindahkan isinya ke file =.cursor/rules/project.mdc=. Tambahkan metadata YAML di awal file kalau perlu atur =glob= atau =alwaysApply=. Setelah itu, hapus atau rename =.cursorrules= (misal jadi =.cursorrules.bak=) supaya nggak konflik.
 
 Beberapa hal yang sebaiknya ada di rules:
 - penjelasan singkat tentang proyek
@@ -123,7 +116,8 @@ Contoh struktur file dan folder untuk rules:
     components.mdc
 #+END_SRC
 
-Perhatikan ukuran rules: Rule dengan mode =Always Apply= ditambahkan ke konteks setiap kali agent dipanggil. Untuk mode lainnya, rule hanya disertakan di saat yang relevan saja. Setiap rule akan mengurangi kapasitas /context window/. Akibatnya agent bisa 'lupa' konteks yang mungkin penting atau memberikan jawaban yang kurang akurat.
+Perhatikan ukuran rules: Rule dengan mode =Always Apply= ditambahkan ke konteks setiap kali agent dipanggil. Untuk mode lainnya, rule hanya disertakan di saat yang relevan saja. Setiap rule akan mengurangi kapasitas /context window/. Akibatnya si agen bisa 'lupa' konteks yang mungkin penting atau memberikan jawaban yang kurang akurat.
+
 Disarankan untuk setiap rules sebaiknya jangan terlalu panjang. Jika sudah lebih dari 100-an baris, bisa pisahkan ke rules file baru dan /mention/ filenya di rule terkait. Kalau aturannya kompleks, pertimbangkan menggunakan =glob= pattern untuk membatasi relevansi. Kalau total semua rule melebihi kapasitas konteks agent akan secara otomatis memangkas aturan dengan prioritas lebih rendah atau kurang relevan akan diabaikan.
 
 *** Rules dasar
@@ -157,9 +151,8 @@ Isi nama dan deskripsikan aturannya. Contohnya, untuk proyek kita ini bisa mengg
 
 Menariknya di Cursor kita bisa memberi kondisi kapan saja rules ini berlaku. Ada empat mode yang bisa dipilih:
 - *Always Apply*: Aturan dipakai di /setiap/ prompt, nggak peduli konteksnya apa.
-- *Apply Intelligently*: Cursor yang memutuskan sendiri kapan aturan ini relevan berdasarkan isi prompt. Fitur ini adalah salah satu fitur pembeda dari tools lain yang umumnya hanya mendukung always-apply atau manual invocation.
 - *Apply to Specific Files*: Aturan cuma berlaku untuk file yang cocok dengan =glob= pattern (misal =*.tsx= untuk file React, atau =*.test.ts= untuk file testing).
-- *Apply Manually*: Kamu yang panggil sendiri lewat =@Rules= saat lagi butuh.
+- *Apply Manually*: Kamu yang panggil sendiri lewat =@rules= ketika dibutuhkan.
 
 Sekarang, dengan aturan yang baru ditetapkan, mari kita coba dengan /prompt/ generik.
 
@@ -171,8 +164,10 @@ Perintah /refactor/ di atas bisa dibilang tidak jelas dan bisa banyak interpreta
 
 Namun karena kita sudah memasang aturan, maka ketika perintah tadi akan dikirimkan bersama dengan rules yang sudah kita definisikan sebelumnya sebagai bagian dari /system prompt/. Sehingga Cursor akan lebih paham apa yang harus dikerjakan.
 
+[[./assets/demo-2.png]]
+
 *** Rules untuk /testing/
-Sekarang mari tambahkan aturan untuk selalu membuat /testing/.
+Jika diperhatikan, proyek kita belum ada metode pengujian sama sekali. Sekarang mari tambahkan aturan untuk selalu membuat /testing/.
 
 Yang kita tambahkan ke rules:
 
