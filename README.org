@@ -49,7 +49,7 @@ Sepanjang sesi ini kita akan menggunakan coding agent Cursor versi 3 atau yang l
 
 #+CAPTION: Tampilan Cursor 3
 #+NAME: cursor-3.png
-[[./cursor-3.png]]
+[[./assets/cursor-3.png]]
 
 Cursor sebagai /harness/ - yang mengendalikan LLM biar output-nya lebih terarah - atau /coding agent/ menggunakan Large Language Model yang sifatnya sulit ditebak. Input yang sama bisa menghasilkan output yang berbeda atau dengan kata lain: "liar". Satu perintah bisa diinterpretasikan berbeda-beda oleh LLM. Mari kita lihat contoh prompt berikut.
 
@@ -68,7 +68,7 @@ Intinya, kita harus *memikirkan apa yang mau kita buat, bagaimana cara membuatny
 
 #+CAPTION: Ketika kita mengirimkan perintah ke /coding agent/, selain perintah kita, /coding agent/ juga turut mengirimkan /system prompt/, /rules atau AGENTS.md/, /SKILL.md/ jika dirasa butuh, kode yang berkaitan dengan perintah, dan percakapan sebelumnya dikirim ke LLM untuk kemudian diproses hingga menghasilkan output, jawaban, atau baris kode.
 #+NAME: agentic-loop.png
-[[./agentic-loop.png]]
+[[./assets/agentic-loop.png]]
 
 
 *** Agenda
@@ -90,9 +90,11 @@ Referensi: [[https://cursor.com/docs/customize-cursor][Dokumentasi Kustomisasi C
 *** Kendala, diskusi atau bertanya
 Silakan interupsi kapan saja jika ada kendala, topik diskusi atau bertanya. Sesi ini didesain agar interaktif dan mengalir dua arah.
 
+#+ATTR_ORG: :width 840
+#+ATTR_HTML: :width 640px
 #+CAPTION: Diskusi online
 #+NAME: qr-questions-monkey.png
-[[./qr-questions-monkey.png]]
+[[./assets/qr-questions-monkey.png]]
 
 ** Memberi Instruksi dengan Rules
 #+ATTR_HTML: :class sidenote
@@ -136,7 +138,7 @@ Mari kita coba praktikkan penggunaan rules. Untuk membuat rules, ada dua cara:
 
 #+CAPTION: Tampilan form untuk membuat rule baru di Cursor. Isi nama rule dan deskripsikan aturannya sesuai kebutuhan proyek.
 #+NAME: fig:Setting
-[[./setting.png]]
+[[./assets/setting.png]]
 
 Isi nama dan deskripsikan aturannya. Contohnya, untuk proyek kita ini bisa menggunakan aturan sebagai berikut:
 
@@ -413,7 +415,7 @@ Use moment.js with timezone support for easy handling of different timezones.
  
 #+CAPTION: Contoh eksekusi hooks: saat agent mencoba =npm install=, hook guard-npm.sh memblokir dan memberi peringatan sesuai rules yang sudah ditetapkan
 #+NAME: fig:Hooks
-[[./hooks.png]]
+[[./assets/hooks.png]]
 
 
 ** Bonus: Delegasi Tugas dengan Subagent
@@ -523,7 +525,7 @@ Beberapa contoh yang bisa kamu eksplorasi:
 
 #+CAPTION: Contoh Customization Marketplace - kita bisa browse dan install kustomisasi buatan komunitas seperti Continual Learning, Superpower, atau Compound Engineering
 #+NAME: fig:continual-learning
-[[./continual-learning.png]]
+[[./assets/continual-learning.png]]
 
 ** Penutup
 #+ATTR_HTML: :class sidenote
@@ -545,9 +547,11 @@ Selamat ngoprek! 🚀
 
 Beri masukan agar saya bisa lebih baik di kesempatan berikutnya. Apa yang menarik dari sesi ini? Apa yang butuh diperbaiki? https://feedback.rizafahmi.com/
 
+#+ATTR_ORG: :width 840
+#+ATTR_HTML: :width 640px
 #+CAPTION: QR Code untuk masukan
 #+NAME: qr-monkey-feedback.png
-[[./qr-feedback-monkey.png]]
+[[./assets/qr-feedback-monkey.png]]
 
 *** Referensi
 - [[https://cursor.com/docs/customize-cursor][Dokumentasi Resmi Kustomisasi Cursor]]
