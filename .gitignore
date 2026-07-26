@@ -2,3 +2,4 @@
 
 # Astro generated files
 .astro/
+/assets/.DS_Store

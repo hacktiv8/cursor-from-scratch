@@ -215,6 +215,15 @@ Lakukan perintah =refactor= lagi untuk melihat perbedaan hasilnya dari sebelumny
 
 Skill ini sifatnya lebih portable - formatnya standar sehingga bisa dipakai di berbagai proyek tanpa perlu menyalin ulang. Berbeda dengan rules yang lebih terikat ke proyek dan kondisi penggunaannya bisa diatur (Always Apply, Apply Intelligently, Apply to Specific Files, atau Apply Manually). Skill hanya digunakan saat relevan: berdasarkan pengamatan, Cursor akan mengevaluasi apakah skill tersebut cocok dengan prompt yang kamu kirim. Jika dianggap kurang relevan, skill tidak akan disertakan ke dalam konteks. Kalau kamu merasa skill seharusnya aktif tapi nggak dipakai, kamu bisa menyebutkan nama skill secara eksplisit di prompt (misal "Gunakan skill TDD untuk task ini").
 
+[[file:assets/trinity_frame_01.png]]
+[[file:assets/trinity_frame_02.png]]
+[[file:assets/trinity_frame_03.png]]
+[[file:assets/trinity_frame_04.png]]
+[[file:assets/trinity_frame_05.png]]
+[[file:assets/trinity_frame_06.png]]
+[[file:assets/trinity_frame_07.png]]
+
+
 *** Contoh Skill: Tidy TDD
 
 Skill ini menerapkan *TDD (Test-Driven Development)* - cara menulis kode dengan membuat /test dulu/, baru menulis kode agar test-nya lulus. Siklusnya: *Red* (test gagal) → *Green* (test lulus) → *Refactor* (perbaiki struktur kode tanpa mengubah perilaku). Ditambah pendekatan *Tidy First* yang dibuat oleh Kent Beck. Konsep ini akan memisahkan perubahan struktur kode (=rename=, =extract method=) dari perubahan logika sehingga tidak /kecampur/ dalam satu commit.
