@@ -181,7 +181,7 @@ Yang kita tambahkan ke rules:
 
 #+END_SRC
 
-Lakukan perintah =refactor= lagi untuk melihat perbedaan hasilnya dari sebelumnya.
+Lakukan perintah =refactor= lagi untuk menambahkan testing ke aplikasi.
 
 [[./assets/demo-3.png]]
 
@@ -206,7 +206,7 @@ Lakukan perintah =refactor= lagi untuk melihat perbedaan hasilnya dari sebelumny
 
 ** Menambahkan Skill
 #+ATTR_HTML: :class sidenote
-*Estimasi waktu:* 10 menit.
+*Estimasi waktu:* ~10 menit.
 
 [[https://cursor.com/docs/skills][Skill]] adalah format berbasis markdown yang terdokumentasi secara publik atau bahasa kerennya /open standard/ - artinya spesifikasinya terbuka dan siapa pun bisa membuat skill yang kompatibel. Format ini cukup terbuka untuk diadopsi dan bisa kamu unduh dari repo GitHub orang lain. Perlu diingat: beberapa skill mungkin membutuhkan library atau tools tambahan yang harus di-install terlebih dahulu, atau ditulis untuk framework spesifik - periksa isi skill sebelum menggunakannya.
 
@@ -220,6 +220,13 @@ Skill ini sifatnya lebih portable - formatnya standar sehingga bisa dipakai di b
 [[file:assets/trinity_frame_06.png]]
 [[file:assets/trinity_frame_07.png]]
 
+*** Menambahkan Skill Baru
+
+Untuk menambah skill baru, bisa dilakukan dengan beberapa cara: manual menambahkan ke =.cursor/skills/= di level proyek, =~/.cursor/skills/= di level global, atau yang lebih umum =~/.agents/skills/=.
+
+Bisa juga dengan meminta bantuan agent untuk membuatkannya.
+
+[[./assets/skills.png]]
 
 *** Contoh Skill: Tidy TDD
 
@@ -302,6 +309,8 @@ Menampilkan tiga bagian waktu Indonesia.
 Untuk waktu di Indonesia ada tiga bagian: Waktu Indonesia Barat (WIB), Waktu Indonesia Tengah (WITA) dan Waktu Indonesia Timur. Tambahkan ke aplikasi supaya ketiganya dapat dilihat sebagai perbandingan tanggal dan waktu
 #+END_SRC
 
+[[./assets/demo-4.png]]
+
 ***** COMMENT Bonus: Mendeteksi lokasi pengguna.
 
 #+BEGIN_SRC text
@@ -313,8 +322,7 @@ dibandingkan zona waktu lain.
 ***** Menampilkan waktu dari kota/negara populer lainnya
 
 #+BEGIN_SRC text
-Saya ingin juga menampilkan zona waktu beberapa kota/negara
-populer sebagai perbandingan.
+Saya ingin juga menampilkan zona waktu beberapa kota/negara populer sebagai perbandingan.
 #+END_SRC
 
 **** Contoh Skill Lainnya
