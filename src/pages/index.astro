@@ -1,0 +1,45 @@
+---
+import "../styles/global.css";
+---
+
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <meta
+      name="description"
+      content="Kala — tampilan tanggal dan jam real-time."
+    />
+    <title>Kala — Jam & Tanggal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="atmosphere" aria-hidden="true"></div>
+
+    <main class="stage">
+      <p class="brand">Kala</p>
+
+      <time id="clock" class="clock" datetime="">
+        <span data-part="hours">00</span><span class="sep" aria-hidden="true"
+          >:</span
+        ><span data-part="minutes">00</span><span class="sep" aria-hidden="true"
+          >:</span
+        ><span data-part="seconds">00</span>
+      </time>
+
+      <p id="date" class="date"></p>
+      <p id="zone" class="zone"></p>
+    </main>
+
+    <script>
+      import "../scripts/start-clock";
+    </script>
+  </body>
+</html>
