@@ -5,6 +5,10 @@ const dateFmt = new Intl.DateTimeFormat("id-ID", {
   year: "numeric",
 });
 
+const zoneName =
+  Intl.DateTimeFormat().resolvedOptions().timeZone?.replace(/_/g, " ") ||
+  "Lokal";
+
 export function pad(n: number): string {
   return String(n).padStart(2, "0");
 }
@@ -28,9 +32,6 @@ export function getClockSnapshot(now: Date = new Date()): ClockSnapshot {
   const abs = Math.abs(offsetMin);
   const tzHours = pad(Math.floor(abs / 60));
   const tzMins = pad(abs % 60);
-  const zoneName =
-    Intl.DateTimeFormat().resolvedOptions().timeZone?.replace(/_/g, " ") ||
-    "Lokal";
 
   return {
     hours,
