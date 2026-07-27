@@ -15,22 +15,20 @@ Intinya: semakin baik kita mendefinisikan apa yang kita mau, semakin baik pula h
 
 *** Yang Akan Kita Pelajari
 
-Di akhir sesi, semoga kita dapat memahami dan mengerti:
-- Rules (=.cursor/rules=) → Memberikan konsistensi dan alignment proyek
-- Skills → Mengajarkan LLM cara kerja yang lebih baik dan portable
-- Hooks → Memberikan kontrol dan guardrail otomatis
-
-Bonus:
-- Subagent → Delegasi tugas ke agen spesialis
-- Customization Marketplace → Menggunakkan rules, skills, subagent, atau hooks buatan komunitas.
+Di akhir sesi, peserta dapat:
+- menjelaskan perbedaan Rule, Skill, dan Hook;
+- membuat dan memverifikasi satu Project Rule;
+- menjalankan Skill baik secara implisit atau eksplisit;
+- membuat Hook yang memblokir perintah tertentu;
 
 *** Prasyarat
 
-Kalau ingin mengikuti materi ini, pastikan kita sudah siapin hal-hal berikut:
-- Sudah install Cursor versi 3.2 atau yang lebih baru, dapat diunduh di https://cursor.com/download
-- Sudah punya akun dan login (bisa pakai Google atau GitHub) ke Cursor
-- Sudah install git dan punya akun GitHub
-- Clone repo ini dengan menjalankan `git clone https://github.com/hacktiv8/cursor-from-scratch`
+Kalau ingin mengikuti materi ini, pastikan teman-temam mempersiapkan hal-hal berikut:
+- Sudah instal Cursor versi 3.2 atau yang lebih baru, dapat diunduh di https://cursor.com/download
+- Sudah punya akun dan /login/ (bisa pakai Google atau GitHub) ke Cursor
+- Sudah instal git dan punya akun GitHub
+- Klon repositori ini dengan menjalankan `git clone https://github.com/hacktiv8/cursor-from-scratch`
+- Jika ingin melihat hasil akhirnya langkah demi langkah, bisa cek `git branch`
 - Familiar dengan basic terminal (=cd=, =mkdir=, =ls=) dan git (=git init=, =git add=, =git commit=, =git reset=, =git checkout=, dll).
 
 *** Mode Interaksi Cursor
@@ -82,7 +80,7 @@ Berikut ini adalah materi yang akan kita bahas.
 Referensi: [[https://cursor.com/docs/customize-cursor][Dokumentasi Kustomisasi Cursor]]
 
 *** Kendala, diskusi atau bertanya
-Silakan interupsi kapan saja jika ada kendala, topik diskusi atau bertanya. Sesi ini didesain agar interaktif dan mengalir dua arah.
+Silakan interupsi kapan saja jika ada kendala, topik diskusi atau bertanya. Sesi ini didesain agar interaktif dan mengalir dua arah. Ajukan topik diskusi atau pertanyaaan ke: https://feedback.rizafahmi.com/questions
 
 #+ATTR_ORG: :width 840
 #+ATTR_HTML: :width 640px
@@ -98,12 +96,12 @@ Untuk mendapatkan hasil yang lebih konsisten dan sesuai ekspektasi pada tugas ya
 
 Cursor menyediakan [[https://cursor.com/docs/rules][Rules]] atau bisa juga menggunakan [[https://agents.md][AGENTS.md]] yang lebih umum digunakan oleh /coding agent/ lain. Rules disimpan di folder =.cursor/rules= dengan format =.mdc= (Markdown for Cursor - format markdown khusus Cursor yang bisa menyimpan metadata pelengkap) untuk memberi aturan sehingga instruksi menjadi lebih jelas.
 
-Catatan: Kalau sudah punya =.cursorrules= dari versi Cursor sebelumnya, bisa buat folder =.cursor/rules/= lalu pindahkan isinya ke file =.cursor/rules/project.mdc=. Tambahkan metadata YAML di awal file kalau perlu atur =glob= atau =alwaysApply=. Setelah itu, hapus atau rename =.cursorrules= (misal jadi =.cursorrules.bak=) supaya nggak konflik.
+Catatan: Kalau sudah punya =.cursorrules= dari versi Cursor sebelumnya, bisa buat folder =.cursor/rules/= lalu pindahkan isinya ke file =.cursor/rules/project.mdc=. Tambahkan metadata YAML di awal file kalau perlu atur =globs= atau =alwaysApply=. Setelah itu, hapus atau rename =.cursorrules= (misal jadi =.cursorrules.bak=) supaya nggak konflik.
 
 Beberapa hal yang sebaiknya ada di rules:
 - penjelasan singkat tentang proyek
 - bagaimana cara kerja dan cara menjalankan proyek
-- coding standard atau arsitektur
+- standar penulisan kode atau arsitektur
 
 Contoh struktur file dan folder untuk rules:
 
@@ -118,7 +116,9 @@ Contoh struktur file dan folder untuk rules:
 
 Perhatikan ukuran rules: Rule dengan mode =Always Apply= ditambahkan ke konteks setiap kali agent dipanggil. Untuk mode lainnya, rule hanya disertakan di saat yang relevan saja. Setiap rule akan mengurangi kapasitas /context window/. Akibatnya si agen bisa 'lupa' konteks yang mungkin penting atau memberikan jawaban yang kurang akurat.
 
-Disarankan untuk setiap rules sebaiknya jangan terlalu panjang. Jika sudah lebih dari 100-an baris, bisa pisahkan ke rules file baru dan /mention/ filenya di rule terkait. Kalau aturannya kompleks, pertimbangkan menggunakan =glob= pattern untuk membatasi relevansi. Kalau total semua rule melebihi kapasitas konteks agent akan secara otomatis memangkas aturan dengan prioritas lebih rendah atau kurang relevan akan diabaikan.
+Untuk workshop ini, saya menyarankan Rule tetap di bawah sekitar 100 baris agar mudah dibaca dan dikelola. Dokumentasi Cursor saat ini menyarankan setiap Rule sebaiknya tidak lebih dari 500 baris. Jika aturannya kompleks, pertimbangkan menggunakan =globs= pattern untuk membatasi relevansi. Kalau total semua rule melebihi kapasitas konteks agent akan secara otomatis memangkas aturan dengan prioritas lebih rendah atau kurang relevan akan diabaikan.
+
+Atau lebih baik rules dipisah menjadi rules-rules yang lebih kecil dan spesifik. Misalnya ada rule khusus untuk frontend, css, javascript, dan sebagainya.
 
 *** Rules dasar
 Mari kita coba praktikkan penggunaan rules. Untuk membuat rules, ada dua cara:
@@ -151,7 +151,7 @@ Isi nama dan deskripsikan aturannya. Contohnya, untuk proyek kita ini bisa mengg
 
 Menariknya di Cursor kita bisa memberi kondisi kapan saja rules ini berlaku. Ada empat mode yang bisa dipilih:
 - *Always Apply*: Aturan dipakai di /setiap/ prompt, nggak peduli konteksnya apa.
-- *Apply to Specific Files*: Aturan cuma berlaku untuk file yang cocok dengan =glob= pattern (misal =*.tsx= untuk file React, atau =*.test.ts= untuk file testing).
+- *Apply to Specific Files*: Aturan cuma berlaku untuk file yang cocok dengan =globs= pattern (misal =*.tsx= untuk file React, atau =*.test.ts= untuk file testing).
 - *Apply Manually*: Kamu yang panggil sendiri lewat =@rules= ketika dibutuhkan.
 
 Sekarang, dengan aturan yang baru ditetapkan, mari kita coba dengan /prompt/ generik.
@@ -160,7 +160,7 @@ Sekarang, dengan aturan yang baru ditetapkan, mari kita coba dengan /prompt/ gen
 refactor
 #+END_SRC
 
-Perintah /refactor/ di atas bisa dibilang tidak jelas dan bisa banyak interpretasi. Apa yang perlu di refactor? Apakah teknologinya, kodenya, testing, dsb.
+Perintah /refactor/ di atas bisa dibilang tidak jelas dan bisa banyak interpretasi. Apa yang perlu diubah? Bagian mana yang perlu refactor? Apakah teknologinya, kodenya, testing, dsb.
 
 Namun karena kita sudah memasang aturan, maka ketika perintah tadi akan dikirimkan bersama dengan rules yang sudah kita definisikan sebelumnya sebagai bagian dari /system prompt/. Sehingga Cursor akan lebih paham apa yang harus dikerjakan.
 
@@ -208,9 +208,9 @@ Lakukan perintah =refactor= lagi untuk melihat perbedaan hasilnya dari sebelumny
 #+ATTR_HTML: :class sidenote
 *Estimasi waktu:* ~10 menit.
 
-[[https://cursor.com/docs/skills][Skill]] adalah format berbasis markdown yang terdokumentasi secara publik atau bahasa kerennya /open standard/ - artinya spesifikasinya terbuka dan siapa pun bisa membuat skill yang kompatibel. Format ini cukup terbuka untuk diadopsi dan bisa kamu unduh dari repo GitHub orang lain. Perlu diingat: beberapa skill mungkin membutuhkan library atau tools tambahan yang harus di-install terlebih dahulu, atau ditulis untuk framework spesifik - periksa isi skill sebelum menggunakannya.
+[[https://cursor.com/docs/skills][Skill]] adalah format berbasis markdown yang terdokumentasi secara publik atau bahasa kerennya /open standard/ - artinya spesifikasinya terbuka dan siapa pun bisa membuat skill yang kompatibel. Format ini cukup terbuka untuk diadopsi dan bisa kamu unduh dari repo GitHub orang lain. Perlu diingat: beberapa skill mungkin membutuhkan library atau tools tambahan yang harus di-instal terlebih dahulu, atau ditulis untuk framework spesifik - periksa isi skill sebelum menggunakannya.
 
-Skill ini sifatnya lebih portable - formatnya standar sehingga bisa dipakai di berbagai proyek tanpa perlu menyalin ulang. Berbeda dengan rules yang lebih terikat ke proyek dan kondisi penggunaannya bisa diatur (Always Apply, Apply Intelligently, Apply to Specific Files, atau Apply Manually). Skill hanya digunakan saat relevan: berdasarkan pengamatan, Cursor akan mengevaluasi apakah skill tersebut cocok dengan prompt yang kamu kirim. Jika dianggap kurang relevan, skill tidak akan disertakan ke dalam konteks. Kalau kamu merasa skill seharusnya aktif tapi nggak dipakai, kamu bisa menyebutkan nama skill secara eksplisit di prompt (misal "Gunakan skill TDD untuk task ini").
+Skill ini sifatnya lebih portable - formatnya standar sehingga bisa dipakai di berbagai proyek tanpa perlu menyalin ulang. Berbeda dengan rules yang lebih terikat ke proyek dan kondisi penggunaannya bisa diatur (Always Apply, Apply to Specific Files, atau Apply Manually). Skill hanya digunakan saat relevan: berdasarkan pengamatan, Cursor akan mengevaluasi apakah skill tersebut cocok dengan prompt yang kamu kirim. Jika dianggap kurang relevan, skill tidak akan disertakan ke dalam konteks. Kalau kamu merasa skill seharusnya aktif tapi nggak dipakai, kamu bisa menyebutkan nama skill secara eksplisit di prompt (misal "Gunakan skill TDD untuk task ini").
 
 [[file:assets/trinity_frame_01.png]]
 [[file:assets/trinity_frame_02.png]]
@@ -233,6 +233,11 @@ Bisa juga dengan meminta bantuan agent untuk membuatkannya.
 Skill ini menerapkan *TDD (Test-Driven Development)* - cara menulis kode dengan membuat /test dulu/, baru menulis kode agar test-nya lulus. Siklusnya: *Red* (test gagal) → *Green* (test lulus) → *Refactor* (perbaiki struktur kode tanpa mengubah perilaku). Ditambah pendekatan *Tidy First* yang dibuat oleh Kent Beck. Konsep ini akan memisahkan perubahan struktur kode (=rename=, =extract method=) dari perubahan logika sehingga tidak /kecampur/ dalam satu commit.
 
 #+BEGIN_SRC markdown
+---
+name: tidy-tdd
+description: Use test-driven development and Tidy First when implementing or changing behavior.
+---
+
 For each next task, please do implement the test, then implement only enough code to make that test pass.
 
 # CORE DEVELOPMENT PRINCIPLES
@@ -306,7 +311,7 @@ Latihan: gunakan prompt berikut bersama skill TDD di atas untuk mengembangkan fi
 Menampilkan tiga bagian waktu Indonesia.
 
 #+BEGIN_SRC text
-Untuk waktu di Indonesia ada tiga bagian: Waktu Indonesia Barat (WIB), Waktu Indonesia Tengah (WITA) dan Waktu Indonesia Timur. Tambahkan ke aplikasi supaya ketiganya dapat dilihat sebagai perbandingan tanggal dan waktu
+Untuk waktu di Indonesia ada tiga bagian: Waktu Indonesia Barat (WIB), Waktu Indonesia Tengah (WITA) dan Waktu Indonesia Timur (WIT). Tambahkan ke aplikasi supaya ketiganya dapat dilihat sebagai perbandingan tanggal dan waktu
 #+END_SRC
 
 [[./assets/demo-4.png]]
@@ -315,7 +320,7 @@ Untuk waktu di Indonesia ada tiga bagian: Waktu Indonesia Barat (WIB), Waktu Ind
 
 #+BEGIN_SRC text
 Deteksi lokasi user berada di zona waktu yang mana.
-Highlight dan buat zona waktu nya menjadi lebih besar
+Highlight dan buat zona waktunya menjadi lebih besar
 dibandingkan zona waktu lain.
 #+END_SRC
 
@@ -339,10 +344,10 @@ Contoh skill lain yang bisa kamu coba:
 Cara berikutnya untuk kustomisasi dan mengembangkan Cursor lebih lanjut. Hooks memungkinkan kita menambahkan otomatisasi dan /guardrail/ ke dalam workflow - misalnya memblokir perintah berbahaya sebelum dieksekusi, atau menjalankan formatter secara otomatis setelah agent selesai mengedit file. Intinya, hooks adalah skrip yang dieksekusi di saat yang diinginkan (/trigger point/). Misalnya sebelum mengirim perintah ke LLM, sebelum menjalankan perintah shell, sebelum =npm install=, dsb.
 
 Berikut beberapa contoh penggunaan hooks:
-- Menjalankan tugas bebersih seperti formatter setelah file diubah
+- Menjalankan tugas pembersihan dan perapihan seperti linter dan formatter setelah file diubah
 - Menambahkan analitik untuk event tertentu
 - Cek keamanan aplikasi
-- Menghindari operasi berebahaya seperti menulis ke database
+- Menghindari operasi berbahaya seperti menulis ke database
 - Menulis logs
 
 *** Menulis Hooks
@@ -357,7 +362,8 @@ Kita bisa menambahkan hooks untuk secara aktif mengecek dan memblokir perintah y
   "hooks": {
     "beforeShellExecution": [
       {
-        "command": ".cursor/hooks/guard-npm.sh"
+        "command": ".cursor/hooks/guard-npm.sh",
+        "failClosed": true
       }
     ]
   }
@@ -379,7 +385,7 @@ input=$(cat)
 command=$(echo "$input" | grep -o '"command":"[^"]*"' | head -1 | sed 's/"command":"//;s/"$//')
 
 if echo "$command" | grep -qE '\b(npm|yarn|pnpm|bun)\s+(install|i|add|dlx)\b'; then
-  echo '{"permission":"deny","agentMessage":"Blocked: adding new dependencies is not allowed. Use existing packages or built-in APIs like Intl.DateTimeFormat."}'
+  echo '{"permission":"deny","agent_message":"Blocked: adding new dependencies is not allowed. Use existing packages or built-in APIs like Intl.DateTimeFormat."}'
   exit 0
 fi
 
@@ -397,21 +403,40 @@ Jika hook script gagal (non-zero exit) atau menghasilkan output JSON yang nggak 
 
 Kalau ada beberapa hook untuk trigger yang sama, hook akan dieksekusi sesuai urutan di array. Jika ada satu hook yang mengembalikan "deny", maka aksi akan diblokir - meskipun hook lain mengembalikan "allow".
 
-Coba dengan mengeksekusi perintah berikut. Kalau hook sudah terpasang dengan benar, agent akan mencoba =npm install moment= dan hook akan memblokirnya dengan peringatan seperti di screenshot bawah.
+Sebelum mencoba dengan prompt, karena shell script, hook bisa kita jalankan untuk memastikan semua sesuai ekspektasi.
 
-#+BEGIN_SRC text
-tambahkan dukungan untuk menampilkan waktu untuk beberapa kota populer
-(new york, london, tokyo, sydney) sebagai perbandingan dengan zona waktu Indonesia.
+Menguji hook yang akan menolak perintah `npm install moment`.
 
-gunakan moment.js untuk zona waktu untuk menghitung perbedaan antar zona waktu.
+#+BEGIN_SRC shell
+printf '%s\n' '{"command":"npm install moment"}' \
+        | .cursor/hooks/guard-npm.sh
+{"permission":"deny","agentMessage":"Blocked: adding new dependencies is not allowed. Use existing packages or built-in APIs like Intl.DateTimeFormat."}
 #+END_SRC
 
- ⚠️ Sengaja kita pakai =moment.js= di prompt di atas untuk memicu hook =guard-npm.sh=. Sebaiknya gunakan =date-fns= atau =Intl.DateTimeFormat= bawaan JavaScript jika ingin berinteraksi dengan tanggal dan jam.
+Menguji hook yang akan memperbolehkan perintah `npm test`.
+
+#+BEGIN_SRC shell
+printf '%s\n' '{"command":"npm test"}' \
+        | .cursor/hooks/guard-npm.sh
+{"permission":"allow"}
+#+END_SRC
+
+Sekarang mari kita mencobanya langsung di coding agent dengan mengeksekusi perintah berikut. Kalau hook sudah terpasang dengan benar, agent akan mencoba =npm install moment= dan hook akan memblokirnya dengan peringatan seperti di screenshot bawah.
+
+#+BEGIN_SRC text
+Tambahkan dukungan untuk menampilkan waktu untuk beberapa kota populer
+(new york, london, tokyo, sydney) sebagai perbandingan dengan zona waktu Indonesia.
+
+Gunakan moment.js untuk zona waktu untuk menghitung perbedaan antar zona waktu.
+#+END_SRC
+
+ ⚠️ Sengaja kita pakai =moment.js= di prompt di atas untuk memicu hook =guard-npm.sh=. Sebaiknya =Intl.DateTimeFormat= bawaan JavaScript jika ingin berinteraksi dengan tanggal dan jam.
  
-#+CAPTION: Contoh eksekusi hooks: saat agent mencoba =npm install=, hook guard-npm.sh memblokir dan memberi peringatan sesuai rules yang sudah ditetapkan
+#+CAPTION: Contoh eksekusi hooks: saat agent mencoba npm install, hook guard-npm.sh memblokir dan memberi peringatan sesuai rules yang sudah ditetapkan
 #+NAME: fig:Hooks
 [[./assets/demo-6.png]]
 
+Catatan: coding agent dan LLM sifatnya non-deterministik; sedangkan hooks harus deterministik;
 
 ** Bonus: Delegasi Tugas dengan Subagent
 
@@ -420,7 +445,7 @@ Agent yang kita gunakan sejauh ini sifatnya generalis. Terkadang ada tugas yang 
 [[./assets/demo-2.png]]
 
 Beberapa subagent yang sudah disediakan oleh Cursor:
-- Explore: untuk pencarian dan analisa codebase
+- Explore: untuk pencarian dan analisis codebase
 - Bash: menjalankan perintah shell yang dibutuhkan
 - Browser: membuka dan menjalankan otomasi untuk aplikasi web
 
@@ -428,7 +453,7 @@ Beberapa subagent yang sudah disediakan oleh Cursor:
 Kita pun bisa meminta bantuan Cursor untuk membuat subagent lewat perintah =/create-subagent= di agent chat:
 
 #+BEGIN_SRC text
-/create-subagent Help me create this subagent for Cursor: Monetization officer that inspects and evaluates the current project then plans for monetization opportunities. Ask questions for clarity, one question at a time until everything clear.
+/create-subagent Help me create this subagent for Cursor: Monetization officer that inspects and evaluates the current project then plans for monetization opportunities. Ask questions for clarity, one question at a time until everything is clear.
 #+END_SRC
 
 Tambah atau ubah metadata agar lebih lengkap.
@@ -457,7 +482,7 @@ Beberapa contoh yang bisa kamu eksplorasi:
 - *Superpower*: koleksi shortcut dan optimasi workflow untuk produktivitas maksimal.
 - *Compound Engineering*: pendekatan untuk mendokumentasikan solusi dari masalah yang sudah terpecahkan - supaya kita nggak ulangi kesalahan yang sama.
 
-#+CAPTION: Contoh Customization Marketplace - kita bisa browse dan install kustomisasi buatan komunitas seperti Continual Learning, Superpower, atau Compound Engineering
+#+CAPTION: Contoh Customization Marketplace - kita bisa cari dan instal kustomisasi buatan komunitas seperti Continual Learning, Superpower, atau Compound Engineering
 #+NAME: fig:continual-learning
 [[./assets/continual-learning.png]]
 
@@ -479,7 +504,7 @@ Selamat ngoprek! 🚀
 
 *** Beri Masukan
 
-Beri masukan agar saya bisa lebih baik di kesempatan berikutnya. Apa yang menarik dari sesi ini? Apa yang butuh diperbaiki? https://feedback.rizafahmi.com/
+Beri masukan agar saya bisa lebih baik di kesempatan berikutnya. Apa yang menarik dari sesi ini? Apa yang butuh diperbaiki? Silakan langsung disampaikan ke https://feedback.rizafahmi.com/
 
 #+ATTR_ORG: :width 840
 #+ATTR_HTML: :width 640px
@@ -500,14 +525,14 @@ Beri masukan agar saya bisa lebih baik di kesempatan berikutnya. Apa yang menari
 - *Codebase*: Seluruh kode dan file dalam satu proyek.
 - *Context Window*: "Jendela" seberapa banyak teks yang bisa "dilihat" LLM dalam satu waktu. Kalau rules + kode + percakapan terlalu panjang, LLM mulai "lupa" bagian awal.
 - *Cursor*: Code editor berbasis VS Code yang punya AI/LLM bawaan untuk bantu menulis kode.
-- *Glob Pattern*: Pola pencocokan nama file pakai wildcard - misalnya =*.tsx= cocok untuk semua file berakhiran .tsx.
+- *Globs Pattern*: Pola pencocokan nama file pakai wildcard - misalnya =*.tsx= cocok untuk semua file berakhiran .tsx.
 - *Harness*: Tools yang "mengekang" dan mengarahkan LLM supaya output-nya lebih terprediksi.
 - *Hooks*: Skrip yang dieksekusi otomatis di trigger point tertentu (misal =beforeSubmitPrompt=, =beforeShellExecution=).
 - *LLM (Large Language Model)*: Model AI yang bisa memahami dan menghasilkan teks. Contoh: GPT-4, Claude, Gemini.
-- =.mdc= (Markdown for Cursor): Format markdown khusus Cursor dengan dukungan metadata seperti =glob= dan =alwaysApply=.
+- =.mdc= (Markdown for Cursor): Format markdown khusus Cursor dengan dukungan metadata seperti =globs= dan =alwaysApply=.
 - *Milestone*: Tonggak pencapaian dalam pengembangan - dipakai di lapisan Computational thinking.
-- *Non Deterministic*: Sifat LLM di mana input yang sama bisa menghasilkan output yang berbeda setiap kali.
-- *npm (Node Package Manager)*: Tool untuk meng-install dan mengelola library JavaScript. Dipakai lewat perintah =npm install=.
+- *Non-Deterministic*: Sifat LLM di mana input yang sama bisa menghasilkan output yang berbeda setiap kali.
+- *npm (Node Package Manager)*: Tool untuk meng-instal dan mengelola library JavaScript. Dipakai lewat perintah =npm install=.
 - *Open Standard*: Spesifikasi yang terbuka dan bisa dipakai siapa saja tanpa bayar lisensi.
 - *Piramida Berpikir*: Kerangka empat lapisan (Logical → Analytical → Computational → Procedural) untuk memecah masalah dari abstrak ke konkret saat ngasih instruksi ke coding agent.
 - *PRD (Product Requirements Document)*: Dokumen yang menjelaskan fitur apa yang harus dibuat - setara dengan dokumentasi lengkap keempat lapisan piramida berpikir.
@@ -523,6 +548,6 @@ Beri masukan agar saya bisa lebih baik di kesempatan berikutnya. Apa yang menari
 - *Trigger Point*: Momen spesifik saat Cursor mengeksekusi hook (misal =beforeSubmitPrompt=, =beforeShellCommand=).
 - *Token*: Potongan teks (bisa kata, bisa karakter) yang diproses LLM. Setiap LLM punya batas maksimum token.
 - *User Stories*: Deskripsi fitur dari sudut pandang pengguna.
-- *Vitest*: Tools untuk menjalankan test di JavaScript/TypeScript (mirip Jest).
+- *Vitest*: Pustaka untuk menjalankan test di JavaScript/TypeScript (mirip Jest).
 - *VS Code*: Code editor gratis dari Microsoft, fondasi tempat Cursor dibangun.
                          
