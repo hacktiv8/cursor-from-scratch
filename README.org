@@ -441,6 +441,13 @@ Bisa dicoba dengan perintah berikut:
 Use the monetization-officer subagent to evaluate monetization opportunities for this project
 #+END_SRC
 
+[[./assets/demo-7-1.png]]
+
+Dan kira-kira begini saran dari subagent.
+
+[[./assets/demo-7-2.png]]
+
+
 ** Bonus: Customization Marketplace
 
 Cursor juga menyediakan marketplace untuk kustomisasi - isinya macam-macam: ada yang berupa rules, ada yang berupa skills, subagents, atau hooks - bahkan ada yang mengombinasikan beberapa jenis sekaligus. Kita bisa menggunakan hasil kustomisasi buatan teman-teman komunitas. Cara mengaksesnya: buka Cursor → klik ikon puzzle (🧩) di sidebar kiri → pilih tab *Marketplace*. 
