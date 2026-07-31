@@ -5,21 +5,11 @@ Materi untuk Cursor.id Meetup Agustus: personalisasi & workflow Cursor agent.
 #+ATTR_HTML: :class sidenote
 *Catatan:* Materi ini ditulis oleh manusia, dengan bantuan LLM. Informasi lebih lanjut bisa cek [[https://rizafahmi.com/ai/][rizafahmi.com/ai/]]
 
-** Pembuka
-#+ATTR_HTML: :class sidenote
-*Estimasi waktu:* ~5 menit.
+** Pembuka [5m]
 
 Pernah menulis perintah untuk coding agent seperti Cursor dan hasilnya jauh dari ekspektasi? Sepertinya kamu nggak sendirian. Coding agent menggunakan Large Language Model (LLM), yang sifat dasarnya "liar" - instruksi yang sama bisa menghasilkan kode yang jauh berbeda.
 
 Intinya: semakin baik kita mendefinisikan apa yang kita mau, semakin baik pula hasil yang diberikan Cursor. Prompt yang bagus tetap penting, tapi fondasi yang kuat - rules + skills + workflow - meningkatkan konsistensi tanpa perlu menulis ulang instruksi setiap kali.
-
-*** Yang Akan Kita Pelajari
-
-Di akhir sesi, peserta dapat:
-- menjelaskan perbedaan Rule, Skill, dan Hook;
-- membuat dan memverifikasi satu Project Rule;
-- menjalankan Skill baik secara implisit atau eksplisit;
-- membuat Hook yang memblokir perintah tertentu;
 
 *** Prasyarat
 
@@ -30,6 +20,14 @@ Kalau ingin mengikuti materi ini, pastikan teman-teman mempersiapkan hal-hal ber
 - Klon repositori ini dengan menjalankan `git clone https://github.com/hacktiv8/cursor-from-scratch`
 - Jika ingin melihat hasil akhirnya langkah demi langkah, bisa cek `git branch`
 - Familiar dengan basic terminal (=cd=, =mkdir=, =ls=) dan git (=git init=, =git add=, =git commit=, =git reset=, =git checkout=, dll).
+
+*** Yang Akan Kita Pelajari
+
+Di akhir sesi, peserta dapat:
+- menjelaskan perbedaan Rule, Skill, dan Hook;
+- membuat dan memverifikasi satu Project Rule;
+- menjalankan Skill baik secara implisit atau eksplisit;
+- membuat Hook yang memblokir perintah tertentu;
 
 *** Mode Interaksi Cursor
 
@@ -63,22 +61,6 @@ Berikut kira-kira hasilnya, versi saya. Yang saya jalankan sekitar minggu lalu k
 
 [[./assets/demo-1.png]]
 
-*** Agenda
-
-Berikut ini adalah materi yang akan kita bahas.
-
-| Bagian | Durasi |
-|--------+--------|
-| Pembuka | 5 m |
-| Rules | 20 m |
-| Skills | 10 m |
-| Hooks | 15 m |
-| Bonus: Subagent | - |
-| Bonus: Marketplace | - |
-| Penutup | 5 m |
-
-Referensi: [[https://cursor.com/docs/customize-cursor][Dokumentasi Kustomisasi Cursor]]
-
 *** Kendala, diskusi atau bertanya
 Silakan interupsi kapan saja jika ada kendala, topik diskusi atau bertanya. Sesi ini didesain agar interaktif dan mengalir dua arah. Ajukan topik diskusi atau pertanyaan ke: https://feedback.rizafahmi.com/questions
 
@@ -88,9 +70,7 @@ Silakan interupsi kapan saja jika ada kendala, topik diskusi atau bertanya. Sesi
 #+NAME: qr-questions-monkey.png
 [[./assets/qr-questions-monkey.png]]
 
-** Memberi Instruksi dengan Rules
-#+ATTR_HTML: :class sidenote
-*Estimasi waktu:* ~20 menit.
+** Memberi Instruksi dengan Rules [20m]
 
 Untuk mendapatkan hasil yang lebih konsisten dan sesuai ekspektasi pada tugas yang kompleks, sebaiknya tambahkan instruksi yang jelas: mau buat apa, buatnya pakai apa, fiturnya apa saja dan bagaimana langkah-langkahnya. Untuk tugas sederhana, instruksi minimal mungkin sudah cukup.
 
@@ -204,9 +184,7 @@ Prefer functional programming style over imperative style in TypeScript
 
 Lakukan perintah =refactor= lagi untuk melihat perbedaan hasilnya dari sebelumnya.
 
-** Menambahkan Skill
-#+ATTR_HTML: :class sidenote
-*Estimasi waktu:* ~10 menit.
+** Menambahkan Skill [10m]
 
 [[https://cursor.com/docs/skills][Skill]] adalah format berbasis markdown yang terdokumentasi secara publik atau bahasa kerennya /open standard/ - artinya spesifikasinya terbuka dan siapa pun bisa membuat skill yang kompatibel. Format ini cukup terbuka untuk diadopsi dan bisa kamu unduh dari repo GitHub orang lain. Perlu diingat: beberapa skill mungkin membutuhkan library atau tools tambahan yang harus di-instal terlebih dahulu, atau ditulis untuk framework spesifik - periksa isi skill sebelum menggunakannya.
 
@@ -337,9 +315,7 @@ Contoh skill lain yang bisa kamu coba:
 - [[https://impeccable.style][impeccable.style]]
 - [[https://github.com/mattpocock/skills/][mattpocock/skills]]
 
-** Kustomisasi lebih lanjut dengan Hooks
-#+ATTR_HTML: :class sidenote
-*Estimasi waktu:* 15 menit.
+** Kustomisasi lebih lanjut dengan Hooks [15m]
 
 Cara berikutnya untuk kustomisasi dan mengembangkan Cursor lebih lanjut. Hooks memungkinkan kita menambahkan otomatisasi dan /guardrail/ ke dalam workflow - misalnya memblokir perintah berbahaya sebelum dieksekusi, atau menjalankan formatter secara otomatis setelah agent selesai mengedit file. Intinya, hooks adalah skrip yang dieksekusi di saat yang diinginkan (/trigger point/). Misalnya sebelum mengirim perintah ke LLM, sebelum menjalankan perintah shell, sebelum =npm install=, dsb.
 
@@ -472,7 +448,6 @@ Dan kira-kira begini saran dari subagent.
 
 [[./assets/demo-7-2.png]]
 
-
 ** Bonus: Customization Marketplace
 
 Cursor juga menyediakan marketplace untuk kustomisasi - isinya macam-macam: ada yang berupa rules, ada yang berupa skills, subagents, atau hooks - bahkan ada yang mengombinasikan beberapa jenis sekaligus. Kita bisa menggunakan hasil kustomisasi buatan teman-teman komunitas. Cara mengaksesnya: buka Cursor → klik ikon puzzle (🧩) di sidebar kiri → pilih tab *Marketplace*. 
@@ -487,8 +462,6 @@ Beberapa contoh yang bisa kamu eksplorasi:
 [[./assets/continual-learning.png]]
 
 ** Penutup
-#+ATTR_HTML: :class sidenote
-*Estimasi waktu:* 5 menit.
 
 Cursor adalah /coding agent/ atau /harness coding tools/ yang bisa dipersonalisasi untuk mengikuti cara kita bekerja sebagai developer.
 
