@@ -23,7 +23,7 @@ Di akhir sesi, peserta dapat:
 
 *** Prasyarat
 
-Kalau ingin mengikuti materi ini, pastikan teman-temam mempersiapkan hal-hal berikut:
+Kalau ingin mengikuti materi ini, pastikan teman-teman mempersiapkan hal-hal berikut:
 - Sudah instal Cursor versi 3.2 atau yang lebih baru, dapat diunduh di https://cursor.com/download
 - Sudah punya akun dan /login/ (bisa pakai Google atau GitHub) ke Cursor
 - Sudah instal git dan punya akun GitHub
@@ -73,14 +73,14 @@ Berikut ini adalah materi yang akan kita bahas.
 | Rules | 20 m |
 | Skills | 10 m |
 | Hooks | 15 m |
-| Bonus: Subagent |
-| Bonus: Marketplace |
+| Bonus: Subagent | - |
+| Bonus: Marketplace | - |
 | Penutup | 5 m |
 
 Referensi: [[https://cursor.com/docs/customize-cursor][Dokumentasi Kustomisasi Cursor]]
 
 *** Kendala, diskusi atau bertanya
-Silakan interupsi kapan saja jika ada kendala, topik diskusi atau bertanya. Sesi ini didesain agar interaktif dan mengalir dua arah. Ajukan topik diskusi atau pertanyaaan ke: https://feedback.rizafahmi.com/questions
+Silakan interupsi kapan saja jika ada kendala, topik diskusi atau bertanya. Sesi ini didesain agar interaktif dan mengalir dua arah. Ajukan topik diskusi atau pertanyaan ke: https://feedback.rizafahmi.com/questions
 
 #+ATTR_ORG: :width 840
 #+ATTR_HTML: :width 640px
@@ -149,7 +149,7 @@ Isi nama dan deskripsikan aturannya. Contohnya, untuk proyek kita ini bisa mengg
 - Accessibility: big text, big buttons, readable type, clear color combination
 #+END_SRC
 
-Menariknya di Cursor kita bisa memberi kondisi kapan saja rules ini berlaku. Ada empat mode yang bisa dipilih:
+Menariknya di Cursor kita bisa memberi kondisi kapan saja rules ini berlaku. Ada +empat mode+ tiga mode yang bisa dipilih:
 - *Always Apply*: Aturan dipakai di /setiap/ prompt, nggak peduli konteksnya apa.
 - *Apply to Specific Files*: Aturan cuma berlaku untuk file yang cocok dengan =globs= pattern (misal =*.tsx= untuk file React, atau =*.test.ts= untuk file testing).
 - *Apply Manually*: Kamu yang panggil sendiri lewat =@rules= ketika dibutuhkan.
@@ -410,7 +410,7 @@ Menguji hook yang akan menolak perintah `npm install moment`.
 #+BEGIN_SRC shell
 printf '%s\n' '{"command":"npm install moment"}' \
         | .cursor/hooks/guard-npm.sh
-{"permission":"deny","agentMessage":"Blocked: adding new dependencies is not allowed. Use existing packages or built-in APIs like Intl.DateTimeFormat."}
+{"permission":"deny","agent_message":"Blocked: adding new dependencies is not allowed. Use existing packages or built-in APIs like Intl.DateTimeFormat."}
 #+END_SRC
 
 Menguji hook yang akan memperbolehkan perintah `npm test`.
